@@ -9,20 +9,16 @@ class EnglishTranslations:
     WRONG_VALUE_ERROR = "❌ Invalid value entered for {{ variable_name }} variable."
 
     START_MSG = (
-        "Hello there! 👋  
-I’m Auto Rename Bot, your go-to assistant for effortlessly renaming files on Telegram.  
-
-✨ Key Features:  
-- Rename files with custom names and extensions.  
-- Fast, secure, and easy to use.  
-- Supports a wide range of file types.  
-
-Simply send me a file, and I’ll guide you through the renaming process!  
-
-Let’s get started! 🚀"
-       
-        "🚀 **Powered by** [NAm](https://t.me/xspes)"
-    )
+    "Hello there! 👋\n"
+    "I’m **Auto Rename Bot**, your go-to assistant for effortlessly renaming files on Telegram.\n\n"
+    "✨ **Key Features:**\n"
+    "- Rename files with custom names and extensions.\n"
+    "- Fast, secure, and easy to use.\n"
+    "- Supports a wide range of file types.\n\n"
+    "Simply send me a file, and I’ll guide you through the renaming process!\n\n"
+    "Let’s get started! 🚀\n\n"
+    "🚀 **Powered by** [NAm](https://t.me/xspes)"
+)
 
     CANCEL_MESSAGE = "⚠️ The rename has been **canceled**. Will be updated soon."
 
