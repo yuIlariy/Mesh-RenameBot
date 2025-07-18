@@ -122,14 +122,24 @@ async def start_handler(_: MeshRenameBot, msg: Message) -> None:
             [
                 [
                     InlineKeyboardButton(
-                        "🌟 Open Source",
+                        "🤩Source code",
                         url="https://github.com/yuIlariy/Mesh-RenameBot"
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        "Updates📥",
+                        url="https://t.me/modstorexd"
+                    ),
+                    InlineKeyboardButton(
+                        "Support🚀",
+                        url="https://t.me/xspes"
                     )
                 ]
             ]
         )
     )
-async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
+    async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
     command_mode = UserDB().get_var("command_mode", msg.from_user.id)
     user_locale = UserDB().get_var("locale", msg.from_user.id)
     translator = Translator(user_locale)
