@@ -113,21 +113,22 @@ def add_handlers(client: MeshRenameBot) -> None:
     signal.signal(signal.SIGTERM, term_handler)
 
 
-await msg.reply(
-    Translator(user_locale).get("START_MSG"),
-    quote=True,
-    reply_markup=InlineKeyboardMarkup(
-        [
+async def start_handler(_: MeshRenameBot, msg: Message) -> None:
+    user_locale = UserDB().get_var("locale", msg.from_user.id)
+    await msg.reply(
+        Translator(user_locale).get("START_MSG"),
+        quote=True,
+        reply_markup=InlineKeyboardMarkup(
             [
-                InlineKeyboardButton(
-                    "🌟 Open Source",
-                    url="https://github.com/yuIlariy/Mesh-RenameBot"
-                )
+                [
+                    InlineKeyboardButton(
+                        "🌟 Open Source",
+                        url="https://github.com/yuIlariy/Mesh-RenameBot"
+                    )
+                ]
             ]
-        ]
+        )
     )
-)
-
 async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
     command_mode = UserDB().get_var("command_mode", msg.from_user.id)
     user_locale = UserDB().get_var("locale", msg.from_user.id)
