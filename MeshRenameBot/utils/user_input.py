@@ -31,33 +31,33 @@ class userin:
                 await e.delete()
             return val
 
-while True:
-    if (time.time() - start) >= 20:
-        break
-
-    if len(self.track_users[e.from_user.id]) != 0:
-        msg_obj = self.track_users[e.from_user.id].pop(0)
-
-        if msg_obj.text == "/ignore":
-            val = "ignore"
-            break
-
-        if file:
-            if msg_obj.document is not None:
-                val = await msg_obj.download()
+        while True:
+            if (time.time() - start) >= 20:
                 break
+
+            if len(self.track_users[e.from_user.id]) != 0:
+                msg_obj = self.track_users[e.from_user.id].pop(0)
+
+                if msg_obj.text == "/ignore":
+                    val = "ignore"
+                    break
+
+                if file:
+                    if msg_obj.document is not None:
+                        val = await msg_obj.download()
+                        break
+                else:
+                    val = msg_obj.text
+                    break
+
+            await asyncio.sleep(1)
+
+        if val is not None and del_msg and 'msg_obj' in locals():
+            await msg_obj.delete()
+        return val
+
+    async def interactive_input(client: Client, msg: types.MessageEntity) -> None:
+        if msg.from_user.id in userin.track_users.keys():
+            userin.track_users[msg.from_user.id].append(msg)
         else:
-            val = msg_obj.text
-            break
-
-    await asyncio.sleep(1)
-
-if val is not None and del_msg and 'msg_obj' in locals():
-    await msg_obj.delete()
-return val
-
-async def interactive_input(client: Client, msg: types.MessageEntity) -> None:
-    if msg.from_user.id in userin.track_users.keys():
-        userin.track_users[msg.from_user.id].append(msg)
-    else:
-        msg.continue_propagation()
+            msg.continue_propagation()
