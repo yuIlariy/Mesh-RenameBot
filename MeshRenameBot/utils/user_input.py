@@ -19,33 +19,42 @@ class userin:
         start = time.time()
         val = None
 
+        # Process the triggering message 'e' as the first input
+        if e.text and not file:
+            val = e.text
+            if del_msg:
+                await e.delete()
+            return val
+        elif file and getattr(e, "document", None) is not None:
+            val = await e.download()
+            if del_msg:
+                await e.delete()
+            return val
+
         while True:
             if (time.time() - start) >= 20:
                 break
-            
+
             if len(self.track_users[e.from_user.id]) != 0:
-                msg_obj = self.track_users[e.from_user.id].pop(0)
-                
-                if msg_obj.text == "/ignore":
-                    val = "ignore"
-                    break
+               msg_obj = self.track_users[e.from_user.id].pop(0)
 
-                if file:
-                    if msg_obj.document is not None:
-                        val = await msg_obj.download()
-                        break
-                else:
-                    val = msg_obj.text
-                    break
-            
-            await asyncio.sleep(1)
-        
-        if val is not None and del_msg:
-            await msg_obj.delete()
+               if msg_obj.text == "/ignore":
+                   val = "ignore"
+                   break
 
-        self.track_users.pop(e.from_user.id)
-        print("val is", val)
-        return val
+               if file:
+                   if msg_obj.document is not None:
+                       val = await msg_obj.download()
+                       break
+               else:
+                   val = msg_obj.text
+                   break
+
+             await asyncio.sleep(1)
+
+         if val is not None and del_msg and 'msg_obj' in locals():
+             await msg_obj.delete()
+         return val
 
 
 async def interactive_input(client: Client, msg: types.MessageEntity) -> None:
