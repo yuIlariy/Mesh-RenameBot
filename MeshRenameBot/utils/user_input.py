@@ -16,8 +16,6 @@ class userin:
         file: bool = False,
         del_msg: bool = False
     ) -> Union[None, str]:
-        # This function gets the new value to be set from the user in current context
-
         self.track_users[e.from_user.id] = []
         start = time.time()
         val = None
@@ -26,17 +24,24 @@ class userin:
         if hasattr(e, "text") and e.text and not file:
             val = e.text
             if del_msg:
-                await e.delete()
+                if isinstance(e, types.Message):
+                    await e.delete()
+                elif isinstance(e, types.CallbackQuery) and hasattr(e, "message") and isinstance(e.message, types.Message):
+                    await e.message.delete()
             return val
         elif hasattr(e, "data") and e.data and not file:
             val = e.data
             if del_msg:
-                await e.delete()
+                if isinstance(e, types.CallbackQuery) and hasattr(e, "message") and isinstance(e.message, types.Message):
+                    await e.message.delete()
             return val
         elif file and getattr(e, "document", None) is not None:
             val = await e.download()
             if del_msg:
-                await e.delete()
+                if isinstance(e, types.Message):
+                    await e.delete()
+                elif isinstance(e, types.CallbackQuery) and hasattr(e, "message") and isinstance(e.message, types.Message):
+                    await e.message.delete()
             return val
 
         while True:
@@ -65,7 +70,10 @@ class userin:
             await asyncio.sleep(1)
 
         if val is not None and del_msg and 'msg_obj' in locals():
-            await msg_obj.delete()
+            if isinstance(msg_obj, types.Message):
+                await msg_obj.delete()
+            elif isinstance(msg_obj, types.CallbackQuery) and hasattr(msg_obj, "message") and isinstance(msg_obj.message, types.Message):
+                await msg_obj.message.delete()
         return val
 
 async def interactive_input(client: Client, msg: Union[types.Message, types.CallbackQuery]) -> None:
