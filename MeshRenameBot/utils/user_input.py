@@ -2,6 +2,7 @@ import time
 import asyncio
 from typing import Union
 from pyrogram import Client, types
+import pyrogram
 
 class userin:
     track_users = {}
@@ -21,29 +22,39 @@ class userin:
         val = None
 
         # Handle Message or CallbackQuery safely
+        # Only delete after all editing or sending is done!
         if hasattr(e, "text") and e.text and not file:
             val = e.text
-            if del_msg:
-                if isinstance(e, types.Message):
+            if del_msg and isinstance(e, types.Message):
+                try:
                     await e.delete()
-                elif isinstance(e, types.CallbackQuery) and hasattr(e, "message") and isinstance(e.message, types.Message):
-                    await e.message.delete()
+                except pyrogram.errors.RPCError:
+                    pass
             return val
         elif hasattr(e, "data") and e.data and not file:
             val = e.data
-            if del_msg:
-                if isinstance(e, types.CallbackQuery) and hasattr(e, "message") and isinstance(e.message, types.Message):
+            # Don't delete before editing; generally, leave inline messages unless you want to remove the menu.
+            if del_msg and isinstance(e, types.CallbackQuery) and hasattr(e, "message") and isinstance(e.message, types.Message):
+                try:
                     await e.message.delete()
+                except pyrogram.errors.RPCError:
+                    pass
             return val
         elif file and getattr(e, "document", None) is not None:
             val = await e.download()
-            if del_msg:
-                if isinstance(e, types.Message):
+            if del_msg and isinstance(e, types.Message):
+                try:
                     await e.delete()
-                elif isinstance(e, types.CallbackQuery) and hasattr(e, "message") and isinstance(e.message, types.Message):
+                except pyrogram.errors.RPCError:
+                    pass
+            elif del_msg and isinstance(e, types.CallbackQuery) and hasattr(e, "message") and isinstance(e.message, types.Message):
+                try:
                     await e.message.delete()
+                except pyrogram.errors.RPCError:
+                    pass
             return val
 
+        msg_obj = None
         while True:
             if (time.time() - start) >= 20:
                 break
@@ -69,11 +80,19 @@ class userin:
 
             await asyncio.sleep(1)
 
-        if val is not None and del_msg and 'msg_obj' in locals():
+        # Only delete after all processing is done
+        if val is not None and del_msg and msg_obj is not None:
             if isinstance(msg_obj, types.Message):
-                await msg_obj.delete()
+                try:
+                    await msg_obj.delete()
+                except pyrogram.errors.RPCError:
+                    pass
             elif isinstance(msg_obj, types.CallbackQuery) and hasattr(msg_obj, "message") and isinstance(msg_obj.message, types.Message):
-                await msg_obj.message.delete()
+                try:
+                    await msg_obj.message.delete()
+                except pyrogram.errors.RPCError:
+                    pass
+
         return val
 
 async def interactive_input(client: Client, msg: Union[types.Message, types.CallbackQuery]) -> None:
