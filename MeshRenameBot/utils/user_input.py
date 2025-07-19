@@ -9,17 +9,27 @@ class userin:
     def __init__(self, client):
         self._client = client
 
-    async def get_value(self, client: Client, e: types.Message, file: bool = False, del_msg: bool = False) -> Union[None, str]:
-        # todo replace with conver. - or maybe not Fix Dont switch to conversion
-        # this function gets the new value to be set from the user in current context
+    async def get_value(
+        self,
+        client: Client,
+        e: Union[types.Message, types.CallbackQuery],
+        file: bool = False,
+        del_msg: bool = False
+    ) -> Union[None, str]:
+        # This function gets the new value to be set from the user in current context
 
         self.track_users[e.from_user.id] = []
         start = time.time()
         val = None
 
-        # Process the triggering message 'e' as the first input
-        if e.text and not file:
+        # Handle Message or CallbackQuery safely
+        if hasattr(e, "text") and e.text and not file:
             val = e.text
+            if del_msg:
+                await e.delete()
+            return val
+        elif hasattr(e, "data") and e.data and not file:
+            val = e.data
             if del_msg:
                 await e.delete()
             return val
@@ -36,16 +46,20 @@ class userin:
             if len(self.track_users[e.from_user.id]) != 0:
                 msg_obj = self.track_users[e.from_user.id].pop(0)
 
-                if msg_obj.text == "/ignore":
+                # Handle ignore command
+                if hasattr(msg_obj, "text") and msg_obj.text == "/ignore":
                     val = "ignore"
                     break
 
                 if file:
-                    if msg_obj.document is not None:
+                    if getattr(msg_obj, "document", None) is not None:
                         val = await msg_obj.download()
                         break
-                else:
+                elif hasattr(msg_obj, "text") and msg_obj.text:
                     val = msg_obj.text
+                    break
+                elif hasattr(msg_obj, "data") and msg_obj.data:
+                    val = msg_obj.data
                     break
 
             await asyncio.sleep(1)
@@ -54,7 +68,7 @@ class userin:
             await msg_obj.delete()
         return val
 
-async def interactive_input(client: Client, msg: types.Message) -> None:
+async def interactive_input(client: Client, msg: Union[types.Message, types.CallbackQuery]) -> None:
     if msg.from_user.id in userin.track_users.keys():
         userin.track_users[msg.from_user.id].append(msg)
     else:
