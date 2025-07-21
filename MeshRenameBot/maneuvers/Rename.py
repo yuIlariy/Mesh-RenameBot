@@ -206,7 +206,7 @@ class RenameManeuver(DefaultManeuver):
         # getting the caption
         caption = udb.get_var("caption", self._cmd_message.from_user.id)
         if caption:
-            caption = caption.format(filename=new_file_name)
+            caption = caption.format(file_name=new_file_name)
 
         try:
             renamelog.info(
