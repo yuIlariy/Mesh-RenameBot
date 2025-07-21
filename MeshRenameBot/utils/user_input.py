@@ -4,7 +4,7 @@ from typing import Union
 from pyrogram import Client
 from pyrogram.types import Message, CallbackQuery
 
-# 🗂 Global tracking
+# 🗂 Shared input tracker across users
 track_users = {}
 
 class userin:
@@ -24,40 +24,41 @@ class userin:
 
         user_id = e.from_user.id
         val = None
-        start = time.time()
+        msg_obj = None
 
-        while time.time() - start < 20:
-            user_queue = track_users.get(user_id, [])
-            while user_queue:
-                msg_obj = user_queue.pop(0)
-
-                if msg_obj.text == "/ignore":
-                    val = "ignore"
+        # 🔥 Pre-check for messages already queued
+        user_queue = track_users.get(user_id, [])
+        if user_queue:
+            msg_obj = user_queue.pop(0)
+        else:
+            # ⏳ Wait if nothing is queued yet
+            start = time.time()
+            while time.time() - start < 20:
+                user_queue = track_users.get(user_id, [])
+                if user_queue:
+                    msg_obj = user_queue.pop(0)
                     break
+                await asyncio.sleep(1)
 
-                if file and msg_obj.document:
-                    val = await msg_obj.download()
-                    break
+        if msg_obj:
+            if msg_obj.text == "/ignore":
+                val = "ignore"
+            elif file and msg_obj.document:
+                val = await msg_obj.download()
+            elif msg_obj.text:
+                val = msg_obj.text
 
-                if msg_obj.text:
-                    val = msg_obj.text
-                    break
-
-            if val:
-                break
-            await asyncio.sleep(1)
-
-        if val is not None and del_msg:
-            try:
-                await msg_obj.delete()
-            except Exception:
-                pass
+            if val is not None and del_msg:
+                try:
+                    await msg_obj.delete()
+                except Exception:
+                    pass
 
         track_users.pop(user_id, None)
         print("val is", val)
         return val
 
-# 📥 External hook for incoming messages
+# 📥 External listener that queues incoming messages immediately
 async def interactive_input(client: Client, msg: Message) -> None:
     user_id = msg.from_user.id
     track_users.setdefault(user_id, []).append(msg)
