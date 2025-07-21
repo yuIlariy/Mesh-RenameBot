@@ -50,12 +50,11 @@ class userin:
     async def interactive_input(self, msg: types.Message) -> None:
         user_id = msg.from_user.id
 
-        # Track every incoming message—including the first one
         if user_id in self.track_users:
             self.track_users[user_id].append(msg)
         else:
             self.track_users[user_id] = [msg]
 
-        # Let message continue to other handlers if needed
+        # Allow message to be routed to other handlers if you're using custom filters
         if hasattr(msg, "continue_propagation"):
             msg.continue_propagation()
