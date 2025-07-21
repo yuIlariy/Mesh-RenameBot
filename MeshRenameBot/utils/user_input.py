@@ -4,6 +4,8 @@ from typing import Union
 from pyrogram import Client, types
 from pyrogram.types import Message, CallbackQuery
 
+# Global dictionary for tracking user input across messages
+track_users = {}
 
 class userin:
     def __init__(self, client: Client):
