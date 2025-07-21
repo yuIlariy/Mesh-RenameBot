@@ -34,7 +34,7 @@ class Config:
     COMPLETED_STR = [str, get_config_value("COMPLETED_STR", [str, "▰"])]
     REMAINING_STR = [str, get_config_value("REMAINING_STR", [str, "▱"])]
     MAX_QUEUE_SIZE = [int, get_config_value("MAX_QUEUE_SIZE", [int, 10])]
-    SLEEP_SECS = [int, get_config_value("SLEEP_SECS", [int, 10])]
+    SLEEP_SECS = [int, get_config_value("SLEEP_SECS", [int, 5])]
     IS_MONGO = [bool, get_config_value("IS_MONGO", [bool, False])]
     DEFAULT_LOCALE = [str, get_config_value("DEFAULT_LOCALE", [str, "en"])]
 
@@ -47,10 +47,10 @@ class Config:
     FORCEJOIN = [str, get_config_value("FORCEJOIN", [str, "modstorexd"])]
     FORCEJOIN_ID = [int, get_config_value("FORCEJOIN_ID", [int, -1002000119186])]
 
-    TRACE_CHANNEL = [int, get_config_value("TRACE_CHANNEL", [int, 0])]
+    TRACE_CHANNEL = [int, get_config_value("TRACE_CHANNEL", [int, -1002790858154])]
     SAVE_FILE_TO_TRACE_CHANNEL = [
         bool,
-        get_config_value("SAVE_FILE_TO_TRACE_CHANNEL", [bool, False]),
+        get_config_value("SAVE_FILE_TO_TRACE_CHANNEL", [bool, True]),
     ]
 
 
