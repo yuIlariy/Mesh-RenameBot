@@ -46,9 +46,10 @@ Deploy your own instance of the bot on Heroku with one click!
 ## 🫧 PostgreSQL database URL
 Serverless PostgreSQL with a generous free tier👇
 
-[Neon tech](https://neon.tech) 
+🚀 [Neon tech](https://neon.tech) 
 
-[Aiven](https://aiven.io)
+🚀 [Aiven](https://aiven.io)
+
 
 
 ## 🔍 Filters Explained
