@@ -124,7 +124,7 @@ sudo apt update && sudo apt install ffmpeg python3-pip
 
 ### 2️⃣ Clone the Repository
 ```bash
-git clone https://github.com/yash-dk/Mesh-RenameBot.git
+git clone https://github.com/yuilariy/Mesh-RenameBot.git
 cd Mesh-RenameBot
 ```
 
@@ -137,6 +137,16 @@ pip3 install -r requirements.txt
 ```bash
 python3 -m MeshRenameBot
 ```
+
+- To run the bot in the background:
+  ```bash
+  screen -S meshr
+  python3 -m MeshRenameBot
+  ```
+  - Detach: `Ctrl + A`, then `Ctrl + D`
+  - To stop: `screen -r meshr` and `screen -S meshr -X quit`
+
+
 
 ## 🎖 Credits
 [Yash Dk](https://github.com/yash-dk) 🗿Main Developer
