@@ -29,9 +29,9 @@ This bot is aimed to be **the best rename bot around**! 🏆✨
 ---
 
 ## Test the bots
-[Check on Telegram](https://t.me/MeshRenameBot)
+[Check on Telegram](https://t.me/MeshRenameBot) 🚀By Yash
 
-[Test Bot V2](https://t.me/MeshRenameBot)
+[Test Bot V2](https://t.me/MeshRenameBot) 🚀By yuilariy
 
 
 ---
@@ -47,6 +47,7 @@ Deploy your own instance of the bot on Heroku with one click!
 Serverless PostgreSQL with a generous free tier👇
 
 [Neon tech](https://neon.tech) 
+
 [Aiven](https://aiven.io)
 
 
