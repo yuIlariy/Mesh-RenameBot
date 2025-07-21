@@ -1,104 +1,88 @@
 # -*- coding: utf-8 -*-
 # (c) YashDK [yash-dk@github]
 
-import psycopg2
-import psycopg2.extras
 import logging
 import time
+from typing import Optional
+
+import psycopg2
+import psycopg2.extras
+from psycopg2.pool import SimpleConnectionPool
 
 renamelog = logging.getLogger(__name__)
 
-
 class DataBaseHandle:
-    _active_connections = []
-    _connection_users = []
+    _pool: Optional[SimpleConnectionPool] = None
 
-    def __init__(self, dburl: str = None) -> None:
-        """Load the DB URL if available
+    def __init__(self, dburl: str = None, minconn: int = 1, maxconn: int = 10) -> None:
+        """Initialize the connection pool.
 
         Args:
-            dburl (str, optional): The database URI to connect to. Defaults to None.
+            dburl (str, optional): The database URI to connect to.
+            minconn (int): Minimum connections to maintain in the pool.
+            maxconn (int): Maximum connections allowed in the pool.
         """
+        if not dburl:
+            renamelog.warning("Database URL is not provided.")
+            self._block = True
+            return
 
         self._dburl = dburl
-
-        if isinstance(self._dburl, bool):
-            self._block = True
-        else:
-            self._block = False
-
-        if self._block:
-            return
-
-        if self._active_connections:
-            self._conn = self._active_connections[0]
-            self._connection_users.append(1)
-        else:
-            renamelog.debug("Established Connection")
-            self._conn = psycopg2.connect(self._dburl)
-            self._connection_users.append(1)
-            self._active_connections.append(self._conn)
-
-    def scur(self, dictcur: bool = False) -> psycopg2.extensions.cursor:
-        """Starts a new cursor for the connection.
-
-        Args:
-            dictcur (bool, optional): If this is true the returned cursor
-            is in dict form insted of list. Defaults to False.
-
-        Returns:
-            psycopg2.extensions.cursor: A cursor to execute sql queries.
-        """
-
-        cur = None
-        for i in range(0, 5):
-            try:
-                if dictcur:
-                    cur = self._conn.cursor(
-                        cursor_factory=psycopg2.extras.DictCursor)
-                else:
-                    cur = self._conn.cursor()
-                break
-
-            except psycopg2.InterfaceError as e:
-                renamelog.info(f"Attempting to Re-establish the connection to server {i} times. {e}")
-                self.re_establish()
-
-        return cur
-
-    def re_establish(self) -> None:
-        """Re tries to connect to the database if in any case it disconnects.
-        """
+        self._block = False
 
         try:
-            if self._active_connections[0].closed != 0:
-                renamelog.info("Re-establish Success.")
-                self._conn = psycopg2.connect(self._dburl)
-                self._active_connections[0] = self._conn
-            else:
-                renamelog.info("Re-establish Success Cache.")
-                self._conn = self._active_connections[0]
-        except:
-            time.sleep(1)  # Blocking call ... this stage is panic.
+            if not DataBaseHandle._pool:
+                DataBaseHandle._pool = SimpleConnectionPool(
+                    minconn, maxconn, dsn=self._dburl, sslmode='require'
+                )
+                renamelog.info("Connection pool established.")
+        except psycopg2.Error as e:
+            renamelog.error(f"Failed to initialize connection pool: {e}")
+            self._block = True
 
-    def ccur(self, cursor: psycopg2.extensions.cursor) -> None:
-        """Closes the cursor that is passed to it.
+    def scur(self, dictcur: bool = False) -> Optional[psycopg2.extensions.cursor]:
+        """Acquire a cursor from the pool.
 
         Args:
-            cursor (psycopg2.extensions.cursor): The cursor that needs to be closed.
+            dictcur (bool): Use DictCursor if True.
+
+        Returns:
+            Optional[cursor]: A cursor object or None if connection fails.
         """
+        if self._block or not DataBaseHandle._pool:
+            return None
 
-        if cursor is not None:
-            self._conn.commit()
-            cursor.close()
+        for attempt in range(5):
+            try:
+                conn = DataBaseHandle._pool.getconn()
+                if dictcur:
+                    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+                else:
+                    cur = conn.cursor()
+                return cur, conn
+            except psycopg2.InterfaceError as e:
+                renamelog.warning(f"Cursor acquisition failed (attempt {attempt}): {e}")
+                time.sleep(1)
+        return None
 
-    def __del__(self):
-        """Close connection so that it will not overload the database server..
+    def ccur(self, cursor: psycopg2.extensions.cursor, conn: psycopg2.extensions.connection) -> None:
+        """Commit and close the cursor, release the connection back to the pool.
+
+        Args:
+            cursor: The cursor to close.
+            conn: The connection to release.
         """
+        if cursor and conn:
+            try:
+                cursor.close()
+                conn.commit()
+                DataBaseHandle._pool.putconn(conn)
+            except psycopg2.Error as e:
+                renamelog.error(f"Error releasing connection: {e}")
+                DataBaseHandle._pool.putconn(conn, close=True)
 
-        if self._block:
-            return
-        self._connection_users.pop()
-
-        if not self._connection_users:
-            self._conn.close()
+    def close_pool(self):
+        """Closes all connections in the pool."""
+        if DataBaseHandle._pool:
+            DataBaseHandle._pool.closeall()
+            renamelog.info("All connections in pool closed.")
