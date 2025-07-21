@@ -268,7 +268,7 @@ async def filter_interact(client, msg: types.CallbackQuery) -> None:
             await msg.message.edit_text(fltm, reply_markup=None)
 
             inob = userin(client)
-            valg = await inob.get_value(client, msg, del_msg=True)
+            valg = await inob.get_value(msg, del_msg=True)  # if inside a Message handler
 
             if valg is None:
                 await msg.message.edit_text(
