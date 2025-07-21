@@ -6,27 +6,26 @@ from typing import Union
 class UserDB(MongoDB):
     shared_users = {}
 
-    # Your upload-mode constants (including the missing one)
-    MODE_SAME_AS_SENT = 0
-    MODE_AS_DOCUMENT = 1
-    MODE_AS_GMEDIA = 2
-    MODE_RENAME_WITH_COMMAND = 3
+    # MODE constants
+    MODE_SAME_AS_SENT              = 0
+    MODE_AS_DOCUMENT               = 1
+    MODE_AS_GMEDIA                 = 2
+    MODE_RENAME_WITH_COMMAND       = 3
+    MODE_RENAME_WITHOUT_COMMAND    = 4
 
-    def __init__(self, dburl=None):
-        # 1. Grab URL from param, env or fallback to config var
+    def __init__(self, dburl: str = None):
         if dburl is None:
-            dburl = os.environ.get("DATABASE_URL")
-            if not dburl:
+            dburl = os.environ.get("DATABASE_URL", None)
+            if dburl is None:
                 dburl = get_var("DATABASE_URL")
-        # 2. Pass BOTH uri and no db_name so base uses its fallback
-        super().__init__(dburl=dburl)
+        super().__init__(dburl)
 
     def get_var(self, var: str, user_id: int) -> Union[None, str]:
         user_id = str(user_id)
         users = self._db.mesh_rename
 
         docs = list(users.find({"user_id": user_id}))
-        if docs:
+        if len(docs) > 0:
             jdata = json.loads(docs[0]["json_data"])
             return jdata.get(var)
         return None
@@ -36,7 +35,7 @@ class UserDB(MongoDB):
         users = self._db.mesh_rename
 
         docs = list(users.find({"user_id": user_id}))
-        if docs:
+        if len(docs) > 0:
             doc = docs[0]
             jdata = json.loads(doc["json_data"])
             jdata[var] = value
@@ -58,7 +57,7 @@ class UserDB(MongoDB):
         users = self._db.mesh_rename
 
         docs = list(users.find({"user_id": user_id}))
-        if docs:
+        if len(docs) > 0:
             thumb = docs[0].get("thumbnail")
             if not thumb:
                 return False
@@ -70,7 +69,6 @@ class UserDB(MongoDB):
             with open(thumb_path, "wb") as f:
                 f.write(thumb)
             return thumb_path
-
         return False
 
     def set_thumbnail(self, thumbnail: bytes, user_id: int) -> bool:
@@ -82,7 +80,7 @@ class UserDB(MongoDB):
                 thumbnail = f.read()
 
         docs = list(users.find({"user_id": user_id}))
-        if docs:
+        if len(docs) > 0:
             users.update_one(
                 {"user_id": user_id},
                 {"$set": {"thumbnail": thumbnail}}
@@ -101,7 +99,7 @@ class UserDB(MongoDB):
         users = self._db.mesh_rename
 
         docs = list(users.find({"user_id": user_id}))
-        if docs:
+        if len(docs) > 0:
             users.update_one(
                 {"user_id": user_id},
                 {"$set": {"file_choice": mode}}
@@ -120,6 +118,7 @@ class UserDB(MongoDB):
         users = self._db.mesh_rename
 
         docs = list(users.find({"user_id": user_id}))
-        if docs:
+        if len(docs) > 0:
             return docs[0].get("file_choice", self.MODE_SAME_AS_SENT)
+        # if never set, default to same-as-sent
         return self.MODE_SAME_AS_SENT
