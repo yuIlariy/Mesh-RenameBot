@@ -1,10 +1,10 @@
 import time
 import asyncio
 from typing import Union
-from pyrogram import Client, types
+from pyrogram import Client
 from pyrogram.types import Message, CallbackQuery
 
-# 🗂 Global dictionary to track user input
+# 🗂 Global tracking
 track_users = {}
 
 class userin:
@@ -17,10 +17,9 @@ class userin:
         file: bool = False,
         del_msg: bool = False
     ) -> Union[None, str]:
-        # 🛡️ Validate input type
         if not hasattr(e, "from_user") or not hasattr(e.from_user, "id"):
             raise TypeError(
-                f"Invalid input to get_value: expected Message or CallbackQuery with 'from_user.id', got {type(e)}"
+                f"Invalid input: expected Message or CallbackQuery with 'from_user.id', got {type(e)}"
             )
 
         user_id = e.from_user.id
@@ -28,8 +27,9 @@ class userin:
         start = time.time()
 
         while time.time() - start < 20:
-            if track_users.get(user_id):
-                msg_obj = track_users[user_id].pop(0)
+            user_queue = track_users.get(user_id, [])
+            while user_queue:
+                msg_obj = user_queue.pop(0)
 
                 if msg_obj.text == "/ignore":
                     val = "ignore"
@@ -38,10 +38,13 @@ class userin:
                 if file and msg_obj.document:
                     val = await msg_obj.download()
                     break
-                elif msg_obj.text:
+
+                if msg_obj.text:
                     val = msg_obj.text
                     break
 
+            if val:
+                break
             await asyncio.sleep(1)
 
         if val is not None and del_msg:
@@ -54,15 +57,10 @@ class userin:
         print("val is", val)
         return val
 
-# 📥 Standalone input listener — to be imported directly
+# 📥 External hook for incoming messages
 async def interactive_input(client: Client, msg: Message) -> None:
     user_id = msg.from_user.id
+    track_users.setdefault(user_id, []).append(msg)
 
-    if user_id in track_users:
-        track_users[user_id].append(msg)
-    else:
-        track_users[user_id] = [msg]
-
-    # 🧩 Optional: Use only in middleware/filter chains
     if hasattr(msg, "continue_propagation"):
         msg.continue_propagation()
