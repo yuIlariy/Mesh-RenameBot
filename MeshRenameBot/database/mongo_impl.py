@@ -6,26 +6,27 @@ from typing import Union
 class UserDB(MongoDB):
     shared_users = {}
 
-    # Mode constants (including the one you were missing)
+    # Your upload-mode constants (including the missing one)
     MODE_SAME_AS_SENT = 0
     MODE_AS_DOCUMENT = 1
     MODE_AS_GMEDIA = 2
     MODE_RENAME_WITH_COMMAND = 3
 
     def __init__(self, dburl=None):
+        # 1. Grab URL from param, env or fallback to config var
         if dburl is None:
-            dburl = os.environ.get("DATABASE_URL", None)
-            if dburl is None:
+            dburl = os.environ.get("DATABASE_URL")
+            if not dburl:
                 dburl = get_var("DATABASE_URL")
-        super().__init__(dburl)
+        # 2. Pass BOTH uri and no db_name so base uses its fallback
+        super().__init__(dburl=dburl)
 
     def get_var(self, var: str, user_id: int) -> Union[None, str]:
         user_id = str(user_id)
         users = self._db.mesh_rename
 
-        # fetch into a list so we can use len() instead of count()
         docs = list(users.find({"user_id": user_id}))
-        if len(docs) > 0:
+        if docs:
             jdata = json.loads(docs[0]["json_data"])
             return jdata.get(var)
         return None
@@ -35,7 +36,7 @@ class UserDB(MongoDB):
         users = self._db.mesh_rename
 
         docs = list(users.find({"user_id": user_id}))
-        if len(docs) > 0:
+        if docs:
             doc = docs[0]
             jdata = json.loads(doc["json_data"])
             jdata[var] = value
@@ -57,12 +58,11 @@ class UserDB(MongoDB):
         users = self._db.mesh_rename
 
         docs = list(users.find({"user_id": user_id}))
-        if len(docs) > 0:
+        if docs:
             thumb = docs[0].get("thumbnail")
             if not thumb:
                 return False
 
-            # ensure userdata/<user_id>/ exists
             base = os.path.join(os.getcwd(), "userdata", user_id)
             os.makedirs(base, exist_ok=True)
 
@@ -82,7 +82,7 @@ class UserDB(MongoDB):
                 thumbnail = f.read()
 
         docs = list(users.find({"user_id": user_id}))
-        if len(docs) > 0:
+        if docs:
             users.update_one(
                 {"user_id": user_id},
                 {"$set": {"thumbnail": thumbnail}}
@@ -94,7 +94,6 @@ class UserDB(MongoDB):
                 "json_data": json.dumps({}),
                 "file_choice": 0
             })
-
         return True
 
     def set_mode(self, mode: int, user_id: int) -> bool:
@@ -102,7 +101,7 @@ class UserDB(MongoDB):
         users = self._db.mesh_rename
 
         docs = list(users.find({"user_id": user_id}))
-        if len(docs) > 0:
+        if docs:
             users.update_one(
                 {"user_id": user_id},
                 {"$set": {"file_choice": mode}}
@@ -121,6 +120,6 @@ class UserDB(MongoDB):
         users = self._db.mesh_rename
 
         docs = list(users.find({"user_id": user_id}))
-        if len(docs) > 0:
+        if docs:
             return docs[0].get("file_choice", self.MODE_SAME_AS_SENT)
         return self.MODE_SAME_AS_SENT
