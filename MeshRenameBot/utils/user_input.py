@@ -20,7 +20,7 @@ class userin:
         val = None
 
         while True:
-            if (time.time() - start) >= 20:
+            if (time.time() - start) >= 86400:
                 break
             
             if len(self.track_users[e.from_user.id]) != 0:
