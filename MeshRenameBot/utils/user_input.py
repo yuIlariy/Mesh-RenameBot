@@ -16,7 +16,7 @@ class userin:
         file: bool = False,
         del_msg: bool = False
     ) -> Union[None, str]:
-        user_id = e.from_user.id
+        user_id = getattr(e.from_user, 'id', None)
         track_users[user_id] = []
         start = time.time()
         val = None
