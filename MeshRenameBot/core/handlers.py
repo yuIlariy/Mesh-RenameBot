@@ -115,9 +115,30 @@ def add_handlers(client: MeshRenameBot) -> None:
 
 async def start_handler(_: MeshRenameBot, msg: Message) -> None:
     user_locale = UserDB().get_var("locale", msg.from_user.id)
-
-    await msg.reply(Translator(user_locale).get("START_MSG"), quote=True)
-
+    await msg.reply(
+        Translator(user_locale).get("START_MSG"),
+        quote=True,
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        "🤩Source code",
+                        url="https://github.com/yuIlariy/Mesh-RenameBot"
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        "Updates📥",
+                        url="https://t.me/modstorexd"
+                    ),
+                    InlineKeyboardButton(
+                        "Support🚀",
+                        url="https://t.me/xspes"
+                    )
+                ]
+            ]
+        )
+    )
 
 async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
     command_mode = UserDB().get_var("command_mode", msg.from_user.id)
