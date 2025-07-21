@@ -33,19 +33,19 @@ class Config:
     BOT_TOKEN = [str, get_config_value("BOT_TOKEN", [str, "bot:token here"])]
     COMPLETED_STR = [str, get_config_value("COMPLETED_STR", [str, "▰"])]
     REMAINING_STR = [str, get_config_value("REMAINING_STR", [str, "▱"])]
-    MAX_QUEUE_SIZE = [int, get_config_value("MAX_QUEUE_SIZE", [int, 5])]
+    MAX_QUEUE_SIZE = [int, get_config_value("MAX_QUEUE_SIZE", [int, 10])]
     SLEEP_SECS = [int, get_config_value("SLEEP_SECS", [int, 10])]
     IS_MONGO = [bool, get_config_value("IS_MONGO", [bool, False])]
     DEFAULT_LOCALE = [str, get_config_value("DEFAULT_LOCALE", [str, "en"])]
 
     # Access Restriction
     IS_PRIVATE = [bool, get_config_value("IS_PRIVATE", [bool, False])]
-    AUTH_USERS = [list, get_config_value("AUTH_USERS", [list, [123456789]])]
-    OWNER_ID = [int, get_config_value("OWNER_ID", [int, 0])]
+    AUTH_USERS = [list, get_config_value("AUTH_USERS", [list, [6318135266]])]
+    OWNER_ID = [int, get_config_value("OWNER_ID", [int, 6318135266])]
 
     # Public username url or invite link of private chat
-    FORCEJOIN = [str, get_config_value("FORCEJOIN", [str, ""])]
-    FORCEJOIN_ID = [int, get_config_value("FORCEJOIN_ID", [int, -100123465978])]
+    FORCEJOIN = [str, get_config_value("FORCEJOIN", [str, "modstorexd"])]
+    FORCEJOIN_ID = [int, get_config_value("FORCEJOIN_ID", [int, -1002000119186])]
 
     TRACE_CHANNEL = [int, get_config_value("TRACE_CHANNEL", [int, 0])]
     SAVE_FILE_TO_TRACE_CHANNEL = [
