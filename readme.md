@@ -28,15 +28,18 @@ This bot is aimed to be **the best rename bot around**! 🏆✨
 
 ---
 
-## Test the bot
+## Test the bots
 [Check on Telegram](https://t.me/MeshRenameBot)
+
+[Test Bot V2](https://t.me/MeshRenameBot)
+
 
 ---
 
 ## ☁️ Deploy to Heroku  
 Deploy your own instance of the bot on Heroku with one click!
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/yash-dk/Mesh-RenameBot)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/yuilariy/Mesh-RenameBot)
 
 ---
 
@@ -127,7 +130,8 @@ python3 -m MeshRenameBot
 ```
 
 ## 🎖 Credits
-[Me](https://github.com/yash-dk)
+[Yash Dk](https://github.com/yash-dk)
 
 [Dan for Pyrogram](https://github.com/pyrogram/pyrogram)
 
+[Yuilariy](https://github.com/yuilariy) (it's me😂) for small fixes (maybe major) using AI, not a coder🤨 )
