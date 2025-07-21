@@ -18,7 +18,7 @@ class EnglishTranslations:
     "Simply send me a file, and I’ll guide you through the renaming process!\n\n"
     "Let’s get started! 🚀\n\n"
     "🚀 **Powered by** [NAm](https://t.me/xspes)"
-)
+    )
 
     CANCEL_MESSAGE = "⚠️ The rename has been **canceled**. Will be updated soon."
 
