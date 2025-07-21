@@ -55,6 +55,6 @@ class userin:
         else:
             self.track_users[user_id] = [msg]
 
-        # Allow message to be routed to other handlers if you're using custom filters
+        # Only useful inside custom filters — safe to leave for future extensions
         if hasattr(msg, "continue_propagation"):
             msg.continue_propagation()
