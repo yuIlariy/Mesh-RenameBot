@@ -2,9 +2,8 @@ import re
 import os
 import logging
 from urllib.parse import urlparse
-from pymongo import MongoClient
-from pymongo.errors import ConnectionFailure, ConfigurationError
-from pymongo.database import Database
+from typing import AbstractSet
+from pymongo import MongoClient, errors
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -12,72 +11,56 @@ logging.basicConfig(level=logging.INFO)
 class MongoDB:
     """
     Base class for MongoDB access.
-    Initializes a MongoClient, ensures it can connect, and selects a database.
+    - dburl: full MongoDB URI (e.g. mongodb+srv://...)
+    - db_name: optional override for the database name; 
+               if omitted, tries to parse it from the URI path or falls back to 'TTKDB'.
     """
 
-    def __init__(
-        self,
-        uri: str = None,
-        db_name: str = None,
-        *,
-        connect_timeout_ms: int = 5000
-    ) -> None:
-        # 1. Determine MongoDB URI
-        uri = uri or os.getenv("DATABASE_URL")
-        if not uri:
+    def __init__(self, dburl: str = None, db_name: str = None) -> None:
+        # 1. Determine URI
+        dburl = dburl or os.getenv("DATABASE_URL")
+        if not dburl:
             raise ValueError(
-                "MongoDB URI must be provided as `uri` argument or via "
-                "`DATABASE_URL` environment variable"
+                "MongoDB URI must be provided via the `dburl` argument "
+                "or the `DATABASE_URL` environment variable."
             )
 
-        # 2. Initialize client and test connection
+        # 2. Connect and verify
         try:
-            self._client = MongoClient(uri, serverSelectionTimeoutMS=connect_timeout_ms)
-            # Force a call to validate the connection
+            self._client = MongoClient(dburl, serverSelectionTimeoutMS=5000)
             self._client.admin.command("ping")
             logger.info("✅ Connected to MongoDB")
-        except (ConnectionFailure, ConfigurationError) as e:
-            logger.error("❌ Could not connect to MongoDB: %s", e)
+        except errors.PyMongoError as err:
+            logger.error("❌ MongoDB connection failed: %s", err)
             raise
 
         # 3. Determine database name
         if db_name:
             name = db_name
         else:
-            # Try parsing it from the URI path (`mongodb://.../mydb`)
-            parsed = urlparse(uri)
-            name = parsed.path.lstrip("/") or os.getenv("DATABASE_NAME")
-
-        if not name:
-            raise ValueError(
-                "Database name must be provided as `db_name` argument, "
-                "embedded in the URI, or via `DATABASE_NAME` environment variable"
-            )
+            parsed = urlparse(dburl)
+            name = parsed.path.lstrip("/")
+            if not name:
+                name = os.getenv("DATABASE_NAME", "TTKDB")
 
         # 4. Select the database
-        self.db: Database = self._client[name]
+        self._db = self._client[name]
         logger.info("Using MongoDB database: %s", name)
 
     def get_client(self) -> MongoClient:
-        """
-        Returns the underlying MongoClient.
-        """
+        """Return the underlying MongoClient."""
         return self._client
 
-    def get_db(self) -> Database:
-        """
-        Returns the selected Database instance.
-        """
-        return self.db
+    def get_db(self):
+        """Return the selected Database instance."""
+        return self._db
 
     def close(self) -> None:
-        """
-        Closes the MongoClient connection.
-        """
+        """Close the MongoClient connection."""
         self._client.close()
         logger.info("MongoDB connection closed")
 
-    # Context-manager support
+    # Context‐manager support
     def __enter__(self) -> "MongoDB":
         return self
 
