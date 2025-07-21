@@ -4,7 +4,7 @@ from typing import Union
 from pyrogram import Client
 from pyrogram.types import Message, CallbackQuery
 
-# 🗂 Shared input tracker across users
+# 🗂 Global message tracker for each user
 track_users = {}
 
 class userin:
@@ -26,12 +26,12 @@ class userin:
         val = None
         msg_obj = None
 
-        # 🔥 Pre-check for messages already queued
+        # 🔥 Process queued messages immediately if any
         user_queue = track_users.get(user_id, [])
         if user_queue:
             msg_obj = user_queue.pop(0)
         else:
-            # ⏳ Wait if nothing is queued yet
+            # ⏳ Wait for incoming messages (max 20 seconds)
             start = time.time()
             while time.time() - start < 20:
                 user_queue = track_users.get(user_id, [])
@@ -54,11 +54,12 @@ class userin:
                 except Exception:
                     pass
 
+        # 🧼 Cleanup after processing
         track_users.pop(user_id, None)
         print("val is", val)
         return val
 
-# 📥 External listener that queues incoming messages immediately
+# 📥 Hook to listen for incoming user messages
 async def interactive_input(client: Client, msg: Message) -> None:
     user_id = msg.from_user.id
     track_users.setdefault(user_id, []).append(msg)
