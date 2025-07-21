@@ -130,7 +130,7 @@ python3 -m MeshRenameBot
 ```
 
 ## 🎖 Credits
-[Yash Dk](https://github.com/yash-dk)
+[Yash Dk](https://github.com/yash-dk) 🗿Main Developer
 
 [Dan for Pyrogram](https://github.com/pyrogram/pyrogram)
 
