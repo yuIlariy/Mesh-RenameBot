@@ -139,7 +139,7 @@ async def get_thumbnail(file_path, user_id=None, force_docs=False):
             if user_thumb is not False:
                 return user_thumb
             else:
-                path = await gen_ss(file_path, random.randint(2, duration.seconds))
+                path = await gen_ss(file_path, random.randint(2, duration))
                 path = await resize_img(path, 320)
                 return path
 
@@ -147,7 +147,7 @@ async def get_thumbnail(file_path, user_id=None, force_docs=False):
         if force_docs:
             return None
 
-        path = await gen_ss(file_path, random.randint(2, duration.seconds))
+        path = await gen_ss(file_path, random.randint(2, duration))
         path = await resize_img(path, 320)
         return path
 
