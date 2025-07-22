@@ -152,20 +152,20 @@ async def status_handler(client: Client, msg: Message) -> None:
 @Client.on_message(filters.regex(r"^/info$", re.IGNORECASE))
 async def info_handler(client, msg):
     caption = (
-        "**📦 Auto Rename Bot**\n"
-        "**🎯 Version:** [1.3.8C](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
-        "**👨‍💻 Developer:** [Yash Dk 🗿](https://github.com/yash-dk)\n"
-        "**🔧 Maintainer:** [NAm 🗿](https://github.com/yuilariy)\n"
-        "**🛠️ Source Code:** [Mesh-RenameBot](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
-        "**☁️ Platform:** [AWS](https://aws.amazon.com)\n"
-        "**🐍 Language:** [Python](https://www.python.org)\n"
-        "**🗄️ Database:** [Postgres (Neon)](https://neon.tech/)"
+        "*📦 Auto Rename Bot*\n"
+        "*🎯 Version:* [1\\.3\\.8C](https://github\\.com/yuIlariy/Mesh\\-RenameBot)\n\n"
+        "*👨‍💻 Developer:* [Yash Dk 🗿](https://github\\.com/yash\\-dk)\n"
+        "*🔧 Maintainer:* [NAm 🗿](https://github\\.com/yuilariy)\n"
+        "*🛠️ Source Code:* [Mesh\\-RenameBot](https://github\\.com/yuIlariy/Mesh\\-RenameBot)\n\n"
+        "*☁️ Platform:* [AWS](https://aws\\.amazon\\.com)\n"
+        "*🐍 Language:* [Python](https://www\\.python\\.org)\n"
+        "*🗄️ Database:* [Postgres \\(Neon\\)](https://neon\\.tech/)"
     )
 
     await msg.reply_photo(
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
         caption=caption,
-        parse_mode="Markdown"
+        parse_mode="MarkdownV2"
     )
     
 
