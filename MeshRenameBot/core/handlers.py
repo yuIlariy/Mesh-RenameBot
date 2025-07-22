@@ -28,6 +28,7 @@ from ..database.user_db import UserDB
 from .caption_manage import set_caption, del_caption
 from ..mesh_bot import MeshRenameBot
 from .change_locale import change_locale, set_locale
+from pyrogram.enums import ParseMode
 
 renamelog = logging.getLogger(__name__)
 
@@ -165,7 +166,7 @@ async def info_handler(client, msg):
     await msg.reply_photo(
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
         caption=caption,
-        parse_mode="MarkdownV2"
+        parse_mode=ParseMode.MARKDOWN_V2
     )
     
 
