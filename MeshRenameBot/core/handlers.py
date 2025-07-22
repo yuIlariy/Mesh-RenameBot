@@ -148,21 +148,24 @@ async def status_handler(client: Client, msg: Message) -> None:
     )
     await msg.reply(status_text)
 
+
 @Client.on_message(filters.regex(r"^/info$", re.IGNORECASE))
-async def info_handler(client: Client, msg: Message) -> None:
+async def info_handler(client, msg):
+    caption = (
+        "**📦 Auto Rename Bot**\n"
+        "**🎯 Version:** [1.3.8C](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
+        "**👨‍💻 Developer:** [Yash Dk 🗿](https://github.com/yash-dk)\n"
+        "**🔧 Maintainer:** [NAm 🗿](https://github.com/yuilariy)\n"
+        "**🛠️ Source Code:** [Mesh-RenameBot](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
+        "**☁️ Platform:** [AWS](https://aws.amazon.com)\n"
+        "**🐍 Language:** [Python](https://www.python.org)\n"
+        "**🗄️ Database:** [Postgres (Neon)](https://neon.tech/)"
+    )
+
     await msg.reply_photo(
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
-        caption=(
-            "📦 <b>Auto Rename Bot</b>\n"
-            "🎯 <b>Version:</b> <a href='https://github.com/yuIlariy/Mesh-RenameBot'>1.3.8C</a>\n\n"
-            "👨‍💻 <b>Developer:</b> <a href='https://github.com/yash-dk'>Yash Dk 🗿</a>\n"
-            "🔧 <b>Maintainer:</b> <a href='https://github.com/yuilariy'>NAm 🗿</a>\n"
-            "🛠️ <b>Source Code:</b> <a href='https://github.com/yuIlariy/Mesh-RenameBot'>Mesh-RenameBot</a>\n\n"
-            "☁️ <b>Platform:</b> <a href='https://aws.amazon.com'>AWS</a>\n"
-            "🐍 <b>Language:</b> <a href='https://www.python.org'>Python</a>\n"
-            "🗄️ <b>Database:</b> <a href='https://neon.tech/'>Postgres (via Neon)</a>"
-        ),
-        parse_mode="html"
+        caption=caption,
+        parse_mode="markdown"
     )
     
 
