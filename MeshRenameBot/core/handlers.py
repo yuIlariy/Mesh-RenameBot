@@ -117,6 +117,9 @@ def add_handlers(client: MeshRenameBot) -> None:
     client.add_handler(
     MessageHandler(status_handler, filters.regex(r"^/status$", re.IGNORECASE))
     )
+    client.add_handler(
+    MessageHandler(info_handler, filters.regex(r"^/info$", re.IGNORECASE))
+    )
     
     signal.signal(signal.SIGINT, term_handler)
     signal.signal(signal.SIGTERM, term_handler)
@@ -144,6 +147,24 @@ async def status_handler(client: Client, msg: Message) -> None:
         f"🚀 Memory Usage: `{mem}%`\n"
     )
     await msg.reply(status_text)
+
+@Client.on_message(filters.regex(r"^/info$", re.IGNORECASE))
+async def info_handler(client: Client, msg: Message) -> None:
+    await msg.reply_photo(
+        photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
+        caption=(
+            "📦 <b>Auto Rename Bot</b>\n"
+            "🎯 <b>Version:</b> <a href='https://github.com/yuIlariy/Mesh-RenameBot'>1.3.8C</a>\n\n"
+            "👨‍💻 <b>Developer:</b> <a href='https://github.com/yash-dk'>Yash Dk 🗿</a>\n"
+            "🔧 <b>Maintainer:</b> <a href='https://github.com/yuilariy'>NAm 🗿</a>\n"
+            "🛠️ <b>Source Code:</b> <a href='https://github.com/yuIlariy/Mesh-RenameBot'>Mesh-RenameBot</a>\n\n"
+            "☁️ <b>Platform:</b> <a href='https://aws.amazon.com'>AWS</a>\n"
+            "🐍 <b>Language:</b> <a href='https://www.python.org'>Python</a>\n"
+            "🗄️ <b>Database:</b> <a href='https://neon.tech/'>Postgres (via Neon)</a>"
+        ),
+        parse_mode="HTML",
+        disable_web_page_preview=True
+    )
     
 
 async def start_handler(_: MeshRenameBot, msg: Message) -> None:
