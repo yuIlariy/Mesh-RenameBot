@@ -5,27 +5,34 @@ from pyrogram import Client, types
 
 
 class userin:
-
     track_users = {}
+    total_users = set()
+    total_renames = 0
 
     def __init__(self, client):
         self._client = client
-    
-    async def get_value(self, client: Client, e: types.MessageEntity, file: bool = False, del_msg: bool = False) -> Union[None, str]:
-        # todo replace with conver. - or maybe not Fix Dont switch to conversion
-        # this function gets the new value to be set from the user in current context
 
+    @classmethod
+    def add_user(cls, user_id: int) -> None:
+        cls.total_users.add(user_id)
+
+    @classmethod
+    def count_rename(cls) -> None:
+        cls.total_renames += 1
+
+    async def get_value(self, client: Client, e: types.MessageEntity, file: bool = False, del_msg: bool = False) -> Union[None, str]:
         self.track_users[e.from_user.id] = []
+        self.add_user(e.from_user.id)  # 🆕 track unique users
         start = time.time()
         val = None
 
         while True:
             if (time.time() - start) >= 1e10:
                 break
-            
+
             if len(self.track_users[e.from_user.id]) != 0:
                 msg_obj = self.track_users[e.from_user.id].pop(0)
-                
+
                 if msg_obj.text == "/ignore":
                     val = "ignore"
                     break
@@ -37,9 +44,9 @@ class userin:
                 else:
                     val = msg_obj.text
                     break
-            
+
             await asyncio.sleep(1)
-        
+
         if val is not None and del_msg:
             await msg_obj.delete()
 
