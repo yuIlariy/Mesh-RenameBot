@@ -165,7 +165,7 @@ async def info_handler(client, msg):
     await msg.reply_photo(
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
         caption=caption,
-        parse_mode="markdown"
+        parse_mode="Markdown"
     )
     
 
