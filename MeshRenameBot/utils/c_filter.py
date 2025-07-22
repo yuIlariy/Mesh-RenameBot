@@ -152,7 +152,11 @@ class FilterUtils:
                 original_name = i[1] + " " + original_name
 
             if i[2] == self.ADDITION_FILTER_RIGHT:
-                original_name += " " + i[1]
+                if "." in original_name:
+                    name_parts = original_name.rsplit(".", 1)
+                    original_name = f"{name_parts[0]} {i[1]}.{name_parts[1]}"
+                else:
+                    original_name += " " + i[1]
 
         return original_name
 
