@@ -149,10 +149,10 @@ class FilterUtils:
         # Addition At the last.
         for i in add_filters:
             if i[2] == self.ADDITION_FILTER_LEFT:
-                original_name = i[1] + original_name
+                original_name = i[1] + " " + original_name
 
             if i[2] == self.ADDITION_FILTER_RIGHT:
-                original_name += i[1]
+                original_name += " " + i[1]
 
         return original_name
 
