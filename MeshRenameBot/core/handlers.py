@@ -159,7 +159,7 @@ async def info_handler(client, msg):
         "*🛠️ Source Code:* [Mesh\\-RenameBot](https://github\\.com/yuIlariy/Mesh\\-RenameBot)\n\n"
         "*☁️ Platform:* [AWS](https://aws\\.amazon\\.com)\n"
         "*🐍 Language:* [Python](https://www\\.python\\.org)\n"
-        "*🗄️ Database:* [Postgres \\(Neon\\)](https://neon\\.tech/)"
+        "*🗄️ Database:* [Postgres \\(Neon\\)](https://neon\\.tech)"
     )
 
     await msg.reply_photo(
