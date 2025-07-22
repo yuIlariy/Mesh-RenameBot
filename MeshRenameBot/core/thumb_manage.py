@@ -19,7 +19,7 @@ from ..translations import Translator
 
 renamelog = logging.getLogger(__name__)
 
-
+# 📦 Image Preparation
 async def adjust_image(path: str) -> Union[str, None]:
     try:
         im = Image.open(path)
@@ -27,11 +27,13 @@ async def adjust_image(path: str) -> Union[str, None]:
         im = Image.open(path)
         im.thumbnail((320, 320), Image.Resampling.LANCZOS)
         im.save(path, "JPEG")
+        renamelog.info(f"Image adjusted at: {path}")
         return path
-    except Exception:
-        return
+    except Exception as e:
+        renamelog.error(f"Failed to adjust image: {e}")
+        return None
 
-
+# 🔧 Set Thumbnail
 async def handle_set_thumb(client, msg: Message):
     user_id = msg.from_user.id
     user_locale = UserDB().get_var("locale", user_id)
@@ -46,116 +48,105 @@ async def handle_set_thumb(client, msg: Message):
         path = await original_message.download()
         path = await adjust_image(path)
         if path is not None:
-            with open(path, "rb") as file_handle:
-                data = file_handle.read()
-                UserDB().set_thumbnail(data, msg.from_user.id)
-
-            os.remove(path)
+            UserDB().set_thumbnail(path, user_id)
             await msg.reply_text(translator.get("THUMB_SET_SUCCESS"), quote=True)
+
+            try:
+                await aos.remove(path)
+            except Exception as e:
+                renamelog.warning(f"Failed to remove temp thumbnail: {e}")
         else:
             await msg.reply_text(translator.get("THUMB_REPLY_TO_MEDIA"), quote=True)
-        await aos.remove(path)
     else:
         await msg.reply_text(translator.get("THUMB_REPLY_TO_MEDIA"), quote=True)
 
-
+# 🎯 Get Thumbnail
 async def handle_get_thumb(client, msg: Message):
     user_id = msg.from_user.id
     user_locale = UserDB().get_var("locale", user_id)
     translator = Translator(user_locale)
 
-    renamelog.info("Getting Thumbnail")
-    thumb_path = UserDB().get_thumbnail(msg.from_user.id)
-    if thumb_path is False:
-        await msg.reply(translator.get("THUMB_NOT_FOUND"), quote=True)
+    renamelog.info("Getting thumbnail for user: %s", user_id)
+    thumb_path = UserDB().get_thumbnail(user_id)
+
+    if not thumb_path or not os.path.exists(thumb_path):
+        await msg.reply_text(translator.get("THUMB_NOT_FOUND"), quote=True)
     else:
         await msg.reply_photo(thumb_path, quote=True)
-        os.remove(thumb_path)
+        try:
+            os.remove(thumb_path)
+        except Exception as e:
+            renamelog.warning(f"Failed to delete used thumbnail: {e}")
 
-
+# 🎬 Generate Screenshot
 async def gen_ss(filepath, ts, opfilepath=None):
-    # todo check the error pipe and do processing
-    source = filepath
-    destination = os.path.dirname(source)
-    ss_name = str(os.path.basename(source)) + "_" + str(round(time.time())) + ".jpg"
+    destination = os.path.dirname(filepath)
+    ss_name = f"{os.path.basename(filepath)}_{round(time.time())}.jpg"
     ss_path = os.path.join(destination, ss_name)
 
     cmd = [
-        "ffmpeg",
-        "-loglevel",
-        "error",
-        "-ss",
-        str(ts),
-        "-i",
-        str(source),
-        "-vframes",
-        "1",
-        "-q:v",
-        "2",
-        str(ss_path),
+        "ffmpeg", "-loglevel", "error", "-ss", str(ts),
+        "-i", str(filepath), "-vframes", "1", "-q:v", "2", ss_path,
     ]
 
-    subpr = await asyncio.create_subprocess_exec(
-        *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
-    )
-    spipe, epipe = await subpr.communicate()
-    epipe = epipe.decode().strip()
-    spipe = spipe.decode().strip()
-    renamelog.info("Stdout Pipe :- {}".format(spipe))
-    renamelog.info("Error Pipe :- {}".format(epipe))
+    try:
+        subpr = await asyncio.create_subprocess_exec(
+            *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+        )
+        spipe, epipe = await subpr.communicate()
+        renamelog.info(f"Screenshot stdout: {spipe.decode().strip()}")
+        renamelog.info(f"Screenshot error: {epipe.decode().strip()}")
+    except Exception as e:
+        renamelog.error(f"Screenshot generation failed: {e}")
+        return None
 
     return ss_path
 
-
+# 🖼️ Resize Image
 async def resize_img(path, width=None, height=None):
-    img = Image.open(path)
-    wei, hei = img.size
+    try:
+        img = Image.open(path)
+        wei, hei = img.size
+        wei = width if width is not None else wei
+        hei = height if height is not None else hei
+        img.thumbnail((wei, hei))
+        img.save(path, "JPEG")
+        return path
+    except Exception as e:
+        renamelog.error(f"Failed to resize image: {e}")
+        return None
 
-    wei = width if width is not None else wei
-    hei = height if height is not None else hei
-
-    img.thumbnail((wei, hei))
-
-    img.save(path, "JPEG")
-    return path
-
-
+# 📌 Retrieve Thumbnail Logic
 async def get_thumbnail(file_path, user_id=None, force_docs=False):
     print(file_path, "-", user_id, "-", force_docs)
+
     metadata = extractMetadata(createParser(file_path))
-    try:
-        duration = metadata.get("duration")
-    except:
-        duration = 3
+    duration = metadata.get("duration", 3)
 
-    if user_id is not None:
+    user_thumb = None
+    if user_id:
         user_thumb = UserDB().get_thumbnail(user_id)
-        if force_docs:
-            if user_thumb is not False:
-                return user_thumb
-            else:
-                return None
-        else:
-            if user_thumb is not False:
-                return user_thumb
-            else:
-                path = await gen_ss(file_path, random.randint(2, duration))
-                path = await resize_img(path, 320)
-                return path
 
-    else:
-        if force_docs:
-            return None
+    if force_docs:
+        return user_thumb if user_thumb else None
 
+    if user_thumb:
+        return user_thumb
+
+    try:
         path = await gen_ss(file_path, random.randint(2, duration))
         path = await resize_img(path, 320)
         return path
+    except Exception as e:
+        renamelog.error(f"Error generating fallback thumbnail: {e}")
+        return None
 
-
-async def handle_clr_thumb(client, msg):
+# 🧹 Clear Thumbnail
+async def handle_clr_thumb(client, msg: Message):
     user_id = msg.from_user.id
     udb = UserDB()
     user_locale = udb.get_var("locale", user_id)
     translator = Translator(user_locale)
-    udb.set_thumbnail(None, msg.from_user.id)
+
+    udb.set_thumbnail(None, user_id)
     await msg.reply_text(translator.get("THUMB_CLEARED"), quote=True)
