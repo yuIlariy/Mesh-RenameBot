@@ -118,7 +118,7 @@ def add_handlers(client: MeshRenameBot) -> None:
     MessageHandler(status_handler, filters.regex(r"^/status$", re.IGNORECASE))
     )
 
-    BOT_START_TIME = time.time()
+BOT_START_TIME = time.time()
 
 async def ping_handler(client: Client, msg: Message) -> None:
     start = time.time()
