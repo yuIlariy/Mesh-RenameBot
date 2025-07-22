@@ -151,7 +151,7 @@ async def status_handler(client: Client, msg: Message) -> None:
 
 
 @Client.on_message(filters.regex(r"^/info$", re.IGNORECASE))
-async def info_handler(client, msg):
+async def info_handler(client, msg: Message):
     caption = (
         "📦 **Auto Rename Bot**\n"
         "🎯 **Version:** [1.3.8C](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
@@ -165,7 +165,44 @@ async def info_handler(client, msg):
 
     await msg.reply_photo(
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
-        caption=caption
+        caption=caption,
+        reply_markup=InlineKeyboardMarkup([
+            [
+                InlineKeyboardButton("🏠 Home", callback_data="home")
+            ]
+        ])
+    )
+
+
+@Client.on_callback_query(filters.regex("info"))
+async def info_callback(client, callback_query):
+    await callback_query.message.edit_caption(
+        caption=(
+            "📦 **Auto Rename Bot**\n"
+            "🎯 **Version:** [1.3.8C](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
+            "👨‍💻 **Developer:** [Yash Dk 🗿](https://github.com/yash-dk)\n"
+            "🔧 **Maintainer:** [NAm 🗿](https://github.com/yuilariy)\n"
+            "🛠️ **Source Code:** [Mesh-RenameBot](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
+            "☁️ **Platform:** [AWS](https://aws.amazon.com)\n"
+            "🐍 **Language:** [Python](https://www.python.org)\n"
+            "🗄️ **Database:** [Postgres (Neon)](https://neon.tech)"
+        ),
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("🏠 Home", callback_data="home")]
+        ])
+    )
+
+@Client.on_callback_query(filters.regex("home"))
+async def home_callback(client, callback_query):
+    user_locale = UserDB().get_var("locale", callback_query.from_user.id)
+    await callback_query.message.edit_caption(
+        caption=Translator(user_locale).get("START_MSG"),
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("ℹ️ Info", callback_data="info")],
+            [InlineKeyboardButton("🤩 Source code", url="https://github.com/yuIlariy/Mesh-RenameBot")],
+            [InlineKeyboardButton("Updates📥", url="https://t.me/modstorexd"),
+             InlineKeyboardButton("Support🚀", url="https://t.me/xspes")]
+        ])
     )
     
 
@@ -174,27 +211,20 @@ async def start_handler(_: MeshRenameBot, msg: Message) -> None:
     await msg.reply(
         Translator(user_locale).get("START_MSG"),
         quote=True,
-        reply_markup=InlineKeyboardMarkup(
+        reply_markup=InlineKeyboardMarkup([
             [
-                [
-                    InlineKeyboardButton(
-                        "🤩Source code",
-                        url="https://github.com/yuIlariy/Mesh-RenameBot"
-                    )
-                ],
-                [
-                    InlineKeyboardButton(
-                        "Updates📥",
-                        url="https://t.me/modstorexd"
-                    ),
-                    InlineKeyboardButton(
-                        "Support🚀",
-                        url="https://t.me/xspes"
-                    )
-                ]
+                InlineKeyboardButton("ℹ️ Info", callback_data="info")
+            ],
+            [
+                InlineKeyboardButton("🤩 Source code", url="https://github.com/yuIlariy/Mesh-RenameBot")
+            ],
+            [
+                InlineKeyboardButton("Updates📥", url="https://t.me/modstorexd"),
+                InlineKeyboardButton("Support🚀", url="https://t.me/xspes")
             ]
-        )
+        ])
     )
+
 
 async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
     command_mode = UserDB().get_var("command_mode", msg.from_user.id)
