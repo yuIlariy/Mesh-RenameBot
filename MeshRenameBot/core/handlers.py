@@ -15,6 +15,7 @@ import datetime
 import psutil
 import logging
 import signal
+import shutil
 import asyncio
 from ..maneuvers.ExecutorManager import ExecutorManager
 from ..maneuvers.Rename import RenameManeuver
@@ -141,21 +142,33 @@ async def ping_handler(client: Client, msg: Message) -> None:
     latency = (end - start) * 1000
     await reply.edit_text(f"🏓 Pong! `{latency:.2f}ms`")
 
+
 async def status_handler(client: Client, msg: Message) -> None:
     uptime = str(datetime.timedelta(seconds=int(time.time() - BOT_START_TIME)))
-    from MeshRenameBot.utils.user_input import userin  # adjust if needed
+    from MeshRenameBot.utils.user_input import userin  # adjust path if needed
     total_users = len(userin.track_users)
     cpu = psutil.cpu_percent()
     mem = psutil.virtual_memory().percent
+    disk = shutil.disk_usage("/")
 
-    status_text = (
+    total_disk = disk.total // (1024 * 1024 * 1024)
+    used_disk = disk.used // (1024 * 1024 * 1024)
+    free_disk = disk.free // (1024 * 1024 * 1024)
+
+    caption = (
         f"🛸 **Bot is Up and Running successfully**🗿\n\n"
         f"⏱ Uptime: `{uptime}`\n"
         f"⚙️ CPU Usage: `{cpu}%`\n"
         f"🚀 Memory Usage: `{mem}%`\n"
+        f"🗄️ Disk Space: `{used_disk} GB / {total_disk} GB` free: `{free_disk} GB`\n\n"
+        f"🚀 **Powered by** [NAm](https://t.me/xspes)"
     )
-    await msg.reply(status_text)
 
+    await msg.reply_photo(
+        photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
+        caption=caption
+    )
+    
 
 @Client.on_message(filters.regex(r"^/info$", re.IGNORECASE))
 async def info_handler(client, msg: Message):
