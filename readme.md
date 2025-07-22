@@ -144,9 +144,9 @@ Use these commands to interact with the bot:
 | `/setcaption` | 📝 **Set a caption for the renamed files** |
 | `/setlang` | 🌐 **Change the bot's language.** |
 | `/ping` | 🎈 **Ping the Bot** |
-| `/status` | 📊 **get bot status (uptime, CPU usage** |
+| `/status` | 🫧 **get bot status (uptime, CPU usage** |
 | `/info` | 📝 **See bot info (maintainer, language, platform** |
-| `/stats` | 🌐 **Get bot stats (total users, number of files renamed).** |
+| `/stats` | 🗄️ **Get bot stats (total users, number of files renamed).** |
 
 
 ### 🔄 Upload Modes:
