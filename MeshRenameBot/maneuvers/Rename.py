@@ -2,6 +2,7 @@ import asyncio
 import logging
 import time
 import os
+import aiofiles.os as aos
 
 from aiofiles import os as aos
 from hachoir.metadata import extractMetadata
@@ -10,6 +11,7 @@ from pyrogram import Client, StopTransmission
 from pyrogram.file_id import FileId
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from pyrogram.types.messages_and_media.message_entity import MessageEntity
+from MeshRenameBot.utils.user_input import userin
 
 from ..core.get_config import get_var
 from ..core.thumb_manage import get_thumbnail
@@ -325,6 +327,13 @@ class RenameManeuver(DefaultManeuver):
                 await progress.edit_text(translator.get("RENAME_UPLOADING_DONE"))
 
             await asyncio.sleep(2)
+            try:
+                size = await aos.path.getsize(dl_path)
+                userin.count_upload(size)
+            except Exception as e:
+                except Exception as e:
+    print(f"[ERROR] Failed to count upload size: {e}")
+
         except:
             renamelog.exception("Errored while uplading the file.")
             await progress.edit_text(translator.get("RENAME_ERRORED"))
