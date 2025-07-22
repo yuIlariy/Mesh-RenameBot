@@ -30,6 +30,7 @@ from .caption_manage import set_caption, del_caption
 from ..mesh_bot import MeshRenameBot
 from .change_locale import change_locale, set_locale
 from pyrogram.enums import ParseMode
+from MeshRenameBot.config import Config
 
 renamelog = logging.getLogger(__name__)
 
