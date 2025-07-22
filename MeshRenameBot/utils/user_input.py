@@ -5,10 +5,13 @@ import os
 from typing import Union
 from pyrogram import Client, types
 
+
 class userin:
     track_users = {}
     total_users = set()
     total_renames = 0
+    total_download_size = 0  # bytes
+    total_upload_size = 0    # bytes
 
     STATS_FILE = "bot_stats.json"
 
@@ -26,12 +29,24 @@ class userin:
         cls.save_stats()
 
     @classmethod
+    def count_download(cls, size_in_bytes: int) -> None:
+        cls.total_download_size += size_in_bytes
+        cls.save_stats()
+
+    @classmethod
+    def count_upload(cls, size_in_bytes: int) -> None:
+        cls.total_upload_size += size_in_bytes
+        cls.save_stats()
+
+    @classmethod
     def save_stats(cls) -> None:
         try:
             with open(cls.STATS_FILE, "w") as f:
                 json.dump({
                     "users": list(cls.total_users),
-                    "renames": cls.total_renames
+                    "renames": cls.total_renames,
+                    "download": cls.total_download_size,
+                    "upload": cls.total_upload_size
                 }, f)
         except Exception as e:
             print(f"[ERROR] Failed to save stats: {e}")
@@ -44,6 +59,8 @@ class userin:
                     data = json.load(f)
                     cls.total_users = set(data.get("users", []))
                     cls.total_renames = data.get("renames", 0)
+                    cls.total_download_size = data.get("download", 0)
+                    cls.total_upload_size = data.get("upload", 0)
             except Exception as e:
                 print(f"[ERROR] Failed to load stats: {e}")
 
