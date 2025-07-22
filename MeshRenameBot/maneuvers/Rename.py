@@ -331,8 +331,7 @@ class RenameManeuver(DefaultManeuver):
                 size = await aos.path.getsize(dl_path)
                 userin.count_upload(size)
             except Exception as e:
-                except Exception as e:
-    print(f"[ERROR] Failed to count upload size: {e}")
+                print(f"[ERROR] Failed to count upload size: {e}")
 
         except:
             renamelog.exception("Errored while uplading the file.")
