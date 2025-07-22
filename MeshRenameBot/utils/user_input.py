@@ -1,13 +1,16 @@
 import time
 import asyncio
+import json
+import os
 from typing import Union
 from pyrogram import Client, types
-
 
 class userin:
     track_users = {}
     total_users = set()
     total_renames = 0
+
+    STATS_FILE = "bot_stats.json"
 
     def __init__(self, client):
         self._client = client
@@ -15,14 +18,37 @@ class userin:
     @classmethod
     def add_user(cls, user_id: int) -> None:
         cls.total_users.add(user_id)
+        cls.save_stats()
 
     @classmethod
     def count_rename(cls) -> None:
         cls.total_renames += 1
+        cls.save_stats()
+
+    @classmethod
+    def save_stats(cls) -> None:
+        try:
+            with open(cls.STATS_FILE, "w") as f:
+                json.dump({
+                    "users": list(cls.total_users),
+                    "renames": cls.total_renames
+                }, f)
+        except Exception as e:
+            print(f"[ERROR] Failed to save stats: {e}")
+
+    @classmethod
+    def load_stats(cls) -> None:
+        if os.path.exists(cls.STATS_FILE):
+            try:
+                with open(cls.STATS_FILE, "r") as f:
+                    data = json.load(f)
+                    cls.total_users = set(data.get("users", []))
+                    cls.total_renames = data.get("renames", 0)
+            except Exception as e:
+                print(f"[ERROR] Failed to load stats: {e}")
 
     async def get_value(self, client: Client, e: types.MessageEntity, file: bool = False, del_msg: bool = False) -> Union[None, str]:
         self.track_users[e.from_user.id] = []
-        self.add_user(e.from_user.id)  # 🆕 track unique users
         start = time.time()
         val = None
 
