@@ -215,8 +215,9 @@ async def home_callback(client, callback_query):
 
 async def start_handler(_: MeshRenameBot, msg: Message) -> None:
     user_locale = UserDB().get_var("locale", msg.from_user.id)
-    await msg.reply(
-        Translator(user_locale).get("START_MSG"),
+    await msg.reply_photo(
+        photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
+        caption=Translator(user_locale).get("START_MSG"),
         quote=True,
         reply_markup=InlineKeyboardMarkup([
             [
@@ -231,7 +232,7 @@ async def start_handler(_: MeshRenameBot, msg: Message) -> None:
             ]
         ])
     )
-
+    
 
 async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
     command_mode = UserDB().get_var("command_mode", msg.from_user.id)
