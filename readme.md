@@ -143,6 +143,10 @@ Use these commands to interact with the bot:
 | `/queue` | 📊 **View rename queue status** |
 | `/setcaption` | 📝 **Set a caption for the renamed files** |
 | `/setlang` | 🌐 **Change the bot's language.** |
+| `/ping` | 🎈 **Ping the Bot** |
+| `/status` | 📊 **get bot status (uptime, CPU usage** |
+| `/info` | 📝 **See bot info (maintainer, language, platform** |
+| `/stats` | 🌐 **Get bot stats (total users, number of files renamed).** |
 
 
 ### 🔄 Upload Modes:
