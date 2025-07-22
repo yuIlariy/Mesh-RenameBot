@@ -136,12 +136,29 @@ def add_handlers(client: MeshRenameBot) -> None:
 BOT_START_TIME = time.time()
 
 async def ping_handler(client: Client, msg: Message) -> None:
+    import datetime
     start = time.time()
     reply = await msg.reply("Pinging...")
     end = time.time()
-    latency = (end - start) * 1000
-    await reply.edit_text(f"🏓 Pong! `{latency:.2f}ms`")
 
+    latency = (end - start) * 1000
+    uptime = str(datetime.timedelta(seconds=int(time.time() - BOT_START_TIME)))
+    cpu = psutil.cpu_percent()
+    mem = psutil.virtual_memory().percent
+
+    caption = (
+        f"🏓 **Pong!** `{latency:.2f}ms`\n\n"
+        f"⏱ Uptime: `{uptime}`\n"
+        f"⚙️ CPU: `{cpu}%`  🚀 Memory: `{mem}%`\n\n"
+        f"🚀 **Powered by** [NAm](https://t.me/xspes)"
+    )
+
+    await reply.delete()  # clean original "Pinging..." message
+    await msg.reply_photo(
+        photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
+        caption=caption
+    )
+    
 
 async def status_handler(client: Client, msg: Message) -> None:
     uptime = str(datetime.timedelta(seconds=int(time.time() - BOT_START_TIME)))
