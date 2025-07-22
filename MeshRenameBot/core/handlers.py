@@ -169,11 +169,10 @@ async def stats_handler(client: Client, msg: Message) -> None:
     import datetime, shutil
 
     uptime = str(datetime.timedelta(seconds=int(time.time() - BOT_START_TIME)))
-    from MeshRenameBot.utils.user_input import userin  # adjust path if needed
+    from MeshRenameBot.utils.user_input import userin
 
     total_users = len(userin.track_users)
     total_renames = getattr(userin, "total_renames", 0)
-    total_thumbnails = getattr(userin, "total_thumbnails", 0)
 
     cpu = psutil.cpu_percent()
     mem = psutil.virtual_memory().percent
@@ -186,7 +185,6 @@ async def stats_handler(client: Client, msg: Message) -> None:
         f"📊 **Global Bot Stats**\n\n"
         f"👥 Total Users: `{total_users}`\n"
         f"📁 Files Renamed: `{total_renames}`\n"
-        f"📸 Thumbnails Used: `{total_thumbnails}`\n"
         f"🕒 Uptime: `{uptime}`\n"
         f"⚙️ CPU: `{cpu}%`  🚀 Memory: `{mem}%`\n"
         f"🗄️ Disk: `{used_disk} GB / {total_disk} GB`, free: `{free_disk} GB`\n\n"
@@ -197,7 +195,7 @@ async def stats_handler(client: Client, msg: Message) -> None:
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
         caption=caption
     )
-
+    
 
 async def status_handler(client: Client, msg: Message) -> None:
     uptime = str(datetime.timedelta(seconds=int(time.time() - BOT_START_TIME)))
@@ -304,6 +302,8 @@ async def start_handler(_: MeshRenameBot, msg: Message) -> None:
     
 
 async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
+    from MeshRenameBot.utils.user_input import userin  # 👈 ensure this import exists
+
     command_mode = UserDB().get_var("command_mode", msg.from_user.id)
     user_locale = UserDB().get_var("locale", msg.from_user.id)
     translator = Translator(user_locale)
@@ -319,9 +319,14 @@ async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
 
     if rep_msg is None:
         await msg.reply_text(translator.get("REPLY_TO_MEDIA"), quote=True)
+        return  # 👈 added return to prevent further execution
 
     file_id = await client.get_file_id(rep_msg)
     if file_id is not None:
+        # 🧮 Track rename + user count
+        userin.add_user(msg.from_user.id)
+        userin.count_rename()
+
         await msg.reply_text(
             translator.get(
                 "RENAME_ADDED_TO_QUEUE", dc_id=file_id.dc_id, media_id=file_id.media_id
@@ -339,7 +344,7 @@ async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
     )
     await asyncio.sleep(2)
     await ExecutorManager().create_maneuver(RenameManeuver(client, rep_msg, msg))
-
+    
 
 async def help_str(_: MeshRenameBot, msg: Message) -> None:
     user_locale = UserDB().get_var("locale", msg.from_user.id)
