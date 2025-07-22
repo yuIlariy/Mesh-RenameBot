@@ -55,6 +55,40 @@ Serverless PostgreSQL with a generous free tier👇
 🚀 [Aiven](https://aiven.io)
 
 
+## 🖥 VPS Deployment Guide
+For self-hosted deployment on a **VPS**, follow these steps:
+
+### 1️⃣ Install Dependencies  
+```bash
+sudo apt update && sudo apt install ffmpeg python3-pip
+```
+
+### 2️⃣ Clone the Repository
+```bash
+git clone https://github.com/yuilariy/Mesh-RenameBot.git
+cd Mesh-RenameBot
+```
+
+### 3️⃣ Install Python Packages
+```bash
+pip3 install -r requirements.txt
+```
+
+### 4️⃣ Run the Bot
+```bash
+python3 -m MeshRenameBot
+```
+
+- To run the bot in the background:
+  ```bash
+  screen -S meshr
+  python3 -m MeshRenameBot
+  ```
+  - Detach: `Ctrl + A`, then `Ctrl + D`
+  - To stop: `screen -r meshr` and `screen -S meshr -X quit`
+
+
+
 
 ## 🔍 Filters Explained
 **Filters** can be managed using the `/filters` command.
@@ -117,38 +151,6 @@ Use these commands to interact with the bot:
 - **General Media** (Streamable Video/Audio)
 
 ---
-
-## 🖥 VPS Deployment Guide
-For self-hosted deployment on a **VPS**, follow these steps:
-
-### 1️⃣ Install Dependencies  
-```bash
-sudo apt update && sudo apt install ffmpeg python3-pip
-```
-
-### 2️⃣ Clone the Repository
-```bash
-git clone https://github.com/yuilariy/Mesh-RenameBot.git
-cd Mesh-RenameBot
-```
-
-### 3️⃣ Install Python Packages
-```bash
-pip3 install -r requirements.txt
-```
-
-### 4️⃣ Run the Bot
-```bash
-python3 -m MeshRenameBot
-```
-
-- To run the bot in the background:
-  ```bash
-  screen -S meshr
-  python3 -m MeshRenameBot
-  ```
-  - Detach: `Ctrl + A`, then `Ctrl + D`
-  - To stop: `screen -r meshr` and `screen -S meshr -X quit`
 
 
 
