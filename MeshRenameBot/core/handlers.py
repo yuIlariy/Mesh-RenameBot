@@ -167,12 +167,11 @@ async def ping_handler(client: Client, msg: Message) -> None:
 @Client.on_message(filters.regex(r"^/stats$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
 async def stats_handler(client: Client, msg: Message) -> None:
     import datetime, shutil
-
-    uptime = str(datetime.timedelta(seconds=int(time.time() - BOT_START_TIME)))
     from MeshRenameBot.utils.user_input import userin
 
-    total_users = len(userin.track_users)
-    total_renames = getattr(userin, "total_renames", 0)
+    uptime = str(datetime.timedelta(seconds=int(time.time() - BOT_START_TIME)))
+    total_users = len(userin.total_users)  # ✅ now uses the fixed set
+    total_renames = userin.total_renames   # ✅ correct counter
 
     cpu = psutil.cpu_percent()
     mem = psutil.virtual_memory().percent
