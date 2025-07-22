@@ -149,7 +149,7 @@ async def status_handler(client: Client, msg: Message) -> None:
     mem = psutil.virtual_memory().percent
 
     status_text = (
-        f"🛸 **Bot is Up and Running successfully**🗿\n"
+        f"🛸 **Bot is Up and Running successfully**🗿\n\n"
         f"⏱ Uptime: `{uptime}`\n"
         f"⚙️ CPU Usage: `{cpu}%`\n"
         f"🚀 Memory Usage: `{mem}%`\n"
