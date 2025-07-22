@@ -10,6 +10,9 @@ from pyrogram.types import (
 )
 from pyrogram.errors import UserNotParticipant, ChatAdminRequired, UsernameNotOccupied
 import re
+import time
+import datetime
+import psutil
 import logging
 import signal
 import asyncio
@@ -108,6 +111,38 @@ def add_handlers(client: MeshRenameBot) -> None:
     client.add_handler(
         CallbackQueryHandler(set_locale, filters.regex("set_locale", re.IGNORECASE))
     )
+    client.add_handler(
+    MessageHandler(ping_handler, filters.regex(r"^/ping$", re.IGNORECASE))
+    )
+    client.add_handler(
+    MessageHandler(status_handler, filters.regex(r"^/status$", re.IGNORECASE))
+    )
+
+    BOT_START_TIME = time.time()
+
+async def ping_handler(client: Client, msg: Message) -> None:
+    start = time.time()
+    reply = await msg.reply("Pinging...")
+    end = time.time()
+    latency = (end - start) * 1000
+    await reply.edit_text(f"🏓 Pong! `{latency:.2f}ms`")
+
+async def status_handler(client: Client, msg: Message) -> None:
+    uptime = str(datetime.timedelta(seconds=int(time.time() - BOT_START_TIME)))
+    from MeshRenameBot.utils.user_input import userin  # adjust if needed
+    total_users = len(userin.track_users)
+    cpu = psutil.cpu_percent()
+    mem = psutil.virtual_memory().percent
+
+    status_text = (
+        f"📊 **Bot Status**\n"
+        f"👥 Tracked Users: `{total_users}`\n"
+        f"⏱ Uptime: `{uptime}`\n"
+        f"⚙️ CPU Usage: `{cpu}%`\n"
+        f"🧠 Memory Usage: `{mem}%`\n"
+    )
+    await msg.reply(status_text)
+    
 
     signal.signal(signal.SIGINT, term_handler)
     signal.signal(signal.SIGTERM, term_handler)
