@@ -162,8 +162,7 @@ async def info_handler(client: Client, msg: Message) -> None:
             "🐍 <b>Language:</b> <a href='https://www.python.org'>Python</a>\n"
             "🗄️ <b>Database:</b> <a href='https://neon.tech/'>Postgres (via Neon)</a>"
         ),
-        parse_mode="HTML",
-        disable_web_page_preview=True
+        parse_mode="HTML"
     )
     
 
