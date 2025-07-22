@@ -36,6 +36,10 @@ This bot is aimed to be **the best rename bot around**! 🏆✨
 
 ---
 
+
+## ‼️Use PostgreSQL database
+mongodb is extremely slow, not yet fixed ‼️
+
 ## ☁️ Deploy to Heroku  
 Deploy your own instance of the bot on Heroku with one click!
 
