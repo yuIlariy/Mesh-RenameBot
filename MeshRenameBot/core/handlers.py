@@ -136,10 +136,9 @@ async def status_handler(client: Client, msg: Message) -> None:
 
     status_text = (
         f"📊 **Bot Status**\n"
-        f"👥 Tracked Users: `{total_users}`\n"
         f"⏱ Uptime: `{uptime}`\n"
         f"⚙️ CPU Usage: `{cpu}%`\n"
-        f"🧠 Memory Usage: `{mem}%`\n"
+        f"🚀 Memory Usage: `{mem}%`\n"
     )
     await msg.reply(status_text)
     
