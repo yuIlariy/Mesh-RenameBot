@@ -166,7 +166,7 @@ async def info_handler(client, msg):
     await msg.reply_photo(
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
         caption=caption,
-        parse_mode=ParseMode.MARKDOWN_V2
+        parse_mode="MarkdownV2"  # ← use string, not enum
     )
     
 
