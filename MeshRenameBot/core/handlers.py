@@ -173,8 +173,10 @@ async def stats_handler(client: Client, msg: Message) -> None:
     from MeshRenameBot.utils.user_input import userin
 
     uptime = str(datetime.timedelta(seconds=int(time.time() - BOT_START_TIME)))
-    total_users = len(userin.total_users)  # ✅ now uses the fixed set
-    total_renames = userin.total_renames   # ✅ correct counter
+    total_users = len(userin.total_users)
+    total_renames = userin.total_renames
+    download_gb = round(userin.total_download_size / (1024 ** 3), 2)
+    upload_gb = round(userin.total_upload_size / (1024 ** 3), 2)
 
     cpu = psutil.cpu_percent()
     mem = psutil.virtual_memory().percent
@@ -187,6 +189,7 @@ async def stats_handler(client: Client, msg: Message) -> None:
         f"📊 **Global Bot Stats**\n\n"
         f"👥 Total Users: `{total_users}`\n"
         f"📁 Files Renamed: `{total_renames}`\n"
+        f"📥 Downloaded: `{download_gb} GB`  📤 Uploaded: `{upload_gb} GB`\n"
         f"🕒 Uptime: `{uptime}`\n"
         f"⚙️ CPU: `{cpu}%`  🚀 Memory: `{mem}%`\n"
         f"🗄️ Disk: `{used_disk} GB / {total_disk} GB`, free: `{free_disk} GB`\n\n"
@@ -304,7 +307,7 @@ async def start_handler(_: MeshRenameBot, msg: Message) -> None:
     
 
 async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
-    from MeshRenameBot.utils.user_input import userin  # 👈 ensure this import exists
+    from MeshRenameBot.utils.user_input import userin
 
     command_mode = UserDB().get_var("command_mode", msg.from_user.id)
     user_locale = UserDB().get_var("locale", msg.from_user.id)
@@ -321,13 +324,17 @@ async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
 
     if rep_msg is None:
         await msg.reply_text(translator.get("REPLY_TO_MEDIA"), quote=True)
-        return  # 👈 added return to prevent further execution
+        return
 
     file_id = await client.get_file_id(rep_msg)
     if file_id is not None:
-        # 🧮 Track rename + user count
         userin.add_user(msg.from_user.id)
         userin.count_rename()
+
+        # 🧮 Track download size now
+        media = rep_msg.document or rep_msg.video or rep_msg.audio or rep_msg.photo
+        if media and hasattr(media, "file_size"):
+            userin.count_download(media.file_size)
 
         await msg.reply_text(
             translator.get(
@@ -345,6 +352,8 @@ async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
         )
     )
     await asyncio.sleep(2)
+
+    # ☑️ Track upload size after maneuver executes (add inside RenameManeuver if not done there)
     await ExecutorManager().create_maneuver(RenameManeuver(client, rep_msg, msg))
     
 
