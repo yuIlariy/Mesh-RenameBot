@@ -121,6 +121,13 @@ def add_handlers(client: MeshRenameBot) -> None:
     client.add_handler(
     MessageHandler(info_handler, filters.regex(r"^/info$", re.IGNORECASE))
     )
+    client.add_handler(
+    CallbackQueryHandler(info_callback, filters.regex("info", re.IGNORECASE))
+    )
+    client.add_handler(
+    CallbackQueryHandler(home_callback, filters.regex("home", re.IGNORECASE))
+    )
+
     
     signal.signal(signal.SIGINT, term_handler)
     signal.signal(signal.SIGTERM, term_handler)
