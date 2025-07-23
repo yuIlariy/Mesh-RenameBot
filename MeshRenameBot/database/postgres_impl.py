@@ -36,13 +36,13 @@ class UserDB:
         table = """CREATE TABLE IF NOT EXISTS ttk_users(
             id SERIAL PRIMARY KEY NOT NULL,
             user_id VARCHAR(50) NOT NULL,
-            json_data VARCHAR(1000) NULL,
+            json_data TEXT NULL,
             thumbnail BYTEA DEFAULT NULL,
             is_premium SMALLINT NOT NULL DEFAULT 0,
             tasks_count INTEGER NOT NULL DEFAULT 0,
             file_choice SMALLINT NOT NULL DEFAULT 0
         );"""
-
+        
         try:
             cur.execute(table)
         except Exception as e:
