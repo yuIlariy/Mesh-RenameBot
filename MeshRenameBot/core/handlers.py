@@ -562,43 +562,42 @@ async def intercept_handler(client: Client, msg: Message) -> None:
     user_locale = UserDB().get_var("locale", user_id)
     translator = Translator(user_locale)
 
-    if get_var("FORCEJOIN") != "":
+    forcejoin_id = get_var("FORCEJOIN_ID")
+    forcejoin_url = get_var("FORCEJOIN")  # expected to be a t.me link or channel URL
+
+    if forcejoin_url and str(forcejoin_url).strip() != "":
         try:
-            user_state = await client.get_chat_member(
-                get_var("FORCEJOIN_ID"), msg.from_user.id
-            )
+            user_state = await client.get_chat_member(forcejoin_id, user_id)
             if user_state.status == "kicked":
                 await msg.reply_text(translator.get("USER_KICKED"), quote=True)
                 return
         except UserNotParticipant:
-            forcejoin = get_var("FORCEJOIN")
+            # ✅ URL safety check
+            if not str(forcejoin_url).startswith("https://t.me/"):
+                renamelog.warning(f"Invalid FORCEJOIN url: {forcejoin_url}")
+                forcejoin_url = "https://t.me/yourfallbackchannel"
+
+            join_button = InlineKeyboardMarkup([
+                [InlineKeyboardButton(translator.get("JOIN_CHANNEL"), url=forcejoin_url)]
+            ])
+
             await msg.reply_text(
                 translator.get("USER_NOT_PARTICIPANT"),
-                reply_markup=InlineKeyboardMarkup(
-                    [
-                        [
-                            InlineKeyboardButton(
-                                translator.get("JOIN_CHANNEL"), url=f"{forcejoin}"
-                            )
-                        ]
-                    ]
-                ),
+                reply_markup=join_button
             )
             return
         except ChatAdminRequired:
-            renamelog.error("The bot is not the admin in the chat make it admin first.")
+            renamelog.error("The bot is not an admin in the channel/group defined in FORCEJOIN_ID.")
             return
         except UsernameNotOccupied:
-            renamelog.error("Invalid FORCEJOIN ID can find that chat.")
+            renamelog.error("FORCEJOIN_ID refers to a chat that doesn't exist or has no username.")
             return
-        except:
-            renamelog.exception(
-                "The ID should be of the channel/ group that you want the user to join."
-            )
+        except Exception as e:
+            renamelog.exception(f"Failed to check user membership in FORCEJOIN group: {e}")
             return
 
     await msg.continue_propagation()
-
+    
 
 async def close_message(_: MeshRenameBot, msg: CallbackQuery) -> None:
     if msg.message.reply_to_message is not None:
