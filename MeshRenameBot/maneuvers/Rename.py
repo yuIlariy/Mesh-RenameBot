@@ -330,7 +330,7 @@ class RenameManeuver(DefaultManeuver):
             try:
                 size = await aos.path.getsize(dl_path)
                 userin.count_upload(size)
-                userin.update_user(msg.from_user.id, uploaded=size)
+                userin.update_user(self.user_msg.from_user.id, uploaded=size)
             except Exception as e:
                 print(f"[ERROR] Failed to count upload size: {e}")
 
