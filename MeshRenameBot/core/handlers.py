@@ -173,8 +173,7 @@ async def ping_handler(client: Client, msg: Message) -> None:
 @Client.on_message(filters.regex(r"^/stats$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
 async def stats_handler(client: Client, msg: Message) -> None:
     import datetime, shutil, psutil
-    from MeshRenameBot.core.database import UserDB
-    from MeshRenameBot.utils.user_input import userin
+    from MeshRenameBot.database.user_db import UserDB  # ✅ fixed import
 
     # ⏱️ System metrics
     uptime = str(datetime.timedelta(seconds=int(time.time() - BOT_START_TIME)))
@@ -219,13 +218,13 @@ async def stats_handler(client: Client, msg: Message) -> None:
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
         caption=caption
     )
-
+    
 
 
 @Client.on_message(filters.regex(r"^/profile$", re.IGNORECASE))
 async def user_profile_handler(client: Client, msg: Message) -> None:
     import datetime
-    from MeshRenameBot.core.database import UserDB
+    from MeshRenameBot.database.user_db import UserDB  # ✅ fixed import
 
     user_id = msg.from_user.id
     user_mention = msg.from_user.mention or f"[User](tg://user?id={user_id})"
@@ -257,7 +256,7 @@ async def user_profile_handler(client: Client, msg: Message) -> None:
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
         caption=caption
     )
-    
+
 
 async def status_handler(client: Client, msg: Message) -> None:
     uptime = str(datetime.timedelta(seconds=int(time.time() - BOT_START_TIME)))
