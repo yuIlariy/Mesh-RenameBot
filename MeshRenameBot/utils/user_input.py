@@ -82,6 +82,7 @@ class userin:
                     cls.total_download_size = data.get("download", 0)
                     cls.total_upload_size = data.get("upload", 0)
                     cls.user_stats = data.get("user_stats", {})
+                    print(f"[INFO] Loaded stats: {len(cls.user_stats)} users, {cls.total_renames} renames")
             except Exception as e:
                 print(f"[ERROR] Failed to load stats: {e}")
 
