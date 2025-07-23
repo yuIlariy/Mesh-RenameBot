@@ -12,9 +12,9 @@ logging.basicConfig(
 )
 logging.getLogger("pyrogram").setLevel(logging.ERROR)
 
-# 👑 Preload channel peer before bot runs
+# 👑 Preload peer before bot starts handling messages
 async def preload_known_peers(bot):
-    track_channel = int(get_var("TRACE_CHANNEL"))  # 💡 Value from env/config
+    track_channel = int(get_var("TRACE_CHANNEL"))
 
     try:
         chat = await bot.get_chat(track_channel)
@@ -35,10 +35,11 @@ if __name__ == "__main__":
         workers=200
     )
 
-    async def start_bot():
-        await rbot.start()
-        await preload_known_peers(rbot)  # 🔐 Register channel peer
-        add_handlers(rbot)
-        rbot.run()
+    excm = ExecutorManager()
+    add_handlers(rbot)
 
-    asyncio.run(start_bot())
+    @rbot.on_start()
+    async def on_bot_start(_: MeshRenameBot):
+        await preload_known_peers(rbot)  # ✅ Works inside bot’s own event loop
+
+    rbot.run()
