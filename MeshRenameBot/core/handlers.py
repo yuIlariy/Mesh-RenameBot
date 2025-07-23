@@ -225,6 +225,17 @@ async def user_profile_handler(client: Client, msg: Message) -> None:
     import datetime
     from MeshRenameBot.database.user_db import UserDB  # ✅ fixed import
 
+    def get_upload_badge(upload_bytes: int) -> str:
+        gb = upload_bytes / (1024 ** 3)
+        if gb >= 1000:
+            return "👑 Crowned King"
+        elif gb >= 500:
+            return "🥈 Medal Master"
+        elif gb >= 100:
+            return "🥉 Bronze Renamer"
+        else:
+            return "🔄 Rookie"
+
     user_id = msg.from_user.id
     user_mention = msg.from_user.mention or f"[User](tg://user?id={user_id})"
 
@@ -234,7 +245,9 @@ async def user_profile_handler(client: Client, msg: Message) -> None:
 
     rename_count = stats.get("rename", 0)
     download_gb = round(stats.get("download", 0) / (1024 ** 3), 2)
-    upload_gb = round(stats.get("upload", 0) / (1024 ** 3), 2)
+    upload_gb_raw = stats.get("upload", 0)
+    upload_gb = round(upload_gb_raw / (1024 ** 3), 2)
+    badge = get_upload_badge(upload_gb_raw)
 
     last_active = datetime.datetime.fromtimestamp(
         stats.get("last_active", time.time())
@@ -247,6 +260,7 @@ async def user_profile_handler(client: Client, msg: Message) -> None:
         f"📁 Files Renamed: `{rename_count}`\n"
         f"📥 Downloaded: `{download_gb} GB`\n"
         f"📤 Uploaded: `{upload_gb} GB`\n"
+        f"🎖 Badge: `{badge}`\n"
         f"🕒 Last Active: `{last_active}`\n\n"
         f"🚀 **Powered by** [NAm](https://t.me/xspes)"
     )
@@ -255,7 +269,7 @@ async def user_profile_handler(client: Client, msg: Message) -> None:
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
         caption=caption
     )
-
+    
 
 async def status_handler(client: Client, msg: Message) -> None:
     uptime = str(datetime.timedelta(seconds=int(time.time() - BOT_START_TIME)))
