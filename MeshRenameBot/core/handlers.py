@@ -555,7 +555,7 @@ async def handle_queue(_: MeshRenameBot, msg: Message) -> None:
     await msg.reply_text(fmsg)
 
 
-async def intercept_handler(client: Client, msg: Message) -> None:
+async def intercept_handler(client, msg):
     if not msg.from_user:
         return
 
@@ -564,21 +564,19 @@ async def intercept_handler(client: Client, msg: Message) -> None:
     user_locale = UserDB().get_var("locale", user_id)
     translator = Translator(user_locale)
 
-    # 🧠 Register user via existing telemetry method
-    UserDB().get_var("locale", user_id)  # ✅ Already safe and used above
+    # Only log new users once
+    if user_locale is None:
+        log_text = (
+            "🚀 **New User Started Rename Bot**\n\n"
+            f"🆔 **User ID:** `{user.id}`\n"
+            f"👤 **Username:** @{user.username if user.username else '—'}\n"
+            f"📛 **Name:** [{user.first_name}](tg://user?id={user.id})\n"
+            f"📂 **Time:** `{msg.date.strftime('%Y-%m-%d %H:%M:%S')}`\n\n"
+            f"🚀 Started: {(await client.get_me()).mention}"
+        )
+        await client.send_message(get_var("LOG_CHANNEL"), log_text)
 
-    # 🛎️ Log new user start to LOG_CHANNEL
-    log_text = (
-        "🚀 **New User Started Rename Bot**\n\n"
-        f"🆔 **User ID:** `{user_id}`\n"
-        f"👤 **Username:** @{user.username if user.username else '—'}\n"
-        f"📛 **Name:** [{user.first_name}](tg://user?id={user_id})\n"
-        f"📂 **Time:** `{msg.date.strftime('%Y-%m-%d %H:%M:%S')}`\n\n"
-        f"🚀 Started: {(await client.get_me()).mention}"
-    )
-    await client.send_message(get_var("LOG_CHANNEL"), log_text)
-
-    # 🔐 Force-join logic
+    # Force-join enforcement
     forcejoin_id = get_var("FORCEJOIN_ID")
     join_username = str(get_var("FORCEJOIN")).strip()
     forcejoin_url = f"https://t.me/{join_username}"
@@ -589,21 +587,22 @@ async def intercept_handler(client: Client, msg: Message) -> None:
             if user_state.status == "kicked":
                 await msg.reply_text(translator.get("USER_KICKED"), quote=True)
                 return
-        except UserNotParticipant:
-            keyboard = InlineKeyboardMarkup([
-                [InlineKeyboardButton(translator.get("JOIN_CHANNEL"), url=forcejoin_url)]
-            ])
-            await msg.reply_text(translator.get("USER_NOT_PARTICIPANT"), reply_markup=keyboard)
-            return
-        except ChatAdminRequired:
-            renamelog.error("Bot must be admin in the FORCEJOIN channel/group.")
-            return
-        except UsernameNotOccupied:
-            renamelog.error("FORCEJOIN_ID refers to invalid or missing chat username.")
-            return
-        except Exception as e:
-            renamelog.exception(f"Error during FORCEJOIN membership check: {e}")
-            return
+        except Exception as err:
+            if isinstance(err, UserNotParticipant):
+                keyboard = InlineKeyboardMarkup([
+                    [InlineKeyboardButton(translator.get("JOIN_CHANNEL"), url=forcejoin_url)]
+                ])
+                await msg.reply_text(translator.get("USER_NOT_PARTICIPANT"), reply_markup=keyboard)
+                return
+            elif isinstance(err, ChatAdminRequired):
+                renamelog.error("Bot must be admin in FORCEJOIN chat.")
+                return
+            elif isinstance(err, UsernameNotOccupied):
+                renamelog.error("FORCEJOIN_ID refers to invalid or unoccupied chat.")
+                return
+            else:
+                renamelog.exception(f"Unhandled error during FORCEJOIN check: {err}")
+                return
 
     await msg.continue_propagation()
     
