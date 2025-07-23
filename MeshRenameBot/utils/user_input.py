@@ -12,6 +12,7 @@ class userin:
     total_renames = 0
     total_download_size = 0  # bytes
     total_upload_size = 0    # bytes
+    user_stats = {}  # user_id: {renames, download, upload, last_active}
 
     STATS_FILE = "bot_stats.json"
 
@@ -39,6 +40,24 @@ class userin:
         cls.save_stats()
 
     @classmethod
+    def update_user(cls, user_id: int, rename=False, downloaded=0, uploaded=0) -> None:
+        stats = cls.user_stats.get(user_id, {
+            "renames": 0,
+            "download": 0,
+            "upload": 0,
+            "last_active": 0
+        })
+
+        if rename:
+            stats["renames"] += 1
+        stats["download"] += downloaded
+        stats["upload"] += uploaded
+        stats["last_active"] = int(time.time())
+
+        cls.user_stats[user_id] = stats
+        cls.save_stats()
+
+    @classmethod
     def save_stats(cls) -> None:
         try:
             with open(cls.STATS_FILE, "w") as f:
@@ -46,7 +65,8 @@ class userin:
                     "users": list(cls.total_users),
                     "renames": cls.total_renames,
                     "download": cls.total_download_size,
-                    "upload": cls.total_upload_size
+                    "upload": cls.total_upload_size,
+                    "user_stats": cls.user_stats
                 }, f)
         except Exception as e:
             print(f"[ERROR] Failed to save stats: {e}")
@@ -61,6 +81,7 @@ class userin:
                     cls.total_renames = data.get("renames", 0)
                     cls.total_download_size = data.get("download", 0)
                     cls.total_upload_size = data.get("upload", 0)
+                    cls.user_stats = data.get("user_stats", {})
             except Exception as e:
                 print(f"[ERROR] Failed to load stats: {e}")
 
