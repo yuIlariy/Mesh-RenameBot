@@ -35,6 +35,7 @@ class RenameManeuver(DefaultManeuver):
         super().__init__(client, media_message, cmd_message)
         self._unique_id = int(str(cmd_message.chat.id) + str(cmd_message.id))
         self._fltr_obj = FilterUtils(cmd_message.from_user.id)
+        self.user_msg = cmd_message  # ✅ Store for per-user upload tracking
 
     async def execute(self) -> None:
         self._execute_pending = False
