@@ -210,7 +210,7 @@ async def user_profile_handler(client: Client, msg: Message) -> None:
     from MeshRenameBot.utils.user_input import userin
 
     user_id = msg.from_user.id
-    user_name = msg.from_user.username or "No Username"
+    user_mention = msg.from_user.mention or f"[User](tg://user?id={msg.from_user.id})"
     stats = userin.user_stats.get(user_id, {})
 
     last_active = datetime.datetime.fromtimestamp(
@@ -223,7 +223,7 @@ async def user_profile_handler(client: Client, msg: Message) -> None:
 
     caption = (
         f"📊 **Your Usage Stats**\n\n"
-        f"👤 User: `{user_name}`\n"
+        f"👤 User: {user_mention}\n"
         f"🆔 ID: `{user_id}`\n"
         f"📁 Files Renamed: `{rename_count}`\n"
         f"📥 Downloaded: `{download_gb} GB`\n"
