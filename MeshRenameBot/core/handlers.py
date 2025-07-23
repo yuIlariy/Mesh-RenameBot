@@ -563,37 +563,31 @@ async def intercept_handler(client: Client, msg: Message) -> None:
     translator = Translator(user_locale)
 
     forcejoin_id = get_var("FORCEJOIN_ID")
-    forcejoin_url = get_var("FORCEJOIN")  # expected to be a t.me link or channel URL
+    join_username = str(get_var("FORCEJOIN")).strip()
 
-    if forcejoin_url and str(forcejoin_url).strip() != "":
+    # 🌐 Build t.me link directly from plain username
+    forcejoin_url = f"https://t.me/{join_username}"
+
+    if forcejoin_id and join_username:
         try:
             user_state = await client.get_chat_member(forcejoin_id, user_id)
             if user_state.status == "kicked":
                 await msg.reply_text(translator.get("USER_KICKED"), quote=True)
                 return
         except UserNotParticipant:
-            # ✅ URL safety check
-            if not str(forcejoin_url).startswith("https://t.me/"):
-                renamelog.warning(f"Invalid FORCEJOIN url: {forcejoin_url}")
-                forcejoin_url = "https://t.me/yourfallbackchannel"
-
-            join_button = InlineKeyboardMarkup([
+            keyboard = InlineKeyboardMarkup([
                 [InlineKeyboardButton(translator.get("JOIN_CHANNEL"), url=forcejoin_url)]
             ])
-
-            await msg.reply_text(
-                translator.get("USER_NOT_PARTICIPANT"),
-                reply_markup=join_button
-            )
+            await msg.reply_text(translator.get("USER_NOT_PARTICIPANT"), reply_markup=keyboard)
             return
         except ChatAdminRequired:
-            renamelog.error("The bot is not an admin in the channel/group defined in FORCEJOIN_ID.")
+            renamelog.error("Bot must be admin in the FORCEJOIN channel/group.")
             return
         except UsernameNotOccupied:
-            renamelog.error("FORCEJOIN_ID refers to a chat that doesn't exist or has no username.")
+            renamelog.error("FORCEJOIN_ID does not match an active username or chat.")
             return
         except Exception as e:
-            renamelog.exception(f"Failed to check user membership in FORCEJOIN group: {e}")
+            renamelog.exception(f"Error during FORCEJOIN membership check: {e}")
             return
 
     await msg.continue_propagation()
