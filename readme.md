@@ -83,10 +83,20 @@ python3 -m MeshRenameBot
 - To run the bot in the background:
   ```bash
   screen -S meshr
+  ```
+  ```bash
   python3 -m MeshRenameBot
   ```
   - Detach: `Ctrl + A`, then `Ctrl + D`
-  - To stop: `screen -r meshr` and `screen -S meshr -X quit`
+
+  - To stop:
+    ```bash
+    screen -r meshr
+    ```
+     and
+    ```bash
+    ```screen -S meshr -X quit
+    ```
 
 
 
