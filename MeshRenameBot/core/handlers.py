@@ -563,10 +563,11 @@ async def intercept_handler(client, msg):
     user_id = user.id
 
     udb = UserDB()
-    translator = Translator(udb.get_var("locale", user_id))
+    user_locale = udb.get_var("locale", user_id)
+    translator = Translator(user_locale)
 
-    # 🔍 Check if user exists in DB already
-    if not udb.get_user(user_id):
+    # ✅ Log only if "joined" key is missing
+    if udb.get_var("joined", user_id) is None:
         log_text = (
             "🚀 **New User Started Rename Bot**\n\n"
             f"🆔 **User ID:** `{user.id}`\n"
@@ -577,7 +578,10 @@ async def intercept_handler(client, msg):
         )
         await client.send_message(get_var("LOG_CHANNEL"), log_text)
 
-    # 🛡️ Force-join logic from plain username in config
+        # 🧠 Optionally mark user as joined
+        udb.set_var("joined", True, user_id)
+
+    # 🔐 Force-join logic
     forcejoin_id = get_var("FORCEJOIN_ID")
     join_username = str(get_var("FORCEJOIN")).strip()
     forcejoin_url = f"https://t.me/{join_username}"
