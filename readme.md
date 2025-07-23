@@ -149,6 +149,7 @@ Use these commands to interact with the bot:
 | `/info` | 📝 **See bot info (maintainer, language, platform** |
 | `/stats` | 🗄️ **Get bot stats (Bot Owner Only) (total users, number of files renamed).** |
 | `/profile` | 🤩 **View Your Usage Stats (Total files renamed, files uploaded, downloaded).** |
+| `/topusers` | 👑 **(Owner Only) View Your Top users leaderboard(Position 🎖️ badges Total files renamed, files uploaded).** |
 
 
 ### 🔄 Upload Modes:
