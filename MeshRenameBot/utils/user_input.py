@@ -81,7 +81,13 @@ class userin:
                     cls.total_renames = data.get("renames", 0)
                     cls.total_download_size = data.get("download", 0)
                     cls.total_upload_size = data.get("upload", 0)
-                    cls.user_stats = data.get("user_stats", {})
+
+                    # ✅ Convert string keys back to int
+                    raw_user_stats = data.get("user_stats", {})
+                    cls.user_stats = {
+                        int(uid): stats for uid, stats in raw_user_stats.items()
+                    }
+
                     print(f"[INFO] Loaded stats: {len(cls.user_stats)} users, {cls.total_renames} renames")
             except Exception as e:
                 print(f"[ERROR] Failed to load stats: {e}")
