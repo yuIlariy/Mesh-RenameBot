@@ -11,11 +11,18 @@ logging.basicConfig(
 logging.getLogger("pyrogram").setLevel(logging.ERROR)
 
 if __name__ == "__main__":
+    # ✅ Load saved stats before bot runs
     from MeshRenameBot.utils.user_input import userin
-    userin.load_stats()  # ✅ Load saved stats before bot runs
+    userin.load_stats()
 
-    rbot = MeshRenameBot("MeshRenameBot", get_var("API_ID"), get_var("API_HASH"),
-                         bot_token=get_var("BOT_TOKEN"), workers=200)
+    rbot = MeshRenameBot(
+        "MeshRenameBot",
+        get_var("API_ID"),
+        get_var("API_HASH"),
+        bot_token=get_var("BOT_TOKEN"),
+        workers=200
+    )
+
     excm = ExecutorManager()
     add_handlers(rbot)
     rbot.run()
