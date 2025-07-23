@@ -259,8 +259,8 @@ async def user_profile_handler(client: Client, msg: Message) -> None:
         f"🆔 ID: `{user_id}`\n"
         f"📁 Files Renamed: `{rename_count}`\n"
         f"📥 Downloaded: `{download_gb} GB`\n"
-        f"📤 Uploaded: `{upload_gb} GB`\n"
-        f"🎖 Badge: `{badge}`\n"
+        f"📤 Uploaded: `{upload_gb} GB`\n\n"
+        f"🎖 Badge: `{badge}`\n\n"
         f"🕒 Last Active: `{last_active}`\n\n"
         f"🚀 **Powered by** [NAm](https://t.me/xspes)"
     )
