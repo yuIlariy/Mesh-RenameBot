@@ -564,7 +564,7 @@ async def intercept_handler(client: Client, msg: Message) -> None:
     translator = Translator(user_locale)
 
     # 🧠 Register user via existing telemetry method
-    UserDB().update_user_stats(user_id)
+    UserDB().get_var("locale", user_id)  # ✅ Already safe and used above
 
     # 🛎️ Log new user start to LOG_CHANNEL
     log_text = (
