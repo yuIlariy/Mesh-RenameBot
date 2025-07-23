@@ -135,6 +135,9 @@ def add_handlers(client: MeshRenameBot) -> None:
     client.add_handler(
     MessageHandler(stats_handler, filters.regex(r"^/stats$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
     )
+    client.add_handler(
+    MessageHandler(user_profile_handler, filters.regex(r"^/profile$", re.IGNORECASE))
+    )
 
     
     signal.signal(signal.SIGINT, term_handler)
@@ -200,7 +203,40 @@ async def stats_handler(client: Client, msg: Message) -> None:
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
         caption=caption
     )
-    
+
+
+@Client.on_message(filters.regex(r"^/profile$", re.IGNORECASE))
+async def user_profile_handler(client: Client, msg: Message) -> None:
+    from MeshRenameBot.utils.user_input import userin
+
+    user_id = msg.from_user.id
+    user_name = msg.from_user.username or "No Username"
+    stats = userin.user_stats.get(user_id, {})
+
+    last_active = datetime.datetime.fromtimestamp(
+        stats.get("last_active", time.time())
+    ).strftime("%Y-%m-%d %H:%M:%S")
+
+    rename_count = stats.get("renames", 0)
+    download_gb = round(stats.get("download", 0) / (1024 ** 3), 2)
+    upload_gb = round(stats.get("upload", 0) / (1024 ** 3), 2)
+
+    caption = (
+        f"📊 **Your Usage Stats**\n\n"
+        f"👤 User: `{user_name}`\n"
+        f"🆔 ID: `{user_id}`\n"
+        f"📁 Files Renamed: `{rename_count}`\n"
+        f"📥 Downloaded: `{download_gb} GB`\n"
+        f"📤 Uploaded: `{upload_gb} GB`\n"
+        f"🕒 Last Active: `{last_active}`\n\n"
+        f"🚀 **Powered by** [NAm](https://t.me/xspes)"
+    )
+
+    await msg.reply_photo(
+        photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
+        caption=caption
+    )
+
 
 async def status_handler(client: Client, msg: Message) -> None:
     uptime = str(datetime.timedelta(seconds=int(time.time() - BOT_START_TIME)))
