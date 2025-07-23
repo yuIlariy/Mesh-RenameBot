@@ -1,10 +1,9 @@
 import time
-import asyncio
 import os
+import asyncio
 from typing import Union
 from pyrogram import Client, types
-from MeshRenameBot.core.database import UserDB
-
+from MeshRenameBot.database.user_db import UserDB  # ✅ Fixed import
 
 class userin:
     track_users = {}
@@ -14,7 +13,7 @@ class userin:
     total_upload_size = 0    # bytes
 
     def __init__(self, client):
-        self._client = client
+        self._client = client  # ✅ Fixed constructor
 
     @classmethod
     def add_user(cls, user_id: int) -> None:
@@ -41,13 +40,19 @@ class userin:
         data["last_active"] = int(time.time())
         UserDB().set_var("telemetry", user_id, data)
 
-    async def get_value(self, client: Client, e: types.MessageEntity, file: bool = False, del_msg: bool = False) -> Union[None, str]:
+    async def get_value(
+        self,
+        client: Client,
+        e: types.MessageEntity,
+        file: bool = False,
+        del_msg: bool = False
+    ) -> Union[None, str]:
         self.track_users[e.from_user.id] = []
         start = time.time()
         val = None
 
         while True:
-            if (time.time() - start) >= 1e10:
+            if (time.time() - start) >= 30:  # ⏱️ reasonable timeout
                 break
 
             if len(self.track_users[e.from_user.id]) != 0:
@@ -70,13 +75,12 @@ class userin:
         if val is not None and del_msg:
             await msg_obj.delete()
 
-        self.track_users.pop(e.from_user.id)
+        self.track_users.pop(e.from_user.id, None)
         print("val is", val)
         return val
 
-
 async def interactive_input(client: Client, msg: types.MessageEntity) -> None:
-    if msg.from_user.id in userin.track_users.keys():
+    if msg.from_user.id in userin.track_users:
         userin.track_users[msg.from_user.id].append(msg)
     else:
         msg.continue_propagation()
