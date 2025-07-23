@@ -38,7 +38,7 @@ class userin:
         data["download"] = data.get("download", 0) + downloaded
         data["upload"] = data.get("upload", 0) + uploaded
         data["last_active"] = int(time.time())
-        UserDB().set_var("telemetry", user_id, data)
+        UserDB().set_var("telemetry", data, user_id)
 
     async def get_value(
         self,
