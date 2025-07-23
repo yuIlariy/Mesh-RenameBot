@@ -95,7 +95,7 @@ python3 -m MeshRenameBot
     ```
      and
     ```bash
-    ```screen -S meshr -X quit
+    screen -S meshr -X quit
     ```
 
 
