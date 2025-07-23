@@ -140,6 +140,9 @@ def add_handlers(client: MeshRenameBot) -> None:
     client.add_handler(
     MessageHandler(top_users_handler, filters.regex(r"^/leaderboard$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
     )
+    client.add_handler(
+    MessageHandler(log_user_start, filters.command("start") & filters.private)
+    )
 
     
     signal.signal(signal.SIGINT, term_handler)
@@ -170,6 +173,29 @@ async def ping_handler(client: Client, msg: Message) -> None:
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
         caption=caption
     )
+
+
+async def log_user_start(client, msg):
+    user = msg.from_user
+    user_id = user.id
+    username = f"@{user.username}" if user.username else "—"
+    name = user.first_name or "No Name"
+    mention = f"[{name}](tg://user?id={user_id})"
+    bot_name = (await client.get_me()).mention
+    time_now = msg.date.strftime("%Y-%m-%d %H:%M:%S")
+
+    log_text = (
+        "🚀 **New User Started Rename Bot**\n\n"
+        f"🆔 **User ID:** `{user_id}`\n"
+        f"👤 **Username:** {username}\n"
+        f"📛 **Name:** {mention}\n"
+        f"📂 **Time:** `{time_now}`\n\n"
+        f"🚀 Started: {bot_name}"
+    )
+
+    log_channel = config.LOG_CHANNEL[1]
+    await client.send_message(log_channel, log_text)
+
 
 
 @Client.on_message(filters.regex(r"^/stats$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
