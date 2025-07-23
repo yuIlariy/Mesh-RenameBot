@@ -367,10 +367,12 @@ async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
         userin.add_user(msg.from_user.id)
         userin.count_rename()
 
-        # 🧮 Track download size now
+        # 🧮 Track download size + per-user update
         media = rep_msg.document or rep_msg.video or rep_msg.audio or rep_msg.photo
-        if media and hasattr(media, "file_size"):
-            userin.count_download(media.file_size)
+        size = media.file_size if media and hasattr(media, "file_size") else 0
+
+        userin.count_download(size)
+        userin.update_user(msg.from_user.id, rename=True, downloaded=size)
 
         await msg.reply_text(
             translator.get(
@@ -388,10 +390,8 @@ async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
         )
     )
     await asyncio.sleep(2)
-
-    # ☑️ Track upload size after maneuver executes (add inside RenameManeuver if not done there)
     await ExecutorManager().create_maneuver(RenameManeuver(client, rep_msg, msg))
-    
+
 
 async def help_str(_: MeshRenameBot, msg: Message) -> None:
     user_locale = UserDB().get_var("locale", msg.from_user.id)
