@@ -14,7 +14,7 @@ logging.getLogger("pyrogram").setLevel(logging.ERROR)
 
 # 👑 Preload channel peer before bot runs
 async def preload_known_peers(bot):
-    from MeshRenameBot import Config
+    from MeshRenameBot import config
     track_channel = Config.TRACE_CHANNEL
 
     try:
