@@ -248,7 +248,13 @@ async def top_users_handler(client: Client, msg: Message) -> None:
 
     caption = "**🏆 Top Uploaders**\n\n"
     for i, (upload_gb, badge, renames, user_id) in enumerate(top, 1):
-        mention = f"[User](tg://user?id={user_id})"
+        try:
+            user = await client.get_users(user_id)
+            name = user.first_name or "User"
+        except Exception:
+            name = "User"
+
+        mention = f"[{name}](tg://user?id={user_id})"
         caption += (
             f"{i}. {badge} {mention}\n"
             f"   📤 Uploaded: `{upload_gb} GB` | 📁 Renamed: `{renames}`\n"
@@ -260,7 +266,7 @@ async def top_users_handler(client: Client, msg: Message) -> None:
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
         caption=caption
     )
-
+    
 
 @Client.on_message(filters.regex(r"^/profile$", re.IGNORECASE))
 async def user_profile_handler(client: Client, msg: Message) -> None:
