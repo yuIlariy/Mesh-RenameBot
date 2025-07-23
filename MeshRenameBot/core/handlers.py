@@ -172,21 +172,36 @@ async def ping_handler(client: Client, msg: Message) -> None:
 
 @Client.on_message(filters.regex(r"^/stats$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
 async def stats_handler(client: Client, msg: Message) -> None:
-    import datetime, shutil
+    import datetime, shutil, psutil
+    from MeshRenameBot.core.database import UserDB
     from MeshRenameBot.utils.user_input import userin
 
+    # ⏱️ System metrics
     uptime = str(datetime.timedelta(seconds=int(time.time() - BOT_START_TIME)))
-    total_users = len(userin.total_users)
-    total_renames = userin.total_renames
-    download_gb = round(userin.total_download_size / (1024 ** 3), 2)
-    upload_gb = round(userin.total_upload_size / (1024 ** 3), 2)
-
     cpu = psutil.cpu_percent()
     mem = psutil.virtual_memory().percent
     disk = shutil.disk_usage("/")
-    total_disk = disk.total // (1024 * 1024 * 1024)
-    used_disk = disk.used // (1024 * 1024 * 1024)
-    free_disk = disk.free // (1024 * 1024 * 1024)
+    total_disk = disk.total // (1024 ** 3)
+    used_disk = disk.used // (1024 ** 3)
+    free_disk = disk.free // (1024 ** 3)
+
+    # 🧠 Global telemetry aggregation from DB
+    total_users = 0
+    total_renames = 0
+    total_download = 0
+    total_upload = 0
+
+    for user_id in UserDB().get_all_users():
+        data = UserDB().get_var("telemetry", user_id)
+        if isinstance(data, dict):
+            total_users += 1
+            total_renames += data.get("rename", 0)
+            total_download += data.get("download", 0)
+            total_upload += data.get("upload", 0)
+
+    # Format sizes
+    download_gb = round(total_download / (1024 ** 3), 2)
+    upload_gb = round(total_upload / (1024 ** 3), 2)
 
     caption = (
         f"📊 **Global Bot Stats**\n\n"
@@ -206,21 +221,26 @@ async def stats_handler(client: Client, msg: Message) -> None:
     )
 
 
+
 @Client.on_message(filters.regex(r"^/profile$", re.IGNORECASE))
 async def user_profile_handler(client: Client, msg: Message) -> None:
-    from MeshRenameBot.utils.user_input import userin
+    import datetime
+    from MeshRenameBot.core.database import UserDB
 
     user_id = msg.from_user.id
-    user_mention = msg.from_user.mention or f"[User](tg://user?id={msg.from_user.id})"
-    stats = userin.user_stats.get(user_id, {})
+    user_mention = msg.from_user.mention or f"[User](tg://user?id={user_id})"
+
+    stats = UserDB().get_var("telemetry", user_id)
+    if not isinstance(stats, dict):
+        stats = {}
+
+    rename_count = stats.get("rename", 0)
+    download_gb = round(stats.get("download", 0) / (1024 ** 3), 2)
+    upload_gb = round(stats.get("upload", 0) / (1024 ** 3), 2)
 
     last_active = datetime.datetime.fromtimestamp(
         stats.get("last_active", time.time())
     ).strftime("%Y-%m-%d %H:%M:%S")
-
-    rename_count = stats.get("renames", 0)
-    download_gb = round(stats.get("download", 0) / (1024 ** 3), 2)
-    upload_gb = round(stats.get("upload", 0) / (1024 ** 3), 2)
 
     caption = (
         f"📊 **Your Usage Stats**\n\n"
@@ -237,7 +257,7 @@ async def user_profile_handler(client: Client, msg: Message) -> None:
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
         caption=caption
     )
-
+    
 
 async def status_handler(client: Client, msg: Message) -> None:
     uptime = str(datetime.timedelta(seconds=int(time.time() - BOT_START_TIME)))
