@@ -561,11 +561,12 @@ async def intercept_handler(client, msg):
 
     user = msg.from_user
     user_id = user.id
-    user_locale = UserDB().get_var("locale", user_id)
-    translator = Translator(user_locale)
 
-    # Only log new users once
-    if user_locale is None:
+    udb = UserDB()
+    translator = Translator(udb.get_var("locale", user_id))
+
+    # 🔍 Check if user exists in DB already
+    if not udb.get_user(user_id):
         log_text = (
             "🚀 **New User Started Rename Bot**\n\n"
             f"🆔 **User ID:** `{user.id}`\n"
@@ -576,7 +577,7 @@ async def intercept_handler(client, msg):
         )
         await client.send_message(get_var("LOG_CHANNEL"), log_text)
 
-    # Force-join enforcement
+    # 🛡️ Force-join logic from plain username in config
     forcejoin_id = get_var("FORCEJOIN_ID")
     join_username = str(get_var("FORCEJOIN")).strip()
     forcejoin_url = f"https://t.me/{join_username}"
