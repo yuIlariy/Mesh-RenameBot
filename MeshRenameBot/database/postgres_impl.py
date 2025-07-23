@@ -98,6 +98,24 @@ class UserDB:
         finally:
             self.db.ccur(cur, conn)
 
+    def get_all_users(self) -> list[int]:
+    cursor_pair = self.db.scur()
+    if not cursor_pair:
+        return []
+    cur, conn = cursor_pair
+
+    try:
+        # ✅ Only users who have telemetry set in their JSON
+        cur.execute("SELECT user_id, json_data FROM ttk_users WHERE json_data IS NOT NULL;")
+        rows = cur.fetchall()
+        return [
+            int(row[0]) for row in rows
+            if row[1] and '"telemetry"' in row[1]
+        ]
+    finally:
+        self.db.ccur(cur, conn)
+        
+
     def get_thumbnail(self, user_id: int) -> Union[str, bool]:
         user_id = str(user_id)
         cursor_pair = self.db.scur(dictcur=True)
