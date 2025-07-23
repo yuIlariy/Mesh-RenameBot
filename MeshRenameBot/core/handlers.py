@@ -32,6 +32,7 @@ from .change_locale import change_locale, set_locale
 from pyrogram.enums import ParseMode
 from MeshRenameBot.config import Config
 from MeshRenameBot.utils.user_input import userin  # 🧠 Load your tracker class
+from MeshRenameBot import config
 
 
 renamelog = logging.getLogger(__name__)
