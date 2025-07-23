@@ -137,6 +137,9 @@ def add_handlers(client: MeshRenameBot) -> None:
     client.add_handler(
     MessageHandler(user_profile_handler, filters.regex(r"^/profile$", re.IGNORECASE))
     )
+    client.add_handler(
+    MessageHandler(top_users_handler, filters.regex(r"^/topusers$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
+    )
 
     
     signal.signal(signal.SIGINT, term_handler)
@@ -218,6 +221,45 @@ async def stats_handler(client: Client, msg: Message) -> None:
         caption=caption
     )
     
+
+@Client.on_message(filters.regex(r"^/topusers$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
+async def top_users_handler(client: Client, msg: Message) -> None:
+    from MeshRenameBot.database.user_db import UserDB
+    import datetime
+
+    all_stats = []
+    for user_id in UserDB().get_all_users():
+        stats = UserDB().get_var("telemetry", user_id)
+        if isinstance(stats, dict):
+            upload_bytes = stats.get("upload", 0)
+            upload_gb = round(upload_bytes / (1024 ** 3), 2)
+            rename_count = stats.get("rename", 0)
+
+            badge = (
+                "👑" if upload_gb >= 1000 else
+                "🥈" if upload_gb >= 500 else
+                "🥉" if upload_gb >= 100 else
+                "🔄"
+            )
+
+            all_stats.append((upload_gb, badge, rename_count, user_id))
+
+    top = sorted(all_stats, reverse=True)[:10]
+
+    caption = "**🏆 Top Uploaders**\n\n"
+    for i, (upload_gb, badge, renames, user_id) in enumerate(top, 1):
+        mention = f"[User](tg://user?id={user_id})"
+        caption += (
+            f"{i}. {badge} {mention}\n"
+            f"   📤 Uploaded: `{upload_gb} GB` | 📁 Renamed: `{renames}`\n"
+        )
+
+    caption += "\n👑 Legends are crowned by upload volume. Keep renaming!"
+
+    await msg.reply_photo(
+        photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
+        caption=caption
+    )
 
 
 @Client.on_message(filters.regex(r"^/profile$", re.IGNORECASE))
