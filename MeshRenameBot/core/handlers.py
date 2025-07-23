@@ -138,7 +138,7 @@ def add_handlers(client: MeshRenameBot) -> None:
     MessageHandler(user_profile_handler, filters.regex(r"^/profile$", re.IGNORECASE))
     )
     client.add_handler(
-    MessageHandler(top_users_handler, filters.regex(r"^/topusers$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
+    MessageHandler(top_users_handler, filters.regex(r"^/leaderboard$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
     )
 
     
@@ -222,7 +222,7 @@ async def stats_handler(client: Client, msg: Message) -> None:
     )
     
 
-@Client.on_message(filters.regex(r"^/topusers$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
+@Client.on_message(filters.regex(r"^/leaderboard$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
 async def top_users_handler(client: Client, msg: Message) -> None:
     from MeshRenameBot.database.user_db import UserDB
     import datetime
