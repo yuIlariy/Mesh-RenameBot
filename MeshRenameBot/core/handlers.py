@@ -558,14 +558,28 @@ async def intercept_handler(client: Client, msg: Message) -> None:
     if not msg.from_user:
         return
 
-    user_id = msg.from_user.id
+    user = msg.from_user
+    user_id = user.id
     user_locale = UserDB().get_var("locale", user_id)
     translator = Translator(user_locale)
 
+    # 🧠 Register user in userDB
+    UserDB().add_user(user_id)
+
+    # 🛎️ Log new user start to LOG_CHANNEL
+    log_text = (
+        "🚀 **New User Started Rename Bot**\n\n"
+        f"🆔 **User ID:** `{user_id}`\n"
+        f"👤 **Username:** @{user.username if user.username else '—'}\n"
+        f"📛 **Name:** [{user.first_name}](tg://user?id={user_id})\n"
+        f"📂 **Time:** `{msg.date.strftime('%Y-%m-%d %H:%M:%S')}`\n\n"
+        f"🚀 Started: {(await client.get_me()).mention}"
+    )
+    await client.send_message(config.LOG_CHANNEL[1], log_text)
+
+    # 🔐 Force-join logic
     forcejoin_id = get_var("FORCEJOIN_ID")
     join_username = str(get_var("FORCEJOIN")).strip()
-
-    # 🌐 Build t.me link directly from plain username
     forcejoin_url = f"https://t.me/{join_username}"
 
     if forcejoin_id and join_username:
@@ -584,7 +598,7 @@ async def intercept_handler(client: Client, msg: Message) -> None:
             renamelog.error("Bot must be admin in the FORCEJOIN channel/group.")
             return
         except UsernameNotOccupied:
-            renamelog.error("FORCEJOIN_ID does not match an active username or chat.")
+            renamelog.error("FORCEJOIN_ID refers to invalid or missing chat username.")
             return
         except Exception as e:
             renamelog.exception(f"Error during FORCEJOIN membership check: {e}")
