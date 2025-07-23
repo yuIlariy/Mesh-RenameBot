@@ -35,7 +35,7 @@ class UserDB:
 
         table = """CREATE TABLE IF NOT EXISTS ttk_users(
             id SERIAL PRIMARY KEY NOT NULL,
-            user_id VARCHAR(50) NOT NULL,
+            user_id BIGINT NOT NULL,
             json_data TEXT NULL,
             thumbnail BYTEA DEFAULT NULL,
             is_premium SMALLINT NOT NULL DEFAULT 0,
