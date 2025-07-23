@@ -47,6 +47,7 @@ class Config:
     FORCEJOIN = [str, get_config_value("FORCEJOIN", [str, "modstorexd"])]
     FORCEJOIN_ID = [int, get_config_value("FORCEJOIN_ID", [int, -1002000119186])]
 
+    LOG_CHANNEL = [int, get_config_value("LOG_CHANNEL", [int, -1001925329161])]
     TRACE_CHANNEL = [int, get_config_value("TRACE_CHANNEL", [int, -1002790858154])]
     SAVE_FILE_TO_TRACE_CHANNEL = [
         bool,
