@@ -166,4 +166,4 @@ Use these commands to interact with the bot:
 
 [Dan for Pyrogram](https://github.com/pyrogram/pyrogram)
 
-[Yuilariy](https://github.com/yuilariy) (it's me😂) for small fixes & new features (maybe major) using AI, not a coder🤨 )
+[Yuilariy](https://github.com/yuilariy) (it's me😂) for small fixes & new features (maybe major) using AI, not a coder🤩)
