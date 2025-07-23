@@ -250,11 +250,14 @@ async def top_users_handler(client: Client, msg: Message) -> None:
     for i, (upload_gb, badge, renames, user_id) in enumerate(top, 1):
         try:
             user = await client.get_users(user_id)
-            name = user.first_name or "User"
+            if user.username:
+                mention = f"@{user.username}"
+            else:
+                name = user.first_name or "User"
+                mention = f"[{name}](tg://user?id={user_id})"
         except Exception:
-            name = "User"
+            mention = f"[User](tg://user?id={user_id})"
 
-        mention = f"[{name}](tg://user?id={user_id})"
         caption += (
             f"{i}. {badge} {mention}\n"
             f"   📤 Uploaded: `{upload_gb} GB` | 📁 Renamed: `{renames}`\n"
