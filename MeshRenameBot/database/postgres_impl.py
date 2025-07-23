@@ -42,7 +42,10 @@ class UserDB:
             tasks_count INTEGER NOT NULL DEFAULT 0,
             file_choice SMALLINT NOT NULL DEFAULT 0
         );"""
-        
+        try:
+            cur.execute("ALTER TABLE ttk_users ALTER COLUMN user_id TYPE BIGINT USING user_id::bigint;")
+        except Exception as e:
+            renamelog.warning(f"User ID migration skipped or already applied: {e}")
         try:
             cur.execute(table)
         except Exception as e:
