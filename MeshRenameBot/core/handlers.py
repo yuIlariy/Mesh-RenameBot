@@ -576,7 +576,7 @@ async def intercept_handler(client: Client, msg: Message) -> None:
         f"📂 **Time:** `{msg.date.strftime('%Y-%m-%d %H:%M:%S')}`\n\n"
         f"🚀 Started: {(await client.get_me()).mention}"
     )
-    await client.send_message(config.LOG_CHANNEL[1], log_text)
+    await client.send_message(get_var("LOG_CHANNEL"), log_text)
 
     # 🔐 Force-join logic
     forcejoin_id = get_var("FORCEJOIN_ID")
