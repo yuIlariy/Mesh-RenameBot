@@ -148,6 +148,7 @@ Use these commands to interact with the bot:
 | `/status` | 🫧 **get bot status (uptime, CPU usage** |
 | `/info` | 📝 **See bot info (maintainer, language, platform** |
 | `/stats` | 🗄️ **Get bot stats (total users, number of files renamed).** |
+| `/profile` | 🤩 **View Your Usage Stats (Total files renamed, files uploaded, downloaded).** |
 
 
 ### 🔄 Upload Modes:
