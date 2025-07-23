@@ -89,11 +89,12 @@ python3 -m MeshRenameBot
   ```
   - Detach: `Ctrl + A`, then `Ctrl + D`
 
-  - To stop:
+- To stop:
     ```bash
     screen -r meshr
     ```
-     and
+    - CTRL+C
+  then
     ```bash
     screen -S meshr -X quit
     ```
