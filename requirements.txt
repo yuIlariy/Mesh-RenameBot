@@ -9,3 +9,4 @@ pymongo
 dnspython
 Jinja2
 psutil
+aiofiles
