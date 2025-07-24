@@ -52,7 +52,7 @@ class userin:
         val = None
 
         while True:
-            if (time.time() - start) >= 30:  # ⏱️ reasonable timeout
+            if (time.time() - start) >= float('inf'):  # ⏱️ no timeout 😁
                 break
 
             if len(self.track_users[e.from_user.id]) != 0:
