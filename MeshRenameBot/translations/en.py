@@ -51,13 +51,9 @@ class EnglishTranslations:
     RENAME_CANCEL_BY_USER = "🚫 **Canceled by the user.**"
 
     FLTR_ADD_LEFT_STR = "➕ Added Filter: `<code>{{ text_1 }}</code>` **to the LEFT**."
-    FLTR_ADD_RIGHT_STR = (
-        "➕ Addition Filter: `<code>{{ text_1 }}</code>` **to the RIGHT**."
-    )
+    FLTR_ADD_RIGHT_STR = "➕ Addition Filter: `<code>{{ text_1 }}</code>` **to the RIGHT**."
     FLTR_RM_STR = "❌ Remove Filter: `<code>{{ text_1 }}</code>`."
-    FLTR_REPLACE_STR = (
-        "🔄 Replace Filter: `<code>{{ text_1 }}</code>` → `<code>{{ text_2 }}</code>`."
-    )
+    FLTR_REPLACE_STR = "🔄 Replace Filter: `<code>{{ text_1 }}</code>` → `<code>{{ text_2 }}</code>`."
 
     CURRENT_FLTRS = "⚙️ **Your Current Filters:**"
     ADD_FLTR = "➕ Add Filter"
@@ -110,9 +106,7 @@ class EnglishTranslations:
 
     ADDITION_POSITION_PROMPT = "📍 **Where do you want to add the text?**"
 
-    REMOVE_FILTER_INIT_MSG = (
-        "✍️ Enter the text you want to remove."
-    )
+    REMOVE_FILTER_INIT_MSG = "✍️ Enter the text you want to remove."
     REMOVE_FILTER_INIT_KBD = InlineKeyboardMarkup(
         [[InlineKeyboardButton("👻 Cancel", callback_data="cancel_filter")]]
     )
