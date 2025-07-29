@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import random
 
 @dataclass
@@ -9,15 +10,15 @@ class EnglishTranslations:
     WRONG_VALUE_ERROR = "❌ Invalid value entered for {{ variable_name }} variable."
 
     START_MSG = (
-    "Hello there! 👋\n"
-    "I’m **Auto Rename Bot**, your go-to assistant for effortlessly renaming files on Telegram.\n\n"
-    "✨ **Key Features:**\n"
-    "- Rename files with custom names and extensions.\n"
-    "- Fast, secure, and easy to use.\n"
-    "- Supports a wide range of file types.\n\n"
-    "Simply send me a file, and I’ll guide you through the renaming process!\n\n"
-    "Let’s get started! Use /mode to enable auto rename, **Rename without command**🚀\n\n"
-    "🚀 **Powered by** [NAm](https://t.me/xspes)"
+        "Hello there! 👋\n"
+        "I’m **Auto Rename Bot**, your go-to assistant for effortlessly renaming files on Telegram.\n\n"
+        "✨ **Key Features:**\n"
+        "- Rename files with custom names and extensions.\n"
+        "- Fast, secure, and easy to use.\n"
+        "- Supports a wide range of file types.\n\n"
+        "Simply send me a file, and I’ll guide you through the renaming process!\n\n"
+        "Let’s get started! Use /mode to enable auto rename, **Rename without command**🚀\n\n"
+        "🚀 **Powered by** [NAm](https://t.me/xspes)"
     )
 
     CANCEL_MESSAGE = "⚠️ The rename has been **canceled**. Will be updated soon."
@@ -75,10 +76,15 @@ class EnglishTranslations:
     ADD_REMOVE_FLTR = "➕ Add Remove Filter"
     BACK = "🔙 Back"
 
-    REPALCE_FILTER_INIT_MSG = "✍️ Send the format: `<code>what_to_replace | replacement</code>` or `/ignore` to go back."
+    REPALCE_FILTER_INIT_MSG = (
+        "✍️ Send the format: `<code>what_to_replace | replacement</code>`"
+    )
+    REPALCE_FILTER_INIT_KBD = InlineKeyboardMarkup(
+        [[InlineKeyboardButton("👻 Cancel", callback_data="cancel_filter")]]
+    )
 
     NO_INPUT_FROM_USER = "⚠️ No input received from you."
-    INPUT_IGNORE = "✅ **Ignored**."
+    INPUT_IGNORE = "✅ **Ignored.**"
     WRONG_INPUT_FORMAT = "❌ Invalid format. Check the provided format."
     REPLACE_FILTER_SUCCESS = (
         "✅ **Replace filter added:**\n" "`'{{ text_1 }}'` → `'{{ text_2 }}'`"
@@ -86,8 +92,10 @@ class EnglishTranslations:
 
     ADDITION_FILTER_INIT_MSG = (
         "✍️ Enter the text to add within `<code>|</code>`\n"
-        "Example: `<code>| text to add |</code>`\n"
-        "or `/ignore` to go back."
+        "Example: `<code>| text to add |</code>`"
+    )
+    ADDITION_FILTER_INIT_KBD = InlineKeyboardMarkup(
+        [[InlineKeyboardButton("👻 Cancel", callback_data="cancel_filter")]]
     )
 
     ADDITION_FILTER_SUCCESS_LEFT = (
@@ -103,13 +111,16 @@ class EnglishTranslations:
     ADDITION_POSITION_PROMPT = "📍 **Where do you want to add the text?**"
 
     REMOVE_FILTER_INIT_MSG = (
-        "✍️ Enter the text you want to remove or `/ignore` to go back."
+        "✍️ Enter the text you want to remove."
+    )
+    REMOVE_FILTER_INIT_KBD = InlineKeyboardMarkup(
+        [[InlineKeyboardButton("👻 Cancel", callback_data="cancel_filter")]]
     )
 
     REMOVE_FILTER_SUCCESS = (
         "✅ **Remove filter added:** `<code>{{ text_1 }}</code>` will be removed."
     )
-
+    
     RENAME_THEMES_DOWNLOADING = [
         "✅ Download complete. Initiating rename magic...",
         "📦 File fetched! Ready to bless it with a new name...",
