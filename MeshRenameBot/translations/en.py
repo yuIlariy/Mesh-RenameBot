@@ -256,6 +256,7 @@ class EnglishTranslations:
         "`{{ pingcmd }}` - 🎈Ping Bot.\n"
         "`{{ infocmd }}` - 🧑‍💻 View bot info.\n"
         "`{{ profilecmd }}` - ☄️ Your usage stats.\n"
+        "`{{ statuscmd }}` - 🗿 Bot Status.\n"
         "`{{ statscmd }}` - 👻 Global bot stats.\n"
         "`{{ leaderboard }}` - 👻 Users leaderboard.\n"
         "`{{ setlanguagecmd }}` - 🌐 Change the bot's language."
