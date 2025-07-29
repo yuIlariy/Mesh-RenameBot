@@ -23,7 +23,10 @@ async def adjust_image(path: str) -> Union[str, None]:
         im.convert("RGB").save(path, "JPEG", exif=b"")
         im.thumbnail((320, 320), Image.Resampling.LANCZOS)
         im.save(path, "JPEG", exif=b"")
-        renamelog.info(f"Image adjusted at: {path}")
+
+        # Final read-check
+        test = Image.open(path)
+        test.load()
         return path
     except Exception as e:
         renamelog.error(f"Failed to adjust image: {e}")
@@ -55,13 +58,20 @@ async def handle_set_thumb(client, msg: Message):
         thumb_path = await adjust_image(path)
     else:
         duration = await get_metadata_duration(path)
-        thumb_path = await gen_ss(path, random.randint(2, duration))
-        if thumb_path:
-            thumb_path = await resize_img(thumb_path, 320)
+        ss_path = await gen_ss(path, random.randint(2, duration))
+        thumb_path = await resize_img(ss_path, 320) if ss_path else None
 
+    # Verify thumbnail integrity before saving
     if thumb_path:
-        UserDB().set_thumbnail(thumb_path, user_id)
-        await msg.reply_text(translator.get("THUMB_SET_SUCCESS"), quote=True)
+        try:
+            with Image.open(thumb_path) as test:
+                test.load()
+            UserDB().set_thumbnail(thumb_path, user_id)
+            await msg.reply_text(translator.get("THUMB_SET_SUCCESS"), quote=True)
+        except Exception as e:
+            renamelog.error(f"Thumbnail verification failed: {e}")
+            await msg.reply_text("❌ Failed to verify thumbnail.", quote=True)
+
         try:
             os.remove(thumb_path)
         except Exception as e:
@@ -82,14 +92,13 @@ async def handle_get_thumb(client, msg: Message):
         await msg.reply_text(translator.get("THUMB_NOT_FOUND"), quote=True)
         return
 
-    # Validation attempt before sending
     try:
         with Image.open(thumb_path) as img:
-            img.verify()
+            img.load()
         await msg.reply_photo(thumb_path, quote=True)
     except Exception as e:
         renamelog.error(f"[getthumb] Failed image verification/send: {e}")
-        await msg.reply_text("⚠️ Thumbnail is invalid or corrupted.", quote=True)
+        await msg.reply_text("⚠️ Thumbnail is invalid or unreadable.", quote=True)
 
 # 🎬 Generate Screenshot
 async def gen_ss(filepath, ts, opfilepath=None):
@@ -106,9 +115,7 @@ async def gen_ss(filepath, ts, opfilepath=None):
         subpr = await asyncio.create_subprocess_exec(
             *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
         )
-        spipe, epipe = await subpr.communicate()
-        renamelog.info(f"Screenshot stdout: {spipe.decode().strip()}")
-        renamelog.info(f"Screenshot error: {epipe.decode().strip()}")
+        await subpr.communicate()
     except Exception as e:
         renamelog.error(f"Screenshot generation failed: {e}")
         return None
@@ -124,6 +131,10 @@ async def resize_img(path, width=None, height=None):
         hei = height if height is not None else hei
         img.thumbnail((wei, hei))
         img.save(path, "JPEG", exif=b"")
+
+        # Verify after save
+        test = Image.open(path)
+        test.load()
         return path
     except Exception as e:
         renamelog.error(f"Failed to resize image: {e}")
@@ -142,12 +153,9 @@ async def get_metadata_duration(file_path):
 async def get_thumbnail(file_path, user_id=None, force_docs=False):
     renamelog.info(f"Retrieve thumbnail → file: {file_path} | user: {user_id} | force_docs: {force_docs}")
 
-    user_thumb = None
-    if user_id:
-        user_thumb = UserDB().get_thumbnail(user_id)
-        if force_docs and user_thumb:
-            return user_thumb
-
+    user_thumb = UserDB().get_thumbnail(user_id) if user_id else None
+    if force_docs and user_thumb:
+        return user_thumb
     if user_thumb:
         return user_thumb
 
@@ -163,10 +171,10 @@ async def get_thumbnail(file_path, user_id=None, force_docs=False):
 # 🧹 Clear Thumbnail
 async def handle_clr_thumb(client, msg: Message):
     user_id = msg.from_user.id
-    udb = UserDB()
-    user_locale = udb.get_var("locale", user_id)
+    user_locale = UserDB().get_var("locale", user_id)
     translator = Translator(user_locale)
 
-    udb.set_thumbnail(None, user_id)
+    UserDB().set_thumbnail(None, user_id)
     await msg.reply_text(translator.get("THUMB_CLEARED"), quote=True)
+
 
