@@ -110,16 +110,47 @@ class EnglishTranslations:
         "✅ **Remove filter added:** `<code>{{ text_1 }}</code>` will be removed."
     )
 
+    RENAME_THEMES_DOWNLOADING = [
+        "✅ Download complete. Initiating rename magic...",
+        "📦 File fetched! Ready to bless it with a new name...",
+        "🪄 Download done. ✨ Let the rename ritual begin...",
+        "🔧 Data acquired. Renaming engine revving up...",
+        "💾 Saved and sealed. Now to rename with style...",
+    ]
+
+    RENAME_THEMES_UPLOADING = [
+        "✅ All renamed and ready! Upload complete.",
+        "🚀 File successfully rebranded and launched.",
+        "📤 Upload done. Your renamed masterpiece is live!",
+        "🌟 File rename finalized. Delivered to the cosmos!",
+        "📁 Task complete. The file ascends renamed.",
+    ]
+
+    RENAME_THEMES_DOWNLOAD_CANCELLED = [
+        "🛑 Download halted. The rename dream fades...",
+        "🚫 You pulled the plug. Download aborted.",
+        "❌ Operation scrapped mid-flight. No file fetched.",
+        "📴 Rename canceled during download. Mission scrubbed.",
+        "👋 User opted out mid-download. Peace out, file.",
+    ]
+
+    RENAME_THEMES_UPLOAD_CANCELLED = [
+        "🛑 Upload canceled. File stays local and unloved.",
+        "🚫 Rebrand reversed. Upload terminated.",
+        "❌ Final stage interrupted. Rename abandoned.",
+        "📴 Upload vetoed. Renamed file goes nowhere.",
+        "👋 User said 'nope' during upload. File retired.",
+    ]
+
     REPLY_TO_MEDIA = "📂 Reply `/rename` to a media file."
 
-    RENAME_DOWNLOADING_DONE = "✅ Download complete. Now renaming the file..."
+    RENAME_DOWNLOADING_DONE = random.choice(RENAME_THEMES_DOWNLOADING)
+    RENAME_UPLOADING_DONE = random.choice(RENAME_THEMES_UPLOADING)
+    RENAME_CANCEL_BY_USER = random.choice(RENAME_THEMES_DOWNLOAD_CANCELLED)
+    RENAME_UPLOAD_CANCELLED_BY_USER = random.choice(RENAME_THEMES_UPLOAD_CANCELLED)
     RENAME_ERRORED = "❗ Rename process encountered an error."
-    RENAME_CANCEL_BY_USER = "🚫 **Download canceled.**"
 
     UPLOADING_THE_FILE = "📤 Uploading the file: **{{ new_file_name }}**"
-
-    RENAME_UPLOAD_CANCELLED_BY_USER = "🚫 **Upload canceled by the user.**"
-    RENAME_UPLOADING_DONE = "✅ **Rename Process Complete.**"
 
     TRACK_MESSAGE_EXECUTION_START = (
         "🚀 **Execution Started for Rename Task**\n"
@@ -129,7 +160,7 @@ class EnglishTranslations:
         "🆔 **User ID:** `<code>{{ user_id }}</code>`\n"
         "📂 **File Name:** `<code>{{ file_name }}</code>`"
     )
-
+    
     TRACK_MESSAGE_ADDED_RENAME = (
         "✅ **Rename Task Added**\n\n"
         "👤 **Username:** @{{ username }}\n"
