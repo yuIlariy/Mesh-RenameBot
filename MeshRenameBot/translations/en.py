@@ -41,13 +41,9 @@ class EnglishTranslations:
     )
 
     RENAME_CANCEL = "❌ Cancel this rename."
-
     RENAMING_FILE = "🔄 Renaming the file... Please wait."
-
     DL_RENAMING_FILE = "📥 Downloading the file... Please wait."
-
     RENAME_ERRORED_REPORT = "❗ The download encountered an error. Report this issue."
-
     RENAME_CANCEL_BY_USER = "🚫 **Canceled by the user.**"
 
     FLTR_ADD_LEFT_STR = "➕ Added Filter: `<code>{{ text_1 }}</code>` **to the LEFT**."
@@ -103,7 +99,6 @@ class EnglishTranslations:
 
     ADDITION_LEFT = "🔄 Addition to LEFT"
     ADDITION_RIGHT = "🔄 Addition to RIGHT"
-
     ADDITION_POSITION_PROMPT = "📍 **Where do you want to add the text?**"
 
     REMOVE_FILTER_INIT_MSG = "✍️ Enter the text you want to remove."
@@ -114,6 +109,7 @@ class EnglishTranslations:
     REMOVE_FILTER_SUCCESS = (
         "✅ **Remove filter added:** `<code>{{ text_1 }}</code>` will be removed."
     )
+
     
     RENAME_THEMES_DOWNLOADING = [
         "✅ Download complete. Initiating rename magic...",
