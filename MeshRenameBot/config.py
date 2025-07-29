@@ -68,6 +68,12 @@ class Commands:
         "MODE": "/mode",
         "HELP": "/help",
         "SET_CAPTION": "/setcaption",
+        "PING": "/ping",
+        "STATUS": "/status",
+        "INFO": "/info",
+        "PROFILE": "/profile",
+        "STATS" : "/stats",
+        "LEADERBOARD" : "/leaderboard",
         "SET_LANG": "/setlanguage",
     }
 
@@ -83,4 +89,10 @@ class Commands:
     MODE = COMMANDS.get("MODE", "/mode")
     HELP = COMMANDS.get("HELP", "/help")
     SET_CAPTION = COMMANDS.get("SET_CAPTION", "/setcaption")
+    LEADERBOARD = COMMANDS.get("LEADERBOARD", "/leaderboard")
+    STATS = COMMANDS.get("STATS", "/stats")
+    INFO = COMMANDS.get("INFO", "/info")
+    PROFILE = COMMANDS.get("PROFILE", "/profile")
+    STATUS = COMMANDS.get("STATUS", "/status")
+    PING = COMMANDS.get("PING", "/ping")
     SET_LANG = COMMANDS.get("SET_LANG", "/setlanguage")
