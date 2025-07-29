@@ -6,53 +6,47 @@ class EnglishTranslations:
     LANGUAGE_NAME = "English"
     LANGUAGE_CODE = "en"
 
-    WRONG_VALUE_ERROR = "❌ Invalid value entered for {{ variable_name }} variable."
-
+    # ✨ START
     START_MSG = (
-    "Hello there! 👋\n"
-    "I’m **Auto Rename Bot**, your go-to assistant for effortlessly renaming files on Telegram.\n\n"
-    "✨ **Key Features:**\n"
-    "- Rename files with custom names and extensions.\n"
-    "- Fast, secure, and easy to use.\n"
-    "- Supports a wide range of file types.\n\n"
-    "Simply send me a file, and I’ll guide you through the renaming process!\n\n"
-    "Let’s get started! Use /mode to enable auto rename, **Rename without command**🚀\n\n"
-    "🚀 **Powered by** [NAm](https://t.me/xspes)"
+        "Hello there! 👋\n"
+        "I’m **Auto Rename Bot**, your go-to assistant for effortlessly renaming files on Telegram.\n\n"
+        "✨ **Key Features:**\n"
+        "- Rename files with custom names and extensions.\n"
+        "- Fast, secure, and easy to use.\n"
+        "- Supports a wide range of file types.\n\n"
+        "Simply send me a file, and I’ll guide you through the renaming process!\n\n"
+        "Let’s get started! Use /mode to enable auto rename, **Rename without command**🚀\n\n"
+        "🚀 **Powered by** [NAm](https://t.me/xspes)"
     )
 
     CANCEL_MESSAGE = "⚠️ The rename has been **canceled**. Will be updated soon."
+    RENAME_CANCEL = "❌ Cancel this rename."
+    RENAME_CANCEL_BY_USER = "🚫 **Canceled by the user.**"
 
+    # 🚫 Filters & No Match
     RENAME_NO_FILTER_MATCH = (
         "🚫 **NO FILTER MATCHED - ABORTING RENAME**\n\n"
         "🔍 Using filters to rename as no name was specified.\n"
         "👻 Manage your filters using /filters."
     )
-
     RENAME_FILTER_MATCH_USED = (
         "✅ Using filters to rename as no name was specified.\n"
         "👻 Manage your filters using /filters."
     )
-
     RENAME_NOFLTR_NONAME = (
         "✍️ Enter the new file name in format:\n"
         "```/rename my_new_filename.extension```\n"
         "or use `/filters` to set rename filters."
     )
 
-    RENAME_CANCEL = "❌ Cancel this rename."
-
     RENAMING_FILE = "🔄 Renaming the file... Please wait."
-
     DL_RENAMING_FILE = "📥 Downloading the file... Please wait."
-
     RENAME_ERRORED_REPORT = "❗ The download encountered an error. Report this issue."
+    RENAME_ERRORED = "❗ Rename process encountered an error."
 
-    RENAME_CANCEL_BY_USER = "🚫 **Canceled by the user.**"
-
+    # 📦 Filter Messages
     FLTR_ADD_LEFT_STR = "➕ Added Filter: `<code>{{ text_1 }}</code>` **to the LEFT**."
-    FLTR_ADD_RIGHT_STR = (
-        "➕ Addition Filter: `<code>{{ text_1 }}</code>` **to the RIGHT**."
-    )
+    FLTR_ADD_RIGHT_STR = "➕ Added Filter: `<code>{{ text_1 }}</code>` **to the RIGHT**."
     FLTR_RM_STR = "❌ Remove Filter: `<code>{{ text_1 }}</code>`."
     FLTR_REPLACE_STR = (
         "🔄 Replace Filter: `<code>{{ text_1 }}</code>` → `<code>{{ text_2 }}</code>`."
@@ -62,6 +56,7 @@ class EnglishTranslations:
     ADD_FLTR = "➕ Add Filter"
     RM_FLTR = "❌ Remove Filter"
 
+    # 🧭 Filter Guide
     FILTERS_INTRO = (
         "🛠 **Filter Guide:**\n"
         "There are 3 types of filters:\n\n"
@@ -75,41 +70,43 @@ class EnglishTranslations:
     ADD_REMOVE_FLTR = "➕ Add Remove Filter"
     BACK = "🔙 Back"
 
-    REPALCE_FILTER_INIT_MSG = "✍️ Send the format: `<code>what_to_replace | replacement</code>` or `/ignore` to go back."
+    # 🧠 Input Prompts — All now use 👻 Cancel
+    REPALCE_FILTER_INIT_MSG = (
+        "✍️ Send the format: `<code>what_to_replace | replacement</code>`\n"
+        "👻 Tap 'Cancel' to return."
+    )
+    ADDITION_FILTER_INIT_MSG = (
+        "✍️ Enter the text to add within `<code>|</code>`\n"
+        "Example: `<code>| text to add |</code>`\n"
+        "👻 Tap 'Cancel' to return."
+    )
+    REMOVE_FILTER_INIT_MSG = (
+        "✍️ Enter the text you want to remove.\n"
+        "👻 Tap 'Cancel' to return."
+    )
 
+    # ✅ Input Feedback
     NO_INPUT_FROM_USER = "⚠️ No input received from you."
-    INPUT_IGNORE = "✅ **Ignored**."
+    INPUT_IGNORE = "✅ **Ignored.**"
     WRONG_INPUT_FORMAT = "❌ Invalid format. Check the provided format."
     REPLACE_FILTER_SUCCESS = (
         "✅ **Replace filter added:**\n" "`'{{ text_1 }}'` → `'{{ text_2 }}'`"
     )
-
-    ADDITION_FILTER_INIT_MSG = (
-        "✍️ Enter the text to add within `<code>|</code>`\n"
-        "Example: `<code>| text to add |</code>`\n"
-        "or `/ignore` to go back."
-    )
-
     ADDITION_FILTER_SUCCESS_LEFT = (
         "✅ Added filter: `<code>{{ text_1 }}</code>` **to LEFT**."
     )
     ADDITION_FILTER_SUCCESS_RIGHT = (
         "✅ Added filter: `<code>{{ text_1 }}</code>` **to RIGHT**."
     )
-
-    ADDITION_LEFT = "🔄 Addition to LEFT"
-    ADDITION_RIGHT = "🔄 Addition to RIGHT"
-
-    ADDITION_POSITION_PROMPT = "📍 **Where do you want to add the text?**"
-
-    REMOVE_FILTER_INIT_MSG = (
-        "✍️ Enter the text you want to remove or `/ignore` to go back."
-    )
-
     REMOVE_FILTER_SUCCESS = (
         "✅ **Remove filter added:** `<code>{{ text_1 }}</code>` will be removed."
     )
 
+    ADDITION_LEFT = "🔄 Addition to LEFT"
+    ADDITION_RIGHT = "🔄 Addition to RIGHT"
+    ADDITION_POSITION_PROMPT = "📍 **Where do you want to add the text?**"
+
+    # 🔁 Rename Flow
     RENAME_THEMES_DOWNLOADING = [
         "✅ Download complete. Initiating rename magic...",
         "📦 File fetched! Ready to bless it with a new name...",
@@ -117,7 +114,6 @@ class EnglishTranslations:
         "🔧 Data acquired. Renaming engine revving up...",
         "💾 Saved and sealed. Now to rename with style...",
     ]
-
     RENAME_THEMES_UPLOADING = [
         "✅ All renamed and ready! Upload complete.",
         "🚀 File successfully rebranded and launched.",
@@ -125,7 +121,6 @@ class EnglishTranslations:
         "🌟 File rename finalized. Delivered to the cosmos!",
         "📁 Task complete. The file ascends renamed.",
     ]
-
     RENAME_THEMES_DOWNLOAD_CANCELLED = [
         "🛑 Download halted. The rename dream fades...",
         "🚫 You pulled the plug. Download aborted.",
@@ -133,7 +128,6 @@ class EnglishTranslations:
         "📴 Rename canceled during download. Mission scrubbed.",
         "👋 User opted out mid-download. Peace out, file.",
     ]
-
     RENAME_THEMES_UPLOAD_CANCELLED = [
         "🛑 Upload canceled. File stays local and unloved.",
         "🚫 Rebrand reversed. Upload terminated.",
@@ -148,10 +142,10 @@ class EnglishTranslations:
     RENAME_UPLOADING_DONE = random.choice(RENAME_THEMES_UPLOADING)
     RENAME_CANCEL_BY_USER = random.choice(RENAME_THEMES_DOWNLOAD_CANCELLED)
     RENAME_UPLOAD_CANCELLED_BY_USER = random.choice(RENAME_THEMES_UPLOAD_CANCELLED)
-    RENAME_ERRORED = "❗ Rename process encountered an error."
 
     UPLOADING_THE_FILE = "📤 Uploading the file: **{{ new_file_name }}**"
 
+    # 🚀 Task Tracker
     TRACK_MESSAGE_EXECUTION_START = (
         "🚀 **Execution Started for Rename Task**\n"
         "🆔 Task ID: `{{ uid }}`\n\n"
