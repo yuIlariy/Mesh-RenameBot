@@ -257,7 +257,7 @@ class EnglishTranslations:
         "`{{ infocmd }}` - 🧑‍💻 View bot info.\n"
         "`{{ profilecmd }}` - ☄️ Your usage stats.\n"
         "`{{ statscmd }}` - 👻 Global bot stats.\n"
-        "`{{leaderboard }}` - 👻 Users leaderboard.\n"
+        "`{{ leaderboard }}` - 👻 Users leaderboard.\n"
         "`{{ setlanguagecmd }}` - 🌐 Change the bot's language."
     )
 
