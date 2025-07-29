@@ -51,17 +51,21 @@ async def progress_for_pyrogram(
         # Dynamic speed icon (🚀 if fast, 🚨 if slow)
         speed_icon = "🚀" if speed >= 8 * 1024 * 1024 else "🚨"
 
-        tmp = f"""<b>
+        # Cube-style progress bar (20 segments)
+        total_blocks = 20
+        filled_blocks = math.floor((percentage / 100) * total_blocks)
+        empty_blocks = total_blocks - filled_blocks
+        cube_bar = "█" * filled_blocks + "░" * empty_blocks
+
+        tmp = f"""{ud_type}
+📊 [{cube_bar}]
+<b>
 ╭━━━━❰ᴘʀᴏɢʀᴇss ʙᴀʀ❱━➣
 
 ┃    🗂️ ᴄᴏᴍᴘʟᴇᴛᴇᴅ: {completed}
-
 ┃    📦 ᴛᴏᴛᴀʟ ꜱɪᴢᴇ: {total_size}
-
 ┃    🔋 ꜱᴛᴀᴛᴜꜱ: {percent_display}%
-
 ┃    {speed_icon} ꜱᴘᴇᴇᴅ: {speed_display}/s
-
 ┃    ⏰ ᴇᴛᴀ: {eta_display}
 
 ╰━━━━━━━━━━━━━━━━➣
@@ -70,16 +74,14 @@ async def progress_for_pyrogram(
         try:
             if not message.photo:
                 await message.edit_text(
-                    text="{}\n{}".format(ud_type, tmp),
+                    text=tmp,
                     reply_markup=markup
                 )
             else:
                 await message.edit_caption(
-                    caption="{}\n{}".format(ud_type, tmp),
+                    caption=tmp,
                     reply_markup=markup
                 )
             await asyncio.sleep(1)
         except:
             pass
-
-
