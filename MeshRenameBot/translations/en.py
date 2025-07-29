@@ -258,7 +258,7 @@ class EnglishTranslations:
         "`{{ profilecmd }}` - ☄️ Your usage stats.\n"
         "`{{ statuscmd }}` - 🗿 Bot Status.\n"
         "`{{ statscmd }}` - 👻 Global bot stats.\n"
-        "`{{ leaderboard }}` - 👻 Users leaderboard.\n"
+        "`{{ leaderboardcmd }}` - 👻 Users leaderboard.\n"
         "`{{ setlanguagecmd }}` - 🌐 Change the bot's language."
     )
 
