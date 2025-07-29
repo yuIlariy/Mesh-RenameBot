@@ -1,68 +1,61 @@
 from dataclasses import dataclass
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import random
 
 @dataclass
 class EnglishTranslations:
-    LANGUAGE_NAME = "English"
-    LANGUAGE_CODE = "en"
+    LANGUAGE_NAME: str = "English"
+    LANGUAGE_CODE: str = "en"
 
-    WRONG_VALUE_ERROR = "❌ Invalid value entered for {{ variable_name }} variable."
+    WRONG_VALUE_ERROR: str = "❌ Invalid value entered for {{ variable_name }} variable."
 
-    START_MSG = (
-    "Hello there! 👋\n"
-    "I’m **Auto Rename Bot**, your go-to assistant for effortlessly renaming files on Telegram.\n\n"
-    "✨ **Key Features:**\n"
-    "- Rename files with custom names and extensions.\n"
-    "- Fast, secure, and easy to use.\n"
-    "- Supports a wide range of file types.\n\n"
-    "Simply send me a file, and I’ll guide you through the renaming process!\n\n"
-    "Let’s get started! Use /mode to enable auto rename, **Rename without command**🚀\n\n"
-    "🚀 **Powered by** [NAm](https://t.me/xspes)"
+    START_MSG: str = (
+        "Hello there! 👋\n"
+        "I’m **Auto Rename Bot**, your go-to assistant for effortlessly renaming files on Telegram.\n\n"
+        "✨ **Key Features:**\n"
+        "- Rename files with custom names and extensions.\n"
+        "- Fast, secure, and easy to use.\n"
+        "- Supports a wide range of file types.\n\n"
+        "Simply send me a file, and I’ll guide you through the renaming process!\n\n"
+        "Let’s get started! Use /mode to enable auto rename, **Rename without command**🚀\n\n"
+        "🚀 **Powered by** [NAm](https://t.me/xspes)"
     )
 
-    CANCEL_MESSAGE = "⚠️ The rename has been **canceled**. Will be updated soon."
+    CANCEL_MESSAGE: str = "⚠️ The rename has been **canceled**. Will be updated soon."
 
-    RENAME_NO_FILTER_MATCH = (
+    RENAME_NO_FILTER_MATCH: str = (
         "🚫 **NO FILTER MATCHED - ABORTING RENAME**\n\n"
         "🔍 Using filters to rename as no name was specified.\n"
         "👻 Manage your filters using /filters."
     )
 
-    RENAME_FILTER_MATCH_USED = (
+    RENAME_FILTER_MATCH_USED: str = (
         "✅ Using filters to rename as no name was specified.\n"
         "👻 Manage your filters using /filters."
     )
 
-    RENAME_NOFLTR_NONAME = (
+    RENAME_NOFLTR_NONAME: str = (
         "✍️ Enter the new file name in format:\n"
         "```/rename my_new_filename.extension```\n"
         "or use `/filters` to set rename filters."
     )
 
-    RENAME_CANCEL = "❌ Cancel this rename."
+    RENAME_CANCEL: str = "❌ Cancel this rename."
+    RENAMING_FILE: str = "🔄 Renaming the file... Please wait."
+    DL_RENAMING_FILE: str = "📥 Downloading the file... Please wait."
+    RENAME_ERRORED_REPORT: str = "❗ The download encountered an error. Report this issue."
+    RENAME_CANCEL_BY_USER: str = "🚫 **Canceled by the user.**"
 
-    RENAMING_FILE = "🔄 Renaming the file... Please wait."
+    FLTR_ADD_LEFT_STR: str = "➕ Added Filter: `<code>{{ text_1 }}</code>` **to the LEFT**."
+    FLTR_ADD_RIGHT_STR: str = "➕ Addition Filter: `<code>{{ text_1 }}</code>` **to the RIGHT**."
+    FLTR_RM_STR: str = "❌ Remove Filter: `<code>{{ text_1 }}</code>`."
+    FLTR_REPLACE_STR: str = "🔄 Replace Filter: `<code>{{ text_1 }}</code>` → `<code>{{ text_2 }}</code>`."
 
-    DL_RENAMING_FILE = "📥 Downloading the file... Please wait."
+    CURRENT_FLTRS: str = "⚙️ **Your Current Filters:**"
+    ADD_FLTR: str = "➕ Add Filter"
+    RM_FLTR: str = "❌ Remove Filter"
 
-    RENAME_ERRORED_REPORT = "❗ The download encountered an error. Report this issue."
-
-    RENAME_CANCEL_BY_USER = "🚫 **Canceled by the user.**"
-
-    FLTR_ADD_LEFT_STR = "➕ Added Filter: `<code>{{ text_1 }}</code>` **to the LEFT**."
-    FLTR_ADD_RIGHT_STR = (
-        "➕ Addition Filter: `<code>{{ text_1 }}</code>` **to the RIGHT**."
-    )
-    FLTR_RM_STR = "❌ Remove Filter: `<code>{{ text_1 }}</code>`."
-    FLTR_REPLACE_STR = (
-        "🔄 Replace Filter: `<code>{{ text_1 }}</code>` → `<code>{{ text_2 }}</code>`."
-    )
-
-    CURRENT_FLTRS = "⚙️ **Your Current Filters:**"
-    ADD_FLTR = "➕ Add Filter"
-    RM_FLTR = "❌ Remove Filter"
-
-    FILTERS_INTRO = (
+    FILTERS_INTRO: str = (
         "🛠 **Filter Guide:**\n"
         "There are 3 types of filters:\n\n"
         "🔄 **Replace Filter:** Replace a given word with another.\n"
@@ -70,46 +63,53 @@ class EnglishTranslations:
         "❌ **Remove Filter:** Remove a word from the filename."
     )
 
-    ADD_REPLACE_FLTR = "➕ Add Replace Filter"
-    ADD_ADDITION_FLTR = "➕ Add Addition Filter"
-    ADD_REMOVE_FLTR = "➕ Add Remove Filter"
-    BACK = "🔙 Back"
+    ADD_REPLACE_FLTR: str = "➕ Add Replace Filter"
+    ADD_ADDITION_FLTR: str = "➕ Add Addition Filter"
+    ADD_REMOVE_FLTR: str = "➕ Add Remove Filter"
+    BACK: str = "🔙 Back"
 
-    REPALCE_FILTER_INIT_MSG = "✍️ Send the format: `<code>what_to_replace | replacement</code>` or `/ignore` to go back."
+    REPALCE_FILTER_INIT_MSG: str = (
+        "✍️ Send the format: `<code>what_to_replace | replacement</code>`"
+    )
+    REPALCE_FILTER_INIT_KBD: InlineKeyboardMarkup = InlineKeyboardMarkup(
+        [[InlineKeyboardButton("👻 Cancel", callback_data="cancel_filter")]]
+    )
 
-    NO_INPUT_FROM_USER = "⚠️ No input received from you."
-    INPUT_IGNORE = "✅ **Ignored**."
-    WRONG_INPUT_FORMAT = "❌ Invalid format. Check the provided format."
-    REPLACE_FILTER_SUCCESS = (
+    NO_INPUT_FROM_USER: str = "⚠️ No input received from you."
+    INPUT_IGNORE: str = "✅ **Ignored.**"
+    WRONG_INPUT_FORMAT: str = "❌ Invalid format. Check the provided format."
+    REPLACE_FILTER_SUCCESS: str = (
         "✅ **Replace filter added:**\n" "`'{{ text_1 }}'` → `'{{ text_2 }}'`"
     )
 
-    ADDITION_FILTER_INIT_MSG = (
+    ADDITION_FILTER_INIT_MSG: str = (
         "✍️ Enter the text to add within `<code>|</code>`\n"
-        "Example: `<code>| text to add |</code>`\n"
-        "or `/ignore` to go back."
+        "Example: `<code>| text to add |</code>`"
+    )
+    ADDITION_FILTER_INIT_KBD: InlineKeyboardMarkup = InlineKeyboardMarkup(
+        [[InlineKeyboardButton("👻 Cancel", callback_data="cancel_filter")]]
     )
 
-    ADDITION_FILTER_SUCCESS_LEFT = (
+    ADDITION_FILTER_SUCCESS_LEFT: str = (
         "✅ Added filter: `<code>{{ text_1 }}</code>` **to LEFT**."
     )
-    ADDITION_FILTER_SUCCESS_RIGHT = (
+    ADDITION_FILTER_SUCCESS_RIGHT: str = (
         "✅ Added filter: `<code>{{ text_1 }}</code>` **to RIGHT**."
     )
 
-    ADDITION_LEFT = "🔄 Addition to LEFT"
-    ADDITION_RIGHT = "🔄 Addition to RIGHT"
+    ADDITION_LEFT: str = "🔄 Addition to LEFT"
+    ADDITION_RIGHT: str = "🔄 Addition to RIGHT"
+    ADDITION_POSITION_PROMPT: str = "📍 **Where do you want to add the text?**"
 
-    ADDITION_POSITION_PROMPT = "📍 **Where do you want to add the text?**"
-
-    REMOVE_FILTER_INIT_MSG = (
-        "✍️ Enter the text you want to remove or `/ignore` to go back."
+    REMOVE_FILTER_INIT_MSG: str = "✍️ Enter the text you want to remove."
+    REMOVE_FILTER_INIT_KBD: InlineKeyboardMarkup = InlineKeyboardMarkup(
+        [[InlineKeyboardButton("👻 Cancel", callback_data="cancel_filter")]]
     )
 
-    REMOVE_FILTER_SUCCESS = (
+    REMOVE_FILTER_SUCCESS: str = (
         "✅ **Remove filter added:** `<code>{{ text_1 }}</code>` will be removed."
     )
-
+    
     RENAME_THEMES_DOWNLOADING = [
         "✅ Download complete. Initiating rename magic...",
         "📦 File fetched! Ready to bless it with a new name...",
