@@ -498,7 +498,7 @@ async def help_str(_: MeshRenameBot, msg: Message) -> None:
             infocmd=Commands.INFO,
             profilecmd=Commands.PROFILE,
             statscmd=Commands.STATS,
-            leaderboardcmd=Commands.LEADERBOARD, 
+            leaderboardcmd=Commands.LEADER_BOARD, 
             setlanguagecmd=Commands.SET_LANG,
         ),
         quote=True,
