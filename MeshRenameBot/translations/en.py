@@ -25,12 +25,12 @@ class EnglishTranslations:
     RENAME_NO_FILTER_MATCH = (
         "🚫 **NO FILTER MATCHED - ABORTING RENAME**\n\n"
         "🔍 Using filters to rename as no name was specified.\n"
-        "📌 Manage your filters using /filters."
+        "👻 Manage your filters using /filters."
     )
 
     RENAME_FILTER_MATCH_USED = (
         "✅ Using filters to rename as no name was specified.\n"
-        "📌 Manage your filters using /filters."
+        "👻 Manage your filters using /filters."
     )
 
     RENAME_NOFLTR_NONAME = (
@@ -169,7 +169,7 @@ class EnglishTranslations:
     )
 
     CAPTION_FOOT_NOTE = (
-        "📌 **NOTE:** You can set the caption using `/setcaption` followed by your desired text.\n"
+        "☄️ **NOTE:** You can set the caption using `/setcaption` followed by your desired text.\n"
         "📂 Use `<code>{file_name}</code>` to dynamically insert the renamed file name in the caption."
     )
 
@@ -184,13 +184,13 @@ class EnglishTranslations:
     RENAME_ADDED_TO_QUEUE = (
         "📥 **Rename Task Added to Queue**\n"
         "🆔 **DC ID:** {{ dc_id }}\n"
-        "📌 **Media ID:** {{ media_id }}"
+        "👻 **Media ID:** {{ media_id }}"
     )
 
     RENAME_QUEUE_STATUS = (
         "📊 **Rename Queue Status:**\n"
-        "📌 **Total Tasks in Queue:** {{ total_tasks }}\n"
-        "📌 **Queue Capacity:** {{ queue_capacity }}\n"
+        "☄️ **Total Tasks in Queue:** {{ total_tasks }}\n"
+        "⚡ **Queue Capacity:** {{ queue_capacity }}\n"
         "⏳ **Currently Processing:** {{ current_task }}"
     )
 
@@ -205,8 +205,8 @@ class EnglishTranslations:
         "{% endif %}"
     )
 
-    USER_KICKED = "🚷 **You have been removed from the chat. You cannot use this bot.**"
-    USER_NOT_PARTICIPANT = "⚠️ **Join the required chat to use this bot.**"
+    USER_KICKED = "👻 **You have been removed from the chat. You cannot use this bot.**"
+    USER_NOT_PARTICIPANT = "👻 **Join the required chat to use this bot.**"
     JOIN_CHANNEL = "🔗 Join Updates Channel"
 
     MODE_INITIAL_MSG = (
@@ -217,7 +217,7 @@ class EnglishTranslations:
         "{% if mode == udb.MODE_AS_DOCUMENT %} ✅{% endif %}\n"
         "3️⃣ **Upload as General Media.**"
         "{% if mode == udb.MODE_AS_GMEDIA %} ✅{% endif %}\n\n"
-        "📌 **Select the renaming mode:**\n"
+        "👻 **Select the renaming mode:**\n"
         "🅰️ **Rename with command.**"
         "{% if command_mode == udb.MODE_RENAME_WITH_COMMAND %} ✅{% endif %}\n"
         "🅱️ **Rename without command.**"
@@ -249,10 +249,15 @@ class EnglishTranslations:
         "    - 🎥 General Media (streamable video/audio).\n\n"
         "    🔄 Switch between renaming modes:\n"
         "    - 🏷 Rename **with command**.\n"
-        "    - ✨ Rename **without command**.\n\n"
+        "    - ✨ Rename **without command/auto Rename**.\n\n"
         "`{{ queuecmd }}` - 📊 View the bot's rename queue status.\n"
         "`{{ setcaptioncmd }}` - 📝 Set a caption for the renamed files.\n"
         "`{{ helpcmd }}` - 📖 Show this help message.\n"
+        "`{{ pingcmd }}` - 🎈Ping Bot.\n"
+        "`{{ infocmd }}` - 🧑‍💻 View bot info.\n"
+        "`{{ profilecmd }}` - ☄️ Your usage stats.\n"
+        "`{{ statscmd }}` - 👻 Global bot stats.\n"
+        "`{{leaderboard }}` - 👻 Users leaderboard.\n"
         "`{{ setlanguagecmd }}` - 🌐 Change the bot's language."
     )
 
