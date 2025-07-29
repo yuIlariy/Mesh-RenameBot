@@ -154,7 +154,7 @@ class RenameManeuver(DefaultManeuver):
                 file_name=dl_path,
                 progress=progress_for_pyrogram,
                 progress_args=(
-                    "Downloading the file",
+                    "📥Downloading the file",
                     progress,
                     time.time(),
                     get_var("SLEEP_SECS"),
