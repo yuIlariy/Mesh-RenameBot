@@ -57,7 +57,7 @@ async def progress_for_pyrogram(
         empty_blocks = total_blocks - filled_blocks
         cube_bar = "█" * filled_blocks + "░" * empty_blocks
 
-        tmp = f"""{ud_type}
+        tmp = f"""{ud_type}\n
 📊 [{cube_bar}]
 <b>
 ╭━━━━❰ᴘʀᴏɢʀᴇss ʙᴀʀ❱━➣
