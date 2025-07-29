@@ -6,7 +6,7 @@ import random
 import os
 from typing import Union
 from PIL import Image
-from pyrogram import StopTransmission
+from pyrogram import StopTransmission, Client, filters
 from pyrogram.types import Message
 from hachoir.parser import createParser
 from hachoir.metadata import extractMetadata
@@ -69,7 +69,7 @@ async def handle_set_thumb(client, msg: Message):
     else:
         await msg.reply_text(translator.get("THUMB_REPLY_TO_MEDIA"), quote=True)
 
-# 🎯 Get Thumbnail
+# ✅ PATCHED: Robust Get Thumbnail
 async def handle_get_thumb(client, msg: Message):
     user_id = msg.from_user.id
     user_locale = UserDB().get_var("locale", user_id)
@@ -80,12 +80,16 @@ async def handle_get_thumb(client, msg: Message):
 
     if not thumb_path or not os.path.exists(thumb_path):
         await msg.reply_text(translator.get("THUMB_NOT_FOUND"), quote=True)
-    else:
+        return
+
+    # Validation attempt before sending
+    try:
+        with Image.open(thumb_path) as img:
+            img.verify()
         await msg.reply_photo(thumb_path, quote=True)
-        try:
-            os.remove(thumb_path)
-        except Exception as e:
-            renamelog.warning(f"Failed to delete used thumbnail: {e}")
+    except Exception as e:
+        renamelog.error(f"[getthumb] Failed image verification/send: {e}")
+        await msg.reply_text("⚠️ Thumbnail is invalid or corrupted.", quote=True)
 
 # 🎬 Generate Screenshot
 async def gen_ss(filepath, ts, opfilepath=None):
@@ -165,5 +169,4 @@ async def handle_clr_thumb(client, msg: Message):
 
     udb.set_thumbnail(None, user_id)
     await msg.reply_text(translator.get("THUMB_CLEARED"), quote=True)
-
 
