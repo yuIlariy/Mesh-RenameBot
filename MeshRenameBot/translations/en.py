@@ -16,7 +16,8 @@ class EnglishTranslations:
     "- Fast, secure, and easy to use.\n"
     "- Supports a wide range of file types.\n\n"
     "Simply send me a file, and I’ll guide you through the renaming process!\n\n"
-    "Let’s get started! Use /mode to enable auto rename, **Rename without command**🚀\n\n"
+    "Let’s get started! Use /mode to enable auto rename, **Rename without command**🚀\n"
+    "Send /help to learn more.\n\n"
     "🚀 **Powered by** [NAm](https://t.me/xspes)"
     )
 
