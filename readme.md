@@ -70,7 +70,13 @@ cd Mesh-RenameBot
 ```
 
 ### 3️⃣ Install Python Packages
-- Run it in a virtual environment if you get error: externally-managed-environment
+###Create Virtual Environment (recommended)
+
+```bash
+python3 -m venv mesh
+source mesh/bin/activate
+```
+
 ```bash
 pip3 install -r requirements.txt
 ```
