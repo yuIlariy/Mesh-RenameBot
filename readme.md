@@ -31,7 +31,7 @@ This bot is aimed to be **the best rename bot around**! 🏆✨
 ## Test the bots
 [Check on Telegram](https://t.me/MeshRenameBot) 🚀By Yash
 
-[Test Bot V2](https://t.me/MeshRenameBot) 🚀By yuilariy
+[Beta Bot V2](https://t.me/MeshRenameBot) 🚀By yuilariy
 
 
 ---
@@ -167,6 +167,8 @@ Use these commands to interact with the bot:
 | `/stats` | 🗄️ **Get bot stats (Bot Owner Only) (total users, number of files renamed).** |
 | `/profile` | 🤩 **View Your Usage Stats (Total files renamed, files uploaded, downloaded).** |
 | `/leaderboard` | 👑 **(Owner Only) View Your Top users leaderboard(Position 🎖️ badges Total files renamed, files uploaded).** |
+| `/broadcast` | ☄️ **send broadcast to bot users.** |
+
 
 
 ### 🔄 Upload Modes:
