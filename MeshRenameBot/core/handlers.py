@@ -262,7 +262,7 @@ async def broadcast_handler(client: Client, msg: Message) -> None:
         except Exception:
             failed += 1
 
-    await msg.reply_text(f"✅ Done!\nSuccess: `{success}`\nFailed: `{failed}`", quote=True)
+    await msg.reply_text(f"✅ Broadcast Done!\nSuccess: `{success}`\nFailed: `{failed}`", quote=True)
 
 #close trial 🌋
 
