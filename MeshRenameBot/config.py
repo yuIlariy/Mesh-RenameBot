@@ -73,6 +73,7 @@ class Commands:
         "INFO": "/info",
         "PROFILE": "/profile",
         "STATS" : "/stats",
+        "BROADCAST" : "/broadcast",
         "LEADER_BOARD" : "/leaderboard",
         "SET_LANG": "/setlanguage",
     }
@@ -94,5 +95,6 @@ class Commands:
     INFO = COMMANDS.get("INFO", "/info")
     PROFILE = COMMANDS.get("PROFILE", "/profile")
     STATUS = COMMANDS.get("STATUS", "/status")
+    BROADCAST = COMMANDS.get("BROADCAST", "/broadcast")
     PING = COMMANDS.get("PING", "/ping")
     SET_LANG = COMMANDS.get("SET_LANG", "/setlanguage")
