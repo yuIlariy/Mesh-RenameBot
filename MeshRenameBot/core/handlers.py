@@ -35,6 +35,7 @@ from MeshRenameBot.utils.user_input import userin  # 🧠 Load your tracker clas
 from MeshRenameBot import config
 
 
+
 renamelog = logging.getLogger(__name__)
 
 
@@ -141,6 +142,9 @@ def add_handlers(client: MeshRenameBot) -> None:
     client.add_handler(
     MessageHandler(top_users_handler, filters.regex(r"^/leaderboard$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
     )
+    client.add_handler(
+    MessageHandler(broadcast_handler, filters.regex(r"^/broadcast$") & filters.user(Config.OWNER_ID[1]))
+    )
 
     
     signal.signal(signal.SIGINT, term_handler)
@@ -222,6 +226,43 @@ async def stats_handler(client: Client, msg: Message) -> None:
         caption=caption
     )
     
+
+
+#🌋 Broadcast Trial ☄️
+from pyrogram import Client, filters
+from pyrogram.types import Message
+from pyrogram.errors import FloodWait, FileReferenceExpired
+from MeshRenameBot.database.user_db import UserDB
+from MeshRenameBot.config import Config
+import asyncio
+
+@Client.on_message(filters.command("broadcast") & filters.user(Config.OWNER_ID[1]))
+async def broadcast_handler(client: Client, msg: Message) -> None:
+    if not msg.reply_to_message:
+        await msg.reply_text("⚠️ Reply to a message to broadcast it.", quote=True)
+        return
+
+    users = UserDB().get_all_users()
+    success = 0
+    failed = 0
+
+    await msg.reply_text(f"📡 Broadcasting to `{len(users)}` users...", quote=True)
+
+    for user_id in users:
+        try:
+            await msg.reply_to_message.copy(chat_id=user_id)
+            success += 1
+        except FloodWait as fw:
+            await asyncio.sleep(fw.value)
+            continue
+        except FileReferenceExpired:
+            failed += 1
+        except Exception:
+            failed += 1
+
+    await msg.reply_text(f"✅ Done!\nSuccess: `{success}`\nFailed: `{failed}`", quote=True)
+
+#close trial 🌋
 
 @Client.on_message(filters.regex(r"^/leaderboard$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
 async def top_users_handler(client: Client, msg: Message) -> None:
