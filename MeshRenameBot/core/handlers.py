@@ -235,11 +235,8 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyrogram.errors import FloodWait, FileReferenceExpired
 from MeshRenameBot.database.user_db import UserDB
-from MeshRenameBot.config import get_config_value, Config
+from MeshRenameBot.config import Config  # ✅ Only import Config
 import asyncio, re
-
-# ✅ Compatible config fix
-LOG_CHANNEL = int(get_config_value("LOG_CHANNEL", [int, -1001925329161]))
 
 @Client.on_message(filters.regex(r"^/broadcast$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
 async def broadcast_handler(client: Client, msg: Message) -> None:
@@ -254,11 +251,12 @@ async def broadcast_handler(client: Client, msg: Message) -> None:
     mention = f"[{msg.from_user.first_name}](tg://user?id={msg.from_user.id})"
     log_text = f"{mention} or `{msg.from_user.id}` ʜᴀꜱ ꜱᴛᴀʀᴛᴇᴅ ᴀ Bʀᴏᴀᴅᴄᴀꜱᴛ...🌌"
 
-    await client.send_message(LOG_CHANNEL, log_text)
+    # ✅ Use LOG_CHANNEL from Config
+    await client.send_message(Config.LOG_CHANNEL, log_text)
     try:
-        await msg.reply_to_message.copy(chat_id=LOG_CHANNEL)
+        await msg.reply_to_message.copy(chat_id=Config.LOG_CHANNEL)
     except Exception as e:
-        await client.send_message(LOG_CHANNEL, f"⚠️ Failed to log broadcast content: `{e}`")
+        await client.send_message(Config.LOG_CHANNEL, f"⚠️ Failed to log broadcast content: `{e}`")
 
     await msg.reply_text(f"📡 Broadcasting to `{len(users)}` users...", quote=True)
 
@@ -275,10 +273,9 @@ async def broadcast_handler(client: Client, msg: Message) -> None:
             failed += 1
 
     summary = f"📊 Broadcast finished by {mention}\n✅ Success: `{success}`\n❌ Failed: `{failed}`"
-    await client.send_message(LOG_CHANNEL, summary)
+    await client.send_message(Config.LOG_CHANNEL, summary)
 
     await msg.reply_text(f"✅ Broadcast Done!\nSuccess: `{success}`\nFailed: `{failed}`", quote=True)
-
 
 #close trial 🌋
 
