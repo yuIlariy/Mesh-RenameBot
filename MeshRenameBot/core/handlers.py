@@ -236,9 +236,11 @@ from pyrogram.types import Message
 from pyrogram.errors import FloodWait, FileReferenceExpired
 from MeshRenameBot.database.user_db import UserDB
 from MeshRenameBot.config import Config
-import asyncio
+import asyncio, re
 
-@Client.on_message(filters.command("broadcast") & filters.user(Config.OWNER_ID[1]))
+LOG_CHANNEL = Config.LOG_CHANNEL
+
+@Client.on_message(filters.regex(r"^/broadcast$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
 async def broadcast_handler(client: Client, msg: Message) -> None:
     if not msg.reply_to_message:
         await msg.reply_text("⚠️ Reply to a message to broadcast it.", quote=True)
@@ -247,6 +249,17 @@ async def broadcast_handler(client: Client, msg: Message) -> None:
     users = UserDB().get_all_users()
     success = 0
     failed = 0
+
+    # 🧠 Mention format
+    mention = f"[{msg.from_user.first_name}](tg://user?id={msg.from_user.id})"
+    log_text = f"{mention} or `{msg.from_user.id}` ʜᴀꜱ ꜱᴛᴀʀᴛᴇᴅ ᴀ Bʀᴏᴀᴅᴄᴀꜱᴛ..."
+
+    # 📦 Log the broadcast content
+    await client.send_message(LOG_CHANNEL, log_text)
+    try:
+        await msg.reply_to_message.copy(chat_id=LOG_CHANNEL)
+    except Exception as e:
+        await client.send_message(LOG_CHANNEL, f"⚠️ Failed to log broadcast content: `{e}`")
 
     await msg.reply_text(f"📡 Broadcasting to `{len(users)}` users...", quote=True)
 
@@ -261,6 +274,10 @@ async def broadcast_handler(client: Client, msg: Message) -> None:
             failed += 1
         except Exception:
             failed += 1
+
+    # 📊 Final summary to LOG_CHANNEL
+    summary = f"📊 Broadcast finished by {mention}\n✅ Success: `{success}`\n❌ Failed: `{failed}`"
+    await client.send_message(LOG_CHANNEL, summary)
 
     await msg.reply_text(f"✅ Broadcast Done!\nSuccess: `{success}`\nFailed: `{failed}`", quote=True)
 
