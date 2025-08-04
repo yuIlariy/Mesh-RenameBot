@@ -143,7 +143,9 @@ def add_handlers(client: MeshRenameBot) -> None:
     MessageHandler(top_users_handler, filters.regex(r"^/leaderboard$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
     )
     client.add_handler(
-    MessageHandler(broadcast_handler, filters.regex(r"^/broadcast$") & filters.user(Config.OWNER_ID[1]))
+    MessageHandler(
+        broadcast_handler,
+        filters.regex(r"^/broadcast$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
     )
 
     
