@@ -236,7 +236,6 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyrogram.errors import FloodWait, FileReferenceExpired
 from MeshRenameBot.database.user_db import UserDB
-from MeshRenameBot.config import get_var, Config
 import asyncio, re
 
 @Client.on_message(filters.regex(r"^/broadcast$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
