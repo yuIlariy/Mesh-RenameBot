@@ -179,7 +179,7 @@ Use these commands to interact with the bot:
 
 
 ## 🎖 Credits
-[Yash Dk](https://github.com/yash-dk) 🗿Developer
+[Yash Dk](https://github.com/yash-dk) 🗿Developer(Base repo)
 
 [Dan for Pyrogram](https://github.com/pyrogram/pyrogram)
 
