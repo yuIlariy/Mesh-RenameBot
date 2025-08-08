@@ -56,7 +56,7 @@ async def progress_for_pyrogram(
         block_bar = "█" * filled_blocks + "░" * empty_blocks
 
         tmp = f"""{ud_type}\n
- [{block_bar}]
+ {block_bar}
 <b>
 ╭━━━━❰ᴘʀᴏɢʀᴇss ʙᴀʀ❱━➣
 
