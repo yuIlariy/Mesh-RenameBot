@@ -24,15 +24,14 @@ async def progress_for_pyrogram(
     now = time.time()
     diff = now - start
 
-    # too early to update the progress
     if diff < 1:
         return
+
     eo = ExecutorManager()
     if uid in eo.canceled_uids:
         raise StopTransmission()
 
     if round(diff % time_out) == 0 or current == total:
-
         percentage = current * 100 / total
         elapsed_time = round(diff)
         speed = current / elapsed_time
@@ -48,17 +47,16 @@ async def progress_for_pyrogram(
         eta_display = estimated_total_time if estimated_total_time != '' else "0 seconds"
         percent_display = round(percentage, 2)
 
-        # Dynamic speed icon (🚀 if fast, 🚨 if slow)
         speed_icon = "🚀" if speed >= 8 * 1024 * 1024 else "🚨"
 
-        # Cube-style progress bar (20 segments)
+        # Classic block-style progress bar (20 segments)
         total_blocks = 20
         filled_blocks = math.floor((percentage / 100) * total_blocks)
         empty_blocks = total_blocks - filled_blocks
-        cube_bar = "█" * filled_blocks + "░" * empty_blocks
+        block_bar = "█" * filled_blocks + "░" * empty_blocks
 
         tmp = f"""{ud_type}\n
-📊 [{cube_bar}]
+ [{block_bar}]
 <b>
 ╭━━━━❰ᴘʀᴏɢʀᴇss ʙᴀʀ❱━➣
 
@@ -85,3 +83,4 @@ async def progress_for_pyrogram(
             await asyncio.sleep(1)
         except:
             pass
+
