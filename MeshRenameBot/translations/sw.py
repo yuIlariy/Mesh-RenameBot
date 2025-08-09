@@ -3,7 +3,7 @@ import random
 
 @dataclass
 class SwahiliTranslations:
-    LANGUAGE_NAME = "Kiswahili"
+    LANGUAGE_NAME = "🇰🇪 Kiswahili"
     LANGUAGE_CODE = "sw"
 
     WRONG_VALUE_ERROR = "❌ Thamani batili kwa muundo {{ variable_name }}."
