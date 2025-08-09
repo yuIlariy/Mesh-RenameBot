@@ -151,6 +151,7 @@ class ChineseTranslations:
     RENAME_UPLOAD_CANCELLED_BY_USER = random.choice(RENAME_THEMES_UPLOAD_CANCELLED)
     RENAME_ERRORED = "❗ 重命名过程中出错。"
 
+    DOWNLOADING_THE_FILE = "📥 正在下载文件"
     UPLOADING_THE_FILE = "📤 正在上传文件：**{{ new_file_name }}**"
 
     TRACK_MESSAGE_EXECUTION_START = (
