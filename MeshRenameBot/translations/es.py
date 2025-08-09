@@ -151,6 +151,7 @@ class SpanishTranslations:
     RENAME_UPLOAD_CANCELLED_BY_USER = random.choice(RENAME_THEMES_UPLOAD_CANCELLED)
     RENAME_ERRORED = "❗ El proceso de renombrado encontró un error."
 
+    DOWNLOADING_THE_FILE = "📥 Descargando el archivo"
     UPLOADING_THE_FILE = "📤 Subiendo el archivo: **{{ new_file_name }}**"
 
     TRACK_MESSAGE_EXECUTION_START = (
