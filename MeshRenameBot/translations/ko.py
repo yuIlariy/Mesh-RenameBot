@@ -151,6 +151,7 @@ class KoreanTranslations:
     RENAME_UPLOAD_CANCELLED_BY_USER = random.choice(RENAME_THEMES_UPLOAD_CANCELLED)
     RENAME_ERRORED = "❗ 이름 변경 과정에서 오류가 발생했습니다."
 
+    DOWNLOADING_THE_FILE = "📥 파일 다운로드 중"
     UPLOADING_THE_FILE = "📤 파일 업로드 중: **{{ new_file_name }}**"
 
     TRACK_MESSAGE_EXECUTION_START = (
