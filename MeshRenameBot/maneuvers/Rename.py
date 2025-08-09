@@ -36,14 +36,14 @@ class RenameManeuver(DefaultManeuver):
         self._fltr_obj = FilterUtils(cmd_message.from_user.id)
         self.user_msg = cmd_message
 
-    async def _get_thumbnail_path(self, user_id: int) -> Optional[str]:
-        """Get user-set thumbnail path with comprehensive error handling"""
+    async def _get_user_thumbnail(self, user_id: int) -> Optional[str]:
+        """Get user-set thumbnail path if it exists"""
         try:
-            user_thumb = UserDB().get_thumbnail(user_id)
-            if user_thumb and isinstance(user_thumb, str) and os.path.exists(user_thumb):
-                return user_thumb
+            thumb_path = UserDB().get_thumbnail(user_id)
+            if thumb_path and isinstance(thumb_path, str) and os.path.exists(thumb_path):
+                return thumb_path
         except Exception as e:
-            renamelog.error(f"Failed to get user thumbnail: {str(e)}", exc_info=True)
+            renamelog.error(f"Error getting user thumbnail: {str(e)}", exc_info=True)
         return None
 
     async def execute(self) -> None:
@@ -52,12 +52,14 @@ class RenameManeuver(DefaultManeuver):
         user_locale = UserDB().get_var("locale", user_id)
         translator = Translator(user_locale)
 
-        # Validate media message
         if self._media_message is None or not self._media_message.media:
             await self._cmd_message.reply_text(translator.get("REPLY_TO_MEDIA"), quote=True)
             return
 
         self._media_message.from_user = self._cmd_message.from_user
+
+        # Get user thumbnail FIRST - we'll use it for all files if it exists
+        thumb_path = await self._get_user_thumbnail(user_id)
 
         # Determine media type
         is_video = False
@@ -154,12 +156,6 @@ class RenameManeuver(DefaultManeuver):
             (mode_choice == udb.MODE_SAME_AS_SENT and self._media_message.document is not None)
         )
 
-        # Handle thumbnail - ALWAYS try to use user-set thumbnail first
-        thumb_path = await self._get_thumbnail_path(self._cmd_message.from_user.id)
-        if thumb_path and not os.path.exists(thumb_path):
-            renamelog.warning(f"Thumbnail path does not exist: {thumb_path}")
-            thumb_path = None
-
         await progress.edit_text(translator.get("RENAME_DOWNLOADING_DONE"), reply_markup=None)
 
         # Prepare caption
@@ -170,7 +166,7 @@ class RenameManeuver(DefaultManeuver):
             except Exception as e:
                 renamelog.warning(f"Error formatting caption: {str(e)}")
 
-        # Upload file
+        # Upload file with thumbnail (if user has set one)
         try:
             if is_audio and not is_force:
                 duration = getattr(self._media_message.audio, 'duration', 0)
@@ -291,9 +287,6 @@ async def rem_this(path: str) -> None:
             await aos.remove(path)
     except Exception as e:
         renamelog.warning(f"Error removing file {path}: {str(e)}")
-
-
-
 
 
 
