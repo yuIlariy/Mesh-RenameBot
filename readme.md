@@ -142,7 +142,7 @@ Modify the `config.py` file inside `MeshRenameBot` to **update settings & comman
 | `FORCEJOIN_ID` | **Chat ID for `FORCEJOIN`** |
 | `TRACE_CHANNEL` | **Tracking Channel ID** (set `0` to disable tracking) |
 | `SAVE_FILE_TO_TRACE_CHANNEL` | **Save user file to tracking channel** |
-| `DEFAULT_LOCALE` | **Default Lnaguage of Bot** (values can be en, es, ar, hi, ko, zh, ru) |
+| `DEFAULT_LOCALE` | **Default Lnaguage of Bot** (values can be en, es, ar, hi, ko, zh, ru, fr, pt) |
 
 ---
 
@@ -160,7 +160,7 @@ Use these commands to interact with the bot:
 | `/mode` | 🔄 **Change upload and/or rename mode** (Same Format, Document, General Media) |
 | `/queue` | 📊 **View rename queue status** |
 | `/setcaption` | 📝 **Set a caption for the renamed files** |
-| `/setlang` | 🌐 **Change the bot's language.** |
+| `/setlanguage` | 🌐 **Change the bot's language.** |
 | `/ping` | 🎈 **Ping the Bot** |
 | `/status` | 🫧 **get bot status (uptime, CPU usage** |
 | `/info` | 📝 **See bot info (maintainer, language, platform** |
