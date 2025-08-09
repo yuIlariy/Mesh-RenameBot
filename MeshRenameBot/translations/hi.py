@@ -3,7 +3,7 @@ import random
 
 @dataclass
 class HindiTranslations:
-    LANGUAGE_NAME = "हिन्दी"
+    LANGUAGE_NAME = "🇮🇳 हिन्दी"
     LANGUAGE_CODE = "hi"
 
     WRONG_VALUE_ERROR = "❌ {{ variable_name }} वेरिएबल के लिए अमान्य मान दर्ज किया गया।"
