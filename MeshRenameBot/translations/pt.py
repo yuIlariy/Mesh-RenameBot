@@ -3,7 +3,7 @@ import random
 
 @dataclass
 class PortugueseTranslations:
-    LANGUAGE_NAME = "Português"
+    LANGUAGE_NAME = "🇧🇷 Português"
     LANGUAGE_CODE = "pt"
 
     WRONG_VALUE_ERROR = "❌ Valor inválido para a variável {{ variable_name }}."
