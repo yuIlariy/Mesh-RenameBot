@@ -39,7 +39,6 @@ async def handle_set_thumb(client, msg: Message):
         await msg.reply_text(translator.get("THUMB_REPLY_TO_MEDIA"), quote=True)
         return
 
-    # Check for the old thumbnail path and remove the file if it exists
     old_thumb_path = UserDB().get_thumbnail(user_id)
     if old_thumb_path and os.path.exists(old_thumb_path):
         try:
@@ -49,36 +48,33 @@ async def handle_set_thumb(client, msg: Message):
     
     download_path = None
     try:
-        # Download the new thumbnail to a temporary path in the downloads directory
         download_path = await original_message.download(
             file_name=f"downloads/{user_id}_{random.randint(1000, 9999)}.jpg"
         )
         
-        # Adjust the image and save it
         adjusted_path = await adjust_image(download_path)
 
         if adjusted_path is None:
             await msg.reply_text(translator.get("THUMB_REPLY_TO_MEDIA"), quote=True)
             return
 
-        # Define the permanent path for the thumbnail
         user_data_dir = os.path.join("userdata", str(user_id))
         await aos.makedirs(user_data_dir, exist_ok=True)
         permanent_path = os.path.join(user_data_dir, "thumbnail.jpg")
 
-        # Copy the adjusted image to the permanent path
         await aos.copy(adjusted_path, permanent_path)
 
-        # Set the permanent path in the database
         UserDB().set_thumbnail(permanent_path, msg.from_user.id)
         
         await msg.reply_text(translator.get("THUMB_SET_SUCCESS"), quote=True)
 
     except Exception as e:
         renamelog.exception(f"Failed to set thumbnail: {e}")
-        await msg.reply_text(translator.get("ERROR_SETTING_THUMBNAIL"), quote=True)
+        # --- FIX START ---
+        # Fallback to a hardcoded error message if the translation key is missing
+        await msg.reply_text("Failed to set thumbnail. Please try again.", quote=True)
+        # --- FIX END ---
     finally:
-        # Clean up the temporary downloaded file
         if download_path and os.path.exists(download_path):
             try:
                 await aos.remove(download_path)
@@ -201,7 +197,6 @@ async def handle_clr_thumb(client, msg):
     
     udb.set_thumbnail(None, msg.from_user.id)
     await msg.reply_text(translator.get("THUMB_CLEARED"), quote=True)
-
 
 
 
