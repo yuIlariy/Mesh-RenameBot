@@ -3,7 +3,7 @@ import random
 
 @dataclass
 class ArabicTranslations:
-    LANGUAGE_NAME = "العربية"
+    LANGUAGE_NAME = "🇸🇦 العربية"
     LANGUAGE_CODE = "ar"
 
     WRONG_VALUE_ERROR = "❌ قيم غير صالحة تم إدخالها للمتغير {{ variable_name }}."
