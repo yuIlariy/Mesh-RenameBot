@@ -1,3 +1,4 @@
+# --- unchanged imports ---
 import asyncio
 import logging
 import time
@@ -58,8 +59,12 @@ class RenameManeuver(DefaultManeuver):
 
         self._media_message.from_user = self._cmd_message.from_user
 
-        # Get user thumbnail FIRST - we'll use it for all files if it exists
+        # Get user thumbnail FIRST
         thumb_path = await self._get_user_thumbnail(user_id)
+
+        # If original message has no thumbnail, we'll still use the user's thumbnail if available
+        # (For video/audio/document)
+        # Pyrogram accepts 'thumb=None' if none available, so no problem if thumb_path is None
 
         # Determine media type
         is_video = False
@@ -166,7 +171,7 @@ class RenameManeuver(DefaultManeuver):
             except Exception as e:
                 renamelog.warning(f"Error formatting caption: {str(e)}")
 
-        # Upload file with thumbnail (if user has set one)
+        # Upload file (always use user's thumbnail if no other)
         try:
             if is_audio and not is_force:
                 duration = getattr(self._media_message.audio, 'duration', 0)
@@ -187,7 +192,7 @@ class RenameManeuver(DefaultManeuver):
                     caption=caption,
                     duration=duration,
                     performer=performer,
-                    thumb=thumb_path,  # Will be None if no user thumbnail set
+                    thumb=thumb_path,
                     progress=progress_for_pyrogram,
                     progress_args=(
                         translator.get("UPLOADING_THE_FILE", file_name=new_file_name),
@@ -224,7 +229,7 @@ class RenameManeuver(DefaultManeuver):
                     duration=duration,
                     width=width,
                     height=height,
-                    thumb=thumb_path,  # Will be None if no user thumbnail set
+                    thumb=thumb_path,
                     progress=progress_for_pyrogram,
                     progress_args=(
                         translator.get("UPLOADING_THE_FILE", file_name=new_file_name),
@@ -243,7 +248,7 @@ class RenameManeuver(DefaultManeuver):
                     dl_path,
                     file_name=new_file_name,
                     caption=caption,
-                    thumb=thumb_path,  # Will be None if no user thumbnail set
+                    thumb=thumb_path,
                     force_document=is_force,
                     progress=progress_for_pyrogram,
                     progress_args=(
@@ -273,9 +278,7 @@ class RenameManeuver(DefaultManeuver):
             renamelog.error(f"Upload error: {str(e)}", exc_info=True)
             await progress.edit_text(translator.get("RENAME_ERRORED"))
         finally:
-            # Cleanup files
-            if thumb_path and os.path.exists(thumb_path):
-                await rem_this(thumb_path)
+            # Cleanup only the downloaded file, not the saved user thumbnail
             if dl_path and os.path.exists(dl_path):
                 await rem_this(dl_path)
 
@@ -287,6 +290,8 @@ async def rem_this(path: str) -> None:
             await aos.remove(path)
     except Exception as e:
         renamelog.warning(f"Error removing file {path}: {str(e)}")
+
+
 
 
 
