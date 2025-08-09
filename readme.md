@@ -24,7 +24,7 @@ This bot is aimed to be **the best rename bot around**! 🏆✨
 ✅ **Force Join** (Require users to join a specific channel before use)  
 ✅ **Multi-language Support** 🌎  
 ✅ **Admin Controls** to manage bot users  
-✅ **10 Different** languages supported (en, es, ar, hi, ko, zh, ru, fr, pt, sw) 
+✅ **10 Different** languages supported (en🇬🇧, es🇪🇸, ar🇸🇦, hi🇮🇳, ko🇰🇷, zh🇨🇳, ru🇷🇺, fr🇫🇷, pt🇧🇷, sw🇰🇪 🇹🇿) 
 
 ---
 
