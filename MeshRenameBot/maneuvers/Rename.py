@@ -154,7 +154,7 @@ class RenameManeuver(DefaultManeuver):
                 file_name=dl_path,
                 progress=progress_for_pyrogram,
                 progress_args=(
-                    translator.get("DOWNLOADING_THE_FILE),
+                    translator.get("DOWNLOADING_THE_FILE"),
                     progress,
                     time.time(),
                     get_var("SLEEP_SECS"),
