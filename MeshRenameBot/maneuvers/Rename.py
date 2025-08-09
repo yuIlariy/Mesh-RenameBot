@@ -36,31 +36,13 @@ class RenameManeuver(DefaultManeuver):
         self.user_msg = cmd_message
 
     async def _get_thumbnail_path(self, dl_path: str, user_id: int, is_force: bool) -> str:
-        """Handle thumbnail generation with proper fallbacks"""
+        """Get thumbnail path with proper error handling"""
         try:
-            # First try to get user-set thumbnail from database
-            user_thumb = UserDB().get_thumbnail(user_id)
-            if user_thumb and os.path.exists(user_thumb):
-                return user_thumb
-            
-            # Then try to get original media thumbnail
-            if self._media_message.video and self._media_message.video.thumbs:
-                thumb_path = await self._client.download_media(self._media_message.video.thumbs[0].file_id)
-                if thumb_path and os.path.exists(thumb_path):
-                    return thumb_path
-            elif self._media_message.document and self._media_message.document.thumbs:
-                thumb_path = await self._client.download_media(self._media_message.document.thumbs[0].file_id)
-                if thumb_path and os.path.exists(thumb_path):
-                    return thumb_path
-            
-            # Finally generate new thumbnail if needed
-            if not is_force:
-                thumb_path = await get_thumbnail(dl_path, user_id, is_force)
-                if thumb_path and os.path.exists(thumb_path):
-                    return thumb_path
-                    
+            thumb_path = await get_thumbnail(dl_path, user_id, is_force)
+            if thumb_path and os.path.exists(thumb_path):
+                return thumb_path
         except Exception as e:
-            renamelog.error(f"Thumbnail generation failed: {e}")
+            renamelog.error(f"Failed to get thumbnail: {e}")
         return None
 
     async def execute(self) -> None:
@@ -382,7 +364,6 @@ async def rem_this(path):
     except Exception as e:
         print(f"Error removing {path}: {e}")
         renamelog.exception(f"Error removing file {path}")
-
 
 
 
