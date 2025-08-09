@@ -36,22 +36,14 @@ class RenameManeuver(DefaultManeuver):
         self._fltr_obj = FilterUtils(cmd_message.from_user.id)
         self.user_msg = cmd_message
 
-    async def _get_thumbnail_path(self, dl_path: str, user_id: int, is_force: bool) -> Optional[str]:
-        """Get thumbnail path with comprehensive error handling"""
+    async def _get_thumbnail_path(self, user_id: int) -> Optional[str]:
+        """Get user-set thumbnail path with comprehensive error handling"""
         try:
-            # First try to get user-set thumbnail from database
             user_thumb = UserDB().get_thumbnail(user_id)
             if user_thumb and isinstance(user_thumb, str) and os.path.exists(user_thumb):
                 return user_thumb
-            
-            # For non-force mode, try to generate thumbnail
-            if not is_force:
-                thumb_path = await get_thumbnail(dl_path, user_id, is_force)
-                if thumb_path and isinstance(thumb_path, str) and os.path.exists(thumb_path):
-                    return thumb_path
-                    
         except Exception as e:
-            renamelog.error(f"Thumbnail generation failed: {str(e)}", exc_info=True)
+            renamelog.error(f"Failed to get user thumbnail: {str(e)}", exc_info=True)
         return None
 
     async def execute(self) -> None:
@@ -162,15 +154,11 @@ class RenameManeuver(DefaultManeuver):
             (mode_choice == udb.MODE_SAME_AS_SENT and self._media_message.document is not None)
         )
 
-        # Handle thumbnail
-        thumb_path = None
-        try:
-            thumb_path = await self._get_thumbnail_path(dl_path, self._cmd_message.from_user.id, is_force)
-            if thumb_path and not os.path.exists(thumb_path):
-                renamelog.warning(f"Thumbnail path does not exist: {thumb_path}")
-                thumb_path = None
-        except Exception as e:
-            renamelog.error(f"Thumbnail error: {str(e)}", exc_info=True)
+        # Handle thumbnail - ALWAYS try to use user-set thumbnail first
+        thumb_path = await self._get_thumbnail_path(self._cmd_message.from_user.id)
+        if thumb_path and not os.path.exists(thumb_path):
+            renamelog.warning(f"Thumbnail path does not exist: {thumb_path}")
+            thumb_path = None
 
         await progress.edit_text(translator.get("RENAME_DOWNLOADING_DONE"), reply_markup=None)
 
@@ -203,7 +191,7 @@ class RenameManeuver(DefaultManeuver):
                     caption=caption,
                     duration=duration,
                     performer=performer,
-                    thumb=thumb_path,
+                    thumb=thumb_path,  # Will be None if no user thumbnail set
                     progress=progress_for_pyrogram,
                     progress_args=(
                         translator.get("UPLOADING_THE_FILE", file_name=new_file_name),
@@ -240,7 +228,7 @@ class RenameManeuver(DefaultManeuver):
                     duration=duration,
                     width=width,
                     height=height,
-                    thumb=thumb_path,
+                    thumb=thumb_path,  # Will be None if no user thumbnail set
                     progress=progress_for_pyrogram,
                     progress_args=(
                         translator.get("UPLOADING_THE_FILE", file_name=new_file_name),
@@ -259,7 +247,7 @@ class RenameManeuver(DefaultManeuver):
                     dl_path,
                     file_name=new_file_name,
                     caption=caption,
-                    thumb=thumb_path,
+                    thumb=thumb_path,  # Will be None if no user thumbnail set
                     force_document=is_force,
                     progress=progress_for_pyrogram,
                     progress_args=(
@@ -303,6 +291,7 @@ async def rem_this(path: str) -> None:
             await aos.remove(path)
     except Exception as e:
         renamelog.warning(f"Error removing file {path}: {str(e)}")
+
 
 
 
