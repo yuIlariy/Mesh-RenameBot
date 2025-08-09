@@ -1,6 +1,7 @@
 from typing import Union, Optional
 from pyrogram.types.user_and_chats.user import User
 from aiofiles import os as aos
+import aiofiles
 from PIL import Image
 import os
 import asyncio
@@ -27,6 +28,18 @@ async def adjust_image(path: str) -> Optional[str]:
     except Exception as e:
         renamelog.error(f"Error adjusting image: {e}")
         return None
+
+# --- FIX START: New asynchronous copy function ---
+async def async_copy_file(src: str, dest: str):
+    """Asynchronously copies a file from source to destination."""
+    async with aiofiles.open(src, mode='rb') as infile:
+        async with aiofiles.open(dest, mode='wb') as outfile:
+            while True:
+                chunk = await infile.read(65536)  # Read in 64KB chunks
+                if not chunk:
+                    break
+                await outfile.write(chunk)
+# --- FIX END ---
 
 
 async def handle_set_thumb(client, msg: Message):
@@ -55,14 +68,16 @@ async def handle_set_thumb(client, msg: Message):
         adjusted_path = await adjust_image(download_path)
 
         if adjusted_path is None:
-            await msg.reply_text(translator.get("THUMB_REPLY_TO_MEDIA"), quote=True)
+            await msg.reply_text("Could not adjust the image.", quote=True) # Fallback message
             return
 
         user_data_dir = os.path.join("userdata", str(user_id))
         await aos.makedirs(user_data_dir, exist_ok=True)
         permanent_path = os.path.join(user_data_dir, "thumbnail.jpg")
 
-        await aos.copy(adjusted_path, permanent_path)
+        # --- FIX START: Use the new async_copy_file function ---
+        await async_copy_file(adjusted_path, permanent_path)
+        # --- FIX END ---
 
         UserDB().set_thumbnail(permanent_path, msg.from_user.id)
         
@@ -70,10 +85,7 @@ async def handle_set_thumb(client, msg: Message):
 
     except Exception as e:
         renamelog.exception(f"Failed to set thumbnail: {e}")
-        # --- FIX START ---
-        # Fallback to a hardcoded error message if the translation key is missing
         await msg.reply_text("Failed to set thumbnail. Please try again.", quote=True)
-        # --- FIX END ---
     finally:
         if download_path and os.path.exists(download_path):
             try:
