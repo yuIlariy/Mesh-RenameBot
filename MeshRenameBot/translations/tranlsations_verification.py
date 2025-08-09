@@ -5,6 +5,7 @@ from hi import HindiTranslations
 from ko import KoreanTranslations
 from ru import RussianTranslations
 from zh import ChineseTranslations
+from fr import FrenchTranslations
 
 for directive in dir(EnglishTranslations):
     if directive.startswith("__"):
@@ -16,6 +17,7 @@ for directive in dir(EnglishTranslations):
         KoreanTranslations,
         RussianTranslations,
         SpanishTranslations,
+        FrenchTranslations,
     ]:
         if not hasattr(translation, directive):
             print(f"Missing {directive} in {translation.__name__}")
