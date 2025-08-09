@@ -40,19 +40,25 @@ class RenameManeuver(DefaultManeuver):
         try:
             # First try to get user-set thumbnail from database
             user_thumb = UserDB().get_thumbnail(user_id)
-            if user_thumb and user_thumb is not False:
+            if user_thumb and os.path.exists(user_thumb):
                 return user_thumb
             
             # Then try to get original media thumbnail
             if self._media_message.video and self._media_message.video.thumbs:
-                return await self._client.download_media(self._media_message.video.thumbs[0].file_id)
+                thumb_path = await self._client.download_media(self._media_message.video.thumbs[0].file_id)
+                if thumb_path and os.path.exists(thumb_path):
+                    return thumb_path
             elif self._media_message.document and self._media_message.document.thumbs:
-                return await self._client.download_media(self._media_message.document.thumbs[0].file_id)
+                thumb_path = await self._client.download_media(self._media_message.document.thumbs[0].file_id)
+                if thumb_path and os.path.exists(thumb_path):
+                    return thumb_path
             
             # Finally generate new thumbnail if needed
             if not is_force:
-                return await get_thumbnail(dl_path, user_id, is_force)
-            
+                thumb_path = await get_thumbnail(dl_path, user_id, is_force)
+                if thumb_path and os.path.exists(thumb_path):
+                    return thumb_path
+                    
         except Exception as e:
             renamelog.error(f"Thumbnail generation failed: {e}")
         return None
@@ -213,6 +219,8 @@ class RenameManeuver(DefaultManeuver):
 
         try:
             thumb_path = await self._get_thumbnail_path(dl_path, self._cmd_message.from_user.id, is_force)
+            if thumb_path and not os.path.exists(thumb_path):
+                thumb_path = None
         except Exception as e:
             renamelog.exception("Thumb error")
             thumb_path = None
@@ -275,11 +283,16 @@ class RenameManeuver(DefaultManeuver):
 
             elif is_video and not is_force:
                 try:
-                    metadata = extractMetadata(createParser(thumb_path))
-                    if metadata.has("width"):
-                        width = metadata.get("width")
-                    if metadata.has("height"):
-                        height = metadata.get("height")
+                    width = height = 0
+                    if thumb_path:
+                        try:
+                            metadata = extractMetadata(createParser(thumb_path))
+                            if metadata.has("width"):
+                                width = metadata.get("width")
+                            if metadata.has("height"):
+                                height = metadata.get("height")
+                        except:
+                            pass
 
                     metadata = extractMetadata(createParser(dl_path))
                     if self._media_message.video is not None:
@@ -356,14 +369,15 @@ class RenameManeuver(DefaultManeuver):
             await progress.edit_text(translator.get("RENAME_ERRORED"))
             return
 
-        if thumb_path is not None:
+        if thumb_path is not None and os.path.exists(thumb_path):
             await rem_this(thumb_path)
-        await rem_this(dl_path)
+        if dl_path is not None and os.path.exists(dl_path):
+            await rem_this(dl_path)
 
 
 async def rem_this(path):
     try:
-        if path and await aos.path.exists(path):
+        if path and os.path.exists(path):
             await aos.remove(path)
     except Exception as e:
         print(f"Error removing {path}: {e}")
