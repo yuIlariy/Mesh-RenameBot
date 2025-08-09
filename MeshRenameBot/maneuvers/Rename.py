@@ -1,4 +1,3 @@
-# --- unchanged imports ---
 import asyncio
 import logging
 import time
@@ -12,68 +11,66 @@ from hachoir.parser import createParser
 from pyrogram import Client, StopTransmission
 from pyrogram.file_id import FileId
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
-from pyrogram.types.messages_and_media.message_entity import MessageEntity
+from pyrogram.types.messagesandmedia.message_entity import MessageEntity
 from MeshRenameBot.utils.user_input import userin
 
-from ..core.get_config import get_var
-from ..core.thumb_manage import get_thumbnail
+from ..core.getconfig import getvar
+from ..core.thumbmanage import getthumbnail
 from ..database.user_db import UserDB
 from ..maneuvers.ExecutorManager import ExecutorManager
 from ..mesh_bot import MeshRenameBot
 from ..translations import Translator
 from ..utils.c_filter import FilterUtils
-from ..utils.progress_for_pyro import progress_for_pyrogram
+from ..utils.progressforpyro import progressforpyrogram
 from .Default import DefaultManeuver
 
-renamelog = logging.getLogger(__name__)
+renamelog = logging.getLogger(name)
 
 
 class RenameManeuver(DefaultManeuver):
-    def __init__(
-        self, client: MeshRenameBot, media_message: Message, cmd_message: Message
+    def init(
+        self, client: MeshRenameBot, mediamessage: Message, cmdmessage: Message
     ) -> None:
-        super().__init__(client, media_message, cmd_message)
-        self._unique_id = int(str(cmd_message.chat.id) + str(cmd_message.id))
-        self._fltr_obj = FilterUtils(cmd_message.from_user.id)
-        self.user_msg = cmd_message
+        super().init(client, mediamessage, cmdmessage)
+        self.uniqueid = int(str(cmdmessage.chat.id) + str(cmdmessage.id))
+        self.fltrobj = FilterUtils(cmdmessage.fromuser.id)
+        self.usermsg = cmdmessage
 
-    async def _get_user_thumbnail(self, user_id: int) -> Optional[str]:
+    async def getuserthumbnail(self, userid: int) -> Optional[str]:
         """Get user-set thumbnail path if it exists"""
         try:
-            thumb_path = UserDB().get_thumbnail(user_id)
-            if thumb_path and isinstance(thumb_path, str) and os.path.exists(thumb_path):
-                return thumb_path
+            thumbpath = UserDB().getthumbnail(userid)
+            if thumbpath and isinstance(thumbpath, str) and os.path.exists(thumbpath):
+                return thumbpath
         except Exception as e:
             renamelog.error(f"Error getting user thumbnail: {str(e)}", exc_info=True)
         return None
 
     async def execute(self) -> None:
-        self._execute_pending = False
-        user_id = self._cmd_message.from_user.id
-        user_locale = UserDB().get_var("locale", user_id)
-        translator = Translator(user_locale)
+        self.executepending = False
+        userid = self.cmdmessage.fromuser.id
+        userlocale = UserDB().getvar("locale", userid)
+        translator = Translator(userlocale)
 
-        if self._media_message is None or not self._media_message.media:
-            await self._cmd_message.reply_text(translator.get("REPLY_TO_MEDIA"), quote=True)
+        if self.mediamessage is None or not self.mediamessage.media:
+            await self.cmdmessage.reply_text(translator.get("REPLYTO_MEDIA"), quote=True)
             return
 
-        self._media_message.from_user = self._cmd_message.from_user
+        self.mediamessage.from_user = self.cmdmessage.from_user
 
         # Get user thumbnail FIRST
-        thumb_path = await self._get_user_thumbnail(user_id)
+        thumb_path = await self.getuserthumbnail(userid)
 
-        # If original message has no thumbnail, we'll still use the user's thumbnail if available
-        # (For video/audio/document)
         # Pyrogram accepts 'thumb=None' if none available, so no problem if thumb_path is None
 
         # Determine media type
         is_video = False
         is_audio = False
         try:
-            mime = getattr(self._media_message.document, 'mime_type', '').split("/")[0]
-            if self._media_message.video is not None:
+            mime = getattr(self.mediamessage.document, 'mime_type', '').split("/")[0]
+            if self.mediamessage.video is not None:
                 is_video = True
-            elif (self._media_message.audio is not None or self._media_message.voice is not None):
+            elif (self.mediamessage.audio is not None or self.mediamessage.voice is not None):
                 is_audio = True
             elif mime == "video":
                 is_video = True
@@ -84,97 +81,97 @@ class RenameManeuver(DefaultManeuver):
 
         # Get new file name
         try:
-            new_file_name = self._cmd_message.text.split(" ", 1)[1]
+            new_filename = self.cmdmessage.text.split(" ", 1)[1]
         except Exception as e:
-            if not self._fltr_obj.has_filters():
-                await self._cmd_message.reply_text(translator.get("RENAME_NOFLTR_NONAME"))
+            if not self.fltrobj.has_filters():
+                await self.cmdmessage.reply_text(translator.get("RENAMENOFLTR_NONAME"))
                 return
 
-            original_file_name = (
-                getattr(self._media_message.document, 'file_name', None) or
-                getattr(self._media_message.video, 'file_name', None) or
-                getattr(self._media_message.audio, 'file_name', None) or
+            original_filename = (
+                getattr(self.mediamessage.document, 'file_name', None) or
+                getattr(self.mediamessage.video, 'file_name', None) or
+                getattr(self.mediamessage.audio, 'file_name', None) or
                 "no_name"
             )
-            new_file_name = await self._fltr_obj.filtered_name(original_file_name)
-            if original_file_name == new_file_name:
-                await self._cmd_message.reply_text(translator.get("RENAME_NO_FILTER_MATCH"))
+            new_filename = await self.fltrobj.filteredname(original_filename)
+            if original_filename == new_filename:
+                await self.cmdmessage.reply_text(translator.get("RENAMENOFILTERMATCH"))
                 return
-            await self._cmd_message.reply_text(
-                translator.get("RENAME_FILTER_MATCH_USED") + f"\nFile name:- {new_file_name}"
+            await self.cmdmessage.reply_text(
+                translator.get("RENAMEFILTERMATCHUSED") + f"\nFile name:- {new_filename}"
             )
 
         # Setup progress tracking
         markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton(translator.get("RENAME_CANCEL"), f"cancel {self._unique_id}")]
+            [InlineKeyboardButton(translator.get("RENAMECANCEL"), f"cancel {self.uniqueid}")]
         ])
 
-        if get_var("SAVE_FILE_TO_TRACE_CHANNEL"):
-            await self._client.forward_messages(
-                get_var("TRACE_CHANNEL"),
-                self._media_message.chat.id,
-                self._media_message.id
+        if getvar("SAVEFILETOTRACE_CHANNEL"):
+            await self.client.forward_messages(
+                getvar("TRACECHANNEL"),
+                self.mediamessage.chat.id,
+                self.mediamessage.id
             )
 
-        await self._client.send_track(translator.get(
-            "TRACK_MESSAGE_EXECUTION_START",
-            uid=self._unique_id,
-            username=self._cmd_message.from_user.username,
-            name=self._cmd_message.from_user.mention(style="md"),
-            user_id=self._cmd_message.from_user.id,
-            file_name=new_file_name,
+        await self.client.send_track(translator.get(
+            "TRACKMESSAGEEXECUTION_START",
+            uid=self.uniqueid,
+            username=self.cmdmessage.from_user.username,
+            name=self.cmdmessage.from_user.mention(style="md"),
+            userid=self.cmdmessage.from_user.id,
+            filename=new_filename,
         ))
 
         # Download file
         try:
-            progress = await self._media_message.reply(
-                translator.get("DL_RENAMING_FILE"), quote=True, reply_markup=markup
+            progress = await self.mediamessage.reply(
+                translator.get("DLRENAMINGFILE"), quote=True, reply_markup=markup
             )
             dl_path = os.path.join("downloads/{}/".format(str(time.time()).replace(".", "")))
             await aos.makedirs(dl_path, exist_ok=True)
-            dl_path = await self._media_message.download(
+            dl_path = await self.mediamessage.download(
                 file_name=dl_path,
-                progress=progress_for_pyrogram,
+                progress=progressforpyrogram,
                 progress_args=(
-                    translator.get("DOWNLOADING_THE_FILE"),
+                    translator.get("DOWNLOADINGTHEFILE"),
                     progress,
                     time.time(),
-                    get_var("SLEEP_SECS"),
-                    self._client,
-                    self._unique_id,
+                    getvar("SLEEPSECS"),
+                    self.client,
+                    self.uniqueid,
                     markup,
                 ),
             )
             if dl_path is None:
-                await progress.edit_text(translator.get("RENAME_CANCEL_BY_USER"))
+                await progress.edit_text(translator.get("RENAMECANCELBYUSER"))
                 return
         except Exception as e:
             renamelog.error(f"Download error: {str(e)}", exc_info=True)
-            await progress.edit_text(translator.get("RENAME_ERRORED"))
+            await progress.edit_text(translator.get("RENAMEERRORED"))
             return
 
         # Get upload mode
         udb = UserDB()
-        mode_choice = udb.get_mode(self._media_message.from_user.id)
+        mode_choice = udb.get_mode(self.mediamessage.from_user.id)
         is_force = (
-            mode_choice == udb.MODE_AS_DOCUMENT or
-            (mode_choice == udb.MODE_SAME_AS_SENT and self._media_message.document is not None)
+            mode_choice == udb.MODEAS_DOCUMENT or
+            (mode_choice == udb.MODESAMEASSENT and self.mediamessage.document is not None)
         )
 
-        await progress.edit_text(translator.get("RENAME_DOWNLOADING_DONE"), reply_markup=None)
+        await progress.edit_text(translator.get("RENAMEDOWNLOADINGDONE"), reply_markup=None)
 
         # Prepare caption
-        caption = udb.get_var("caption", self._cmd_message.from_user.id)
+        caption = udb.getvar("caption", self.cmdmessage.from_user.id)
         if caption and isinstance(caption, str):
             try:
-                caption = caption.format(file_name=new_file_name)
+                caption = caption.format(filename=new_filename)
             except Exception as e:
                 renamelog.warning(f"Error formatting caption: {str(e)}")
 
         # Upload file (always use user's thumbnail if no other)
         try:
             if is_audio and not is_force:
-                duration = getattr(self._media_message.audio, 'duration', 0)
+                duration = getattr(self.mediamessage.audio, 'duration', 0)
                 performer = ""
                 try:
                     metadata = extractMetadata(createParser(dl_path))
@@ -185,35 +182,41 @@ class RenameManeuver(DefaultManeuver):
                 except Exception as e:
                     renamelog.warning(f"Metadata extraction error: {str(e)}")
 
-                rmsg = await self._client.send_audio(
-                    self._cmd_message.chat.id,
-                    dl_path,
-                    file_name=new_file_name,
+                rmsg = await self.client.send_audio(
+                    chat_id=self.cmdmessage.chat.id,
+                    audio=dl_path,
+                    file_name=new_filename,
                     caption=caption,
                     duration=duration,
                     performer=performer,
-                    thumb=thumb_path,
-                    progress=progress_for_pyrogram,
+                    thumb=thumb_path, # Passed the user thumbnail here
+                    progress=progressforpyrogram,
                     progress_args=(
-                        translator.get("UPLOADING_THE_FILE", file_name=new_file_name),
+                        translator.get("UPLOADINGTHEFILE", filename=new_filename),
                         progress,
                         time.time(),
-                        get_var("SLEEP_SECS"),
-                        self._client,
-                        self._unique_id,
+                        getvar("SLEEPSECS"),
+                        self.client,
+                        self.uniqueid,
                         markup,
                     ),
                 )
 
             elif is_video and not is_force:
                 width = height = 0
-                duration = getattr(self._media_message.video, 'duration', 0)
+                duration = getattr(self.mediamessage.video, 'duration', 0)
                 try:
-                    if thumb_path:
-                        thumb_meta = extractMetadata(createParser(thumb_path))
-                        if thumb_meta:
-                            width = thumb_meta.get("width", 0)
-                            height = thumb_meta.get("height", 0)
+                    if self.mediamessage.video and self.mediamessage.video.thumbs:
+                        # Use the video's original thumbnail dimensions if available
+                        width = self.mediamessage.video.thumbs[0].width
+                        height = self.mediamessage.video.thumbs[0].height
+                    elif thumb_path:
+                        # If a user thumbnail exists, use its dimensions
+                        thumbmeta = extractMetadata(createParser(thumb_path))
+                        if thumbmeta:
+                            width = thumbmeta.get("width", 0)
+                            height = thumbmeta.get("height", 0)
+                    
                     if duration == 0:
                         metadata = extractMetadata(createParser(dl_path))
                         if metadata and metadata.has("duration"):
@@ -221,62 +224,62 @@ class RenameManeuver(DefaultManeuver):
                 except Exception as e:
                     renamelog.warning(f"Video metadata error: {str(e)}")
 
-                rmsg = await self._client.send_video(
-                    self._cmd_message.chat.id,
-                    dl_path,
-                    file_name=new_file_name,
+                rmsg = await self.client.send_video(
+                    chat_id=self.cmdmessage.chat.id,
+                    video=dl_path,
+                    file_name=new_filename,
                     caption=caption,
                     duration=duration,
                     width=width,
                     height=height,
-                    thumb=thumb_path,
-                    progress=progress_for_pyrogram,
+                    thumb=thumb_path, # Passed the user thumbnail here
+                    progress=progressforpyrogram,
                     progress_args=(
-                        translator.get("UPLOADING_THE_FILE", file_name=new_file_name),
+                        translator.get("UPLOADINGTHEFILE", filename=new_filename),
                         progress,
                         time.time(),
-                        get_var("SLEEP_SECS"),
-                        self._client,
-                        self._unique_id,
+                        getvar("SLEEPSECS"),
+                        self.client,
+                        self.uniqueid,
                         markup,
                     ),
                 )
 
             else:
-                rmsg = await self._client.send_document(
-                    self._cmd_message.chat.id,
-                    dl_path,
-                    file_name=new_file_name,
+                rmsg = await self.client.send_document(
+                    chat_id=self.cmdmessage.chat.id,
+                    document=dl_path,
+                    file_name=new_filename,
                     caption=caption,
-                    thumb=thumb_path,
+                    thumb=thumb_path, # Passed the user thumbnail here
                     force_document=is_force,
-                    progress=progress_for_pyrogram,
+                    progress=progressforpyrogram,
                     progress_args=(
-                        translator.get("UPLOADING_THE_FILE", file_name=new_file_name),
+                        translator.get("UPLOADINGTHEFILE", filename=new_filename),
                         progress,
                         time.time(),
-                        get_var("SLEEP_SECS"),
-                        self._client,
-                        self._unique_id,
+                        getvar("SLEEPSECS"),
+                        self.client,
+                        self.uniqueid,
                         markup,
                     ),
                 )
 
             if rmsg is None:
-                await progress.edit_text(translator.get("RENAME_UPLOAD_CANCELLED_BY_USER"))
+                await progress.edit_text(translator.get("RENAMEUPLOADCANCELLEDBY_USER"))
             else:
-                await progress.edit_text(translator.get("RENAME_UPLOADING_DONE"))
+                await progress.edit_text(translator.get("RENAMEUPLOADING_DONE"))
 
             try:
                 size = await aos.path.getsize(dl_path)
                 userin.count_upload(size)
-                userin.update_user(self.user_msg.from_user.id, uploaded=size)
+                userin.updateuser(self.usermsg.from_user.id, uploaded=size)
             except Exception as e:
                 renamelog.warning(f"Upload stats error: {str(e)}")
 
         except Exception as e:
             renamelog.error(f"Upload error: {str(e)}", exc_info=True)
-            await progress.edit_text(translator.get("RENAME_ERRORED"))
+            await progress.edit_text(translator.get("RENAMEERRORED"))
         finally:
             # Cleanup only the downloaded file, not the saved user thumbnail
             if dl_path and os.path.exists(dl_path):
