@@ -9,6 +9,7 @@ from .ru import RussianTranslations
 from .zh import ChineseTranslations
 from .fr import FrenchTranslations
 from .pt import PortugueseTranslations
+from .sw import SwahiliTranslations
 from ..config import Config
 
 TRANSLATION_MAP: Dict[str, object] = {
@@ -21,6 +22,7 @@ TRANSLATION_MAP: Dict[str, object] = {
     "zh": ChineseTranslations(),
     "fr": FrenchTranslations(),
     "pt": PortugueseTranslations(),
+    "sw": SwahiliTranslations(),
 }
 
 
