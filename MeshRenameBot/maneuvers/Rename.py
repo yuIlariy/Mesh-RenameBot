@@ -23,8 +23,6 @@ from ..utils.c_filter import FilterUtils
 from ..utils.progress_for_pyro import progress_for_pyrogram
 from .Default import DefaultManeuver
 
-# Diff File
-
 renamelog = logging.getLogger(__name__)
 
 
@@ -35,7 +33,18 @@ class RenameManeuver(DefaultManeuver):
         super().__init__(client, media_message, cmd_message)
         self._unique_id = int(str(cmd_message.chat.id) + str(cmd_message.id))
         self._fltr_obj = FilterUtils(cmd_message.from_user.id)
-        self.user_msg = cmd_message  # ✅ Store for per-user upload tracking
+        self.user_msg = cmd_message
+
+    async def _get_original_thumbnail(self):
+        """Extract original thumbnail if available"""
+        try:
+            if self._media_message.video and self._media_message.video.thumbs:
+                return self._media_message.video.thumbs[0]
+            elif self._media_message.document and self._media_message.document.thumbs:
+                return self._media_message.document.thumbs[0]
+        except Exception as e:
+            renamelog.warning(f"Error getting original thumb: {e}")
+        return None
 
     async def execute(self) -> None:
         self._execute_pending = False
@@ -83,7 +92,6 @@ class RenameManeuver(DefaultManeuver):
         except Exception as e:
             print(e)
             if self._fltr_obj.has_filters():
-
                 if self._media_message.document is not None:
                     original_file_name = self._media_message.document.file_name
                 elif self._media_message.video is not None:
@@ -142,6 +150,9 @@ class RenameManeuver(DefaultManeuver):
 
         await self._client.send_track(track_msg)
 
+        original_thumb = await self._get_original_thumbnail()
+        thumb_path = None
+
         try:
             progress = await self._media_message.reply(
                 translator.get("DL_RENAMING_FILE"), quote=True, reply_markup=markup
@@ -193,9 +204,12 @@ class RenameManeuver(DefaultManeuver):
             is_force = False
 
         try:
-            thumb_path = await get_thumbnail(
-                dl_path, self._cmd_message.from_user.id, is_force
-            )
+            if original_thumb:
+                thumb_path = await self._client.download_media(original_thumb.file_id)
+            else:
+                thumb_path = await get_thumbnail(
+                    dl_path, self._cmd_message.from_user.id, is_force
+                )
         except:
             renamelog.exception("Thumb error")
             thumb_path = None
@@ -206,7 +220,6 @@ class RenameManeuver(DefaultManeuver):
             translator.get("RENAME_DOWNLOADING_DONE"), reply_markup=None
         )
 
-        # getting the caption
         caption = udb.get_var("caption", self._cmd_message.from_user.id)
         if caption:
             caption = caption.format(file_name=new_file_name)
@@ -351,3 +364,6 @@ async def rem_this(path):
     except:
         print(path)
         renamelog.exception("Errored while removeing the file.")
+
+
+
