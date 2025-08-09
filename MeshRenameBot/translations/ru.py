@@ -3,7 +3,7 @@ import random
 
 @dataclass
 class RussianTranslations:
-    LANGUAGE_NAME = "Русский"
+    LANGUAGE_NAME = "🇷🇺 Русский"
     LANGUAGE_CODE = "ru"
 
     WRONG_VALUE_ERROR = "❌ Недопустимое значение для переменной {{ variable_name }}."
