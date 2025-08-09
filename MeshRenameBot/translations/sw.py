@@ -14,7 +14,7 @@ class SwahiliTranslations:
         "✨ **Vipengele vya Msingi:**\n"
         "- Badilisha majina ya faili na viambatisho vipya\n"
         "- Haraka, salama na rahisi kutumia\n"
-        - Inasaidia aina nyingi za faili\n\n"
+        "- Inasaidia aina nyingi za faili\n\n"
         "Tuma faili kwangu nami nitakuongoza katika mchakato!\n\n"
         "Tuanze! Tumia /mode kuwezesha kubadilisha jina kiotomatiki\n"
         "Tuma /help kujifunza zaidi.\n\n"
