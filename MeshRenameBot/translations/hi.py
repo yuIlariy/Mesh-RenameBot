@@ -151,6 +151,7 @@ class HindiTranslations:
     RENAME_UPLOAD_CANCELLED_BY_USER = random.choice(RENAME_THEMES_UPLOAD_CANCELLED)
     RENAME_ERRORED = "❗ नाम बदलने की प्रक्रिया में त्रुटि आई।"
 
+    DOWNLOADING_THE_FILE = "📥 फ़ाइल डाउनलोड हो रही है"
     UPLOADING_THE_FILE = "📤 फाइल अपलोड की जा रही है: **{{ new_file_name }}**"
 
     TRACK_MESSAGE_EXECUTION_START = (
