@@ -185,4 +185,10 @@ Use these commands to interact with the bot:
 
 [Dan for Pyrogram](https://github.com/pyrogram/pyrogram)
 
-[Yuilariy](https://github.com/yuilariy) (it's me😂) for small fixes & new features (maybe major) using AI, not a coder🤩)
+[Yuilariy](https://github.com/yuilariy) (it's me👑) for  fixes & new features, adding Portuguese(Brazilian) & French Language))
+
+
+
+
+## Know issue 🌋
+- Thumbnail adding not working, unable to fix it(Know how to? PM me)
