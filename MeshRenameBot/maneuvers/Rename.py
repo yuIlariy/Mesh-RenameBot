@@ -53,12 +53,7 @@ class RenameManeuver(DefaultManeuver):
 
         translator = Translator(user_locale)
 
-        if self._media_message is None:
-            await self._cmd_message.reply_text(
-                translator.get("REPLY_TO_MEDIA"), quote=True
-            )
-            return
-        elif not self._media_message.media:
+        if self._media_message is None or not self._media_message.media:
             await self._cmd_message.reply_text(
                 translator.get("REPLY_TO_MEDIA"), quote=True
             )
@@ -203,31 +198,35 @@ class RenameManeuver(DefaultManeuver):
         else:
             is_force = False
 
-        # --- FIX START ---
-        # We need to get the user's thumbnail first, and then decide what to do
-        # If the user has a custom thumbnail, we always use it.
-        # Otherwise, we fall back to the original thumbnail.
-        user_thumb_path = UserDB().get_thumbnail(user_id)
-        
-        if user_thumb_path and os.path.exists(user_thumb_path):
-            thumb_path = user_thumb_path
+        # --- REVISED FIX START ---
+        # Get the user's thumbnail first.
+        thumb_path = UserDB().get_thumbnail(user_id)
+
+        # If a user thumbnail is set and exists, use it.
+        if thumb_path and os.path.exists(thumb_path):
             renamelog.info("Using user's custom thumbnail.")
         else:
-            # If no user thumbnail exists, check if the file has an original thumbnail
-            # If so, download it. Otherwise, generate one from the downloaded file.
-            try:
-                if original_thumb:
+            # If no user thumbnail, check for an original thumbnail.
+            thumb_path = None # Reset thumb_path
+            if original_thumb:
+                try:
+                    # Download the original thumbnail and use its path.
                     thumb_path = await self._client.download_media(original_thumb.file_id)
                     renamelog.info("Using original file's thumbnail.")
-                else:
+                except Exception:
+                    renamelog.exception("Error downloading original thumbnail.")
+            
+            # If still no thumbnail, try to generate one from the downloaded file.
+            if not thumb_path:
+                try:
                     thumb_path = await get_thumbnail(
                         dl_path, self._cmd_message.from_user.id, is_force
                     )
                     renamelog.info("Generated a new thumbnail.")
-            except:
-                renamelog.exception("Thumb error")
-                thumb_path = None
-        # --- FIX END ---
+                except Exception:
+                    renamelog.exception("Error generating thumbnail.")
+
+        # --- REVISED FIX END ---
 
         renamelog.info(thumb_path)
         renamelog.info(f"is force = {is_force}")
@@ -377,7 +376,9 @@ class RenameManeuver(DefaultManeuver):
             await progress.edit_text(translator.get("RENAME_ERRORED"))
             return
 
-        if thumb_path is not None and thumb_path != user_thumb_path:
+        # Cleanup downloaded thumbnail if it's not the user's permanent one
+        user_thumbnail_path_db = UserDB().get_thumbnail(user_id)
+        if thumb_path is not None and thumb_path != user_thumbnail_path_db:
             await rem_this(thumb_path)
         await rem_this(dl_path)
 
