@@ -203,16 +203,31 @@ class RenameManeuver(DefaultManeuver):
         else:
             is_force = False
 
-        try:
-            if original_thumb:
-                thumb_path = await self._client.download_media(original_thumb.file_id)
-            else:
-                thumb_path = await get_thumbnail(
-                    dl_path, self._cmd_message.from_user.id, is_force
-                )
-        except:
-            renamelog.exception("Thumb error")
-            thumb_path = None
+        # --- FIX START ---
+        # We need to get the user's thumbnail first, and then decide what to do
+        # If the user has a custom thumbnail, we always use it.
+        # Otherwise, we fall back to the original thumbnail.
+        user_thumb_path = UserDB().get_thumbnail(user_id)
+        
+        if user_thumb_path and os.path.exists(user_thumb_path):
+            thumb_path = user_thumb_path
+            renamelog.info("Using user's custom thumbnail.")
+        else:
+            # If no user thumbnail exists, check if the file has an original thumbnail
+            # If so, download it. Otherwise, generate one from the downloaded file.
+            try:
+                if original_thumb:
+                    thumb_path = await self._client.download_media(original_thumb.file_id)
+                    renamelog.info("Using original file's thumbnail.")
+                else:
+                    thumb_path = await get_thumbnail(
+                        dl_path, self._cmd_message.from_user.id, is_force
+                    )
+                    renamelog.info("Generated a new thumbnail.")
+            except:
+                renamelog.exception("Thumb error")
+                thumb_path = None
+        # --- FIX END ---
 
         renamelog.info(thumb_path)
         renamelog.info(f"is force = {is_force}")
@@ -271,12 +286,21 @@ class RenameManeuver(DefaultManeuver):
                 )
 
             elif is_video and not is_force:
+                width = 0
+                height = 0
                 try:
-                    metadata = extractMetadata(createParser(thumb_path))
-                    if metadata.has("width"):
-                        width = metadata.get("width")
-                    if metadata.has("height"):
-                        height = metadata.get("height")
+                    # Get dimensions from the thumbnail if a thumb_path exists
+                    if thumb_path:
+                        metadata = extractMetadata(createParser(thumb_path))
+                        if metadata.has("width"):
+                            width = metadata.get("width")
+                        if metadata.has("height"):
+                            height = metadata.get("height")
+                    
+                    # Fallback to video dimensions if thumb dimensions aren't available
+                    if width == 0 and height == 0 and self._media_message.video:
+                        width = self._media_message.video.width
+                        height = self._media_message.video.height
 
                     metadata = extractMetadata(createParser(dl_path))
                     if self._media_message.video is not None:
@@ -353,7 +377,7 @@ class RenameManeuver(DefaultManeuver):
             await progress.edit_text(translator.get("RENAME_ERRORED"))
             return
 
-        if thumb_path is not None:
+        if thumb_path is not None and thumb_path != user_thumb_path:
             await rem_this(thumb_path)
         await rem_this(dl_path)
 
