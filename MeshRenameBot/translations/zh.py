@@ -3,7 +3,7 @@ import random
 
 @dataclass
 class ChineseTranslations:
-    LANGUAGE_NAME = "中文"
+    LANGUAGE_NAME = "🇨🇳 中文"
     LANGUAGE_CODE = "zh"
 
     WRONG_VALUE_ERROR = "❌ 变量 {{ variable_name }} 输入了无效值。"
