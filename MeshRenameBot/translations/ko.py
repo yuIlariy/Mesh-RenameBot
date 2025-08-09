@@ -3,7 +3,7 @@ import random
 
 @dataclass
 class KoreanTranslations:
-    LANGUAGE_NAME = "한국어"
+    LANGUAGE_NAME = "🇰🇷 한국어"
     LANGUAGE_CODE = "ko"
 
     WRONG_VALUE_ERROR = "❌ {{ variable_name }} 변수에 잘못된 값이 입력되었습니다."
