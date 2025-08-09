@@ -70,7 +70,7 @@ cd Mesh-RenameBot
 ```
 
 ### 3️⃣ Install Python Packages
-### Create Virtual Environment (recommended)
+- Create Virtual Environment (recommended)
 
 ```bash
 python3 -m venv mesh
