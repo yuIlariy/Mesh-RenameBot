@@ -35,15 +35,26 @@ class RenameManeuver(DefaultManeuver):
         self._fltr_obj = FilterUtils(cmd_message.from_user.id)
         self.user_msg = cmd_message
 
-    async def _get_original_thumbnail(self):
-        """Extract original thumbnail if available"""
+    async def _get_thumbnail_path(self, dl_path: str, user_id: int, is_force: bool) -> str:
+        """Handle thumbnail generation with proper fallbacks"""
         try:
+            # First try to get user-set thumbnail from database
+            user_thumb = UserDB().get_thumbnail(user_id)
+            if user_thumb and user_thumb is not False:
+                return user_thumb
+            
+            # Then try to get original media thumbnail
             if self._media_message.video and self._media_message.video.thumbs:
-                return self._media_message.video.thumbs[0]
+                return await self._client.download_media(self._media_message.video.thumbs[0].file_id)
             elif self._media_message.document and self._media_message.document.thumbs:
-                return self._media_message.document.thumbs[0]
+                return await self._client.download_media(self._media_message.document.thumbs[0].file_id)
+            
+            # Finally generate new thumbnail if needed
+            if not is_force:
+                return await get_thumbnail(dl_path, user_id, is_force)
+            
         except Exception as e:
-            renamelog.warning(f"Error getting original thumb: {e}")
+            renamelog.error(f"Thumbnail generation failed: {e}")
         return None
 
     async def execute(self) -> None:
@@ -150,9 +161,6 @@ class RenameManeuver(DefaultManeuver):
 
         await self._client.send_track(track_msg)
 
-        original_thumb = await self._get_original_thumbnail()
-        thumb_path = None
-
         try:
             progress = await self._media_message.reply(
                 translator.get("DL_RENAMING_FILE"), quote=True, reply_markup=markup
@@ -204,13 +212,8 @@ class RenameManeuver(DefaultManeuver):
             is_force = False
 
         try:
-            if original_thumb:
-                thumb_path = await self._client.download_media(original_thumb.file_id)
-            else:
-                thumb_path = await get_thumbnail(
-                    dl_path, self._cmd_message.from_user.id, is_force
-                )
-        except:
+            thumb_path = await self._get_thumbnail_path(dl_path, self._cmd_message.from_user.id, is_force)
+        except Exception as e:
             renamelog.exception("Thumb error")
             thumb_path = None
 
@@ -360,10 +363,12 @@ class RenameManeuver(DefaultManeuver):
 
 async def rem_this(path):
     try:
-        await aos.remove(path)
-    except:
-        print(path)
-        renamelog.exception("Errored while removeing the file.")
+        if path and await aos.path.exists(path):
+            await aos.remove(path)
+    except Exception as e:
+        print(f"Error removing {path}: {e}")
+        renamelog.exception(f"Error removing file {path}")
+
 
 
 
