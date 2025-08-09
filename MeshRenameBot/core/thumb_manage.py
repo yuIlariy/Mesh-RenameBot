@@ -23,13 +23,17 @@ async def adjust_image(path: str) -> Optional[str]:
         im.convert("RGB").save(path, "JPEG")
         im = Image.open(path)
         im.thumbnail((320, 320), Image.Resampling.LANCZOS)
-        im.save(path, "JPEG")
+        
+        # --- FIX START: Ensure file is not too big and saved correctly ---
+        # Telegram has size limits, so saving with optimized=True can help
+        im.save(path, "JPEG", optimize=True, quality=85)
+        # --- FIX END ---
+        
         return path
     except Exception as e:
         renamelog.error(f"Error adjusting image: {e}")
         return None
 
-# --- FIX START: New asynchronous copy function ---
 async def async_copy_file(src: str, dest: str):
     """Asynchronously copies a file from source to destination."""
     async with aiofiles.open(src, mode='rb') as infile:
@@ -39,7 +43,6 @@ async def async_copy_file(src: str, dest: str):
                 if not chunk:
                     break
                 await outfile.write(chunk)
-# --- FIX END ---
 
 
 async def handle_set_thumb(client, msg: Message):
@@ -68,16 +71,14 @@ async def handle_set_thumb(client, msg: Message):
         adjusted_path = await adjust_image(download_path)
 
         if adjusted_path is None:
-            await msg.reply_text("Could not adjust the image.", quote=True) # Fallback message
+            await msg.reply_text("Could not adjust the image.", quote=True)
             return
 
         user_data_dir = os.path.join("userdata", str(user_id))
         await aos.makedirs(user_data_dir, exist_ok=True)
         permanent_path = os.path.join(user_data_dir, "thumbnail.jpg")
 
-        # --- FIX START: Use the new async_copy_file function ---
         await async_copy_file(adjusted_path, permanent_path)
-        # --- FIX END ---
 
         UserDB().set_thumbnail(permanent_path, msg.from_user.id)
         
@@ -209,6 +210,7 @@ async def handle_clr_thumb(client, msg):
     
     udb.set_thumbnail(None, msg.from_user.id)
     await msg.reply_text(translator.get("THUMB_CLEARED"), quote=True)
+
 
 
 
