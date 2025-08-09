@@ -11,7 +11,6 @@ from pyrogram import Client, StopTransmission
 from pyrogram.file_id import FileId
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from pyrogram.types.messages_and_media.message_entity import MessageEntity
-from pyrogram.errors import ThumbnailFileInvalid
 from MeshRenameBot.utils.user_input import userin
 
 from ..core.get_config import get_var
@@ -21,7 +20,7 @@ from ..maneuvers.ExecutorManager import ExecutorManager
 from ..mesh_bot import MeshRenameBot
 from ..translations import Translator
 from ..utils.c_filter import FilterUtils
-from ..utils.progress_for_pyro import progress_for_pyrogram
+from ..utils.progress_for_pyrogram import progress_for_pyrogram
 from .Default import DefaultManeuver
 
 renamelog = logging.getLogger(__name__)
@@ -39,23 +38,47 @@ class RenameManeuver(DefaultManeuver):
 
     async def _preserve_original_thumb(self):
         """Extract original thumbnail before download if available"""
-        if self._media_message.video and self._media_message.video.thumbs:
-            self._original_thumb = self._media_message.video.thumbs[0]
-        elif self._media_message.document and self._media_message.document.thumbs:
-            self._original_thumb = self._media_message.document.thumbs[0]
+        try:
+            if self._media_message.video and self._media_message.video.thumbs:
+                self._original_thumb = self._media_message.video.thumbs[0]
+            elif self._media_message.document and self._media_message.document.thumbs:
+                self._original_thumb = self._media_message.document.thumbs[0]
+        except Exception as e:
+            renamelog.warning(f"Error preserving original thumb: {e}")
 
     async def _get_thumbnail_path(self, dl_path: str, user_id: int, is_force: bool) -> str:
         """Handle thumbnail generation with original thumb priority"""
         try:
             if self._original_thumb:
                 thumb_path = await self._client.download_media(self._original_thumb.file_id)
-                if await aos.path.getsize(thumb_path) > 200 * 1024:  # Telegram's limit
-                    thumb_path = await resize_img(thumb_path, 320)
-                return thumb_path
+                if thumb_path and await aos.path.exists(thumb_path):
+                    if await aos.path.getsize(thumb_path) > 200 * 1024:  # Telegram's limit
+                        thumb_path = await resize_img(thumb_path, 320)
+                    return thumb_path
             return await get_thumbnail(dl_path, user_id, is_force)
         except Exception as e:
             renamelog.warning(f"Thumbnail generation failed: {e}")
             return None
+
+    async def _safe_send_with_thumb(self, send_func, *args, **kwargs):
+        """Attempt sending with thumbnail, fallback without if needed"""
+        thumb_path = kwargs.pop('thumb', None)
+        
+        try:
+            if thumb_path:
+                kwargs['thumb'] = thumb_path
+                return await send_func(*args, **kwargs)
+            return await send_func(*args, **kwargs)
+        except Exception as e:
+            if thumb_path and "thumbnail" in str(e).lower():
+                renamelog.warning(f"Thumbnail error, retrying without: {e}")
+                try:
+                    del kwargs['thumb']
+                    return await send_func(*args, **kwargs)
+                except Exception as e:
+                    renamelog.error(f"Upload failed: {e}")
+                    raise
+            raise
 
     async def execute(self) -> None:
         self._execute_pending = False
@@ -177,38 +200,26 @@ class RenameManeuver(DefaultManeuver):
                     duration = metadata.get("duration").seconds
                 performer = metadata.get("author") if metadata and metadata.has("author") else ""
 
-                try:
-                    rmsg = await self._client.send_audio(
-                        self._cmd_message.chat.id,
-                        dl_path,
-                        file_name=new_file_name,
-                        caption=caption,
-                        duration=duration,
-                        performer=performer,
-                        thumb=thumb_path,
-                        progress=progress_for_pyrogram,
-                        progress_args=(
-                            translator.get("UPLOADING_THE_FILE", file_name=new_file_name),
-                            progress,
-                            time.time(),
-                            get_var("SLEEP_SECS"),
-                            self._client,
-                            self._unique_id,
-                            markup,
-                        ),
-                    )
-                except ThumbnailFileInvalid:
-                    rmsg = await self._client.send_audio(
-                        self._cmd_message.chat.id,
-                        dl_path,
-                        file_name=new_file_name,
-                        caption=caption,
-                        duration=duration,
-                        performer=performer,
-                        thumb=None,
-                        progress=progress_for_pyrogram,
-                        progress_args=(...),
-                    )
+                rmsg = await self._safe_send_with_thumb(
+                    self._client.send_audio,
+                    self._cmd_message.chat.id,
+                    dl_path,
+                    file_name=new_file_name,
+                    caption=caption,
+                    duration=duration,
+                    performer=performer,
+                    thumb=thumb_path,
+                    progress=progress_for_pyrogram,
+                    progress_args=(
+                        translator.get("UPLOADING_THE_FILE", file_name=new_file_name),
+                        progress,
+                        time.time(),
+                        get_var("SLEEP_SECS"),
+                        self._client,
+                        self._unique_id,
+                        markup,
+                    ),
+                )
 
             elif is_video and not is_force:
                 width = height = 0
@@ -230,56 +241,48 @@ class RenameManeuver(DefaultManeuver):
                     except:
                         pass
 
-                try:
-                    rmsg = await self._client.send_video(
-                        self._cmd_message.chat.id,
-                        dl_path,
-                        file_name=new_file_name,
-                        caption=caption,
-                        duration=duration,
-                        width=width,
-                        height=height,
-                        thumb=thumb_path,
-                        progress=progress_for_pyrogram,
-                        progress_args=(...),
-                    )
-                except ThumbnailFileInvalid:
-                    rmsg = await self._client.send_video(
-                        self._cmd_message.chat.id,
-                        dl_path,
-                        file_name=new_file_name,
-                        caption=caption,
-                        duration=duration,
-                        width=width,
-                        height=height,
-                        thumb=None,
-                        progress=progress_for_pyrogram,
-                        progress_args=(...),
-                    )
+                rmsg = await self._safe_send_with_thumb(
+                    self._client.send_video,
+                    self._cmd_message.chat.id,
+                    dl_path,
+                    file_name=new_file_name,
+                    caption=caption,
+                    duration=duration,
+                    width=width,
+                    height=height,
+                    thumb=thumb_path,
+                    progress=progress_for_pyrogram,
+                    progress_args=(
+                        translator.get("UPLOADING_THE_FILE", file_name=new_file_name),
+                        progress,
+                        time.time(),
+                        get_var("SLEEP_SECS"),
+                        self._client,
+                        self._unique_id,
+                        markup,
+                    ),
+                )
 
             else:
-                try:
-                    rmsg = await self._client.send_document(
-                        self._cmd_message.chat.id,
-                        dl_path,
-                        file_name=new_file_name,
-                        caption=caption,
-                        thumb=thumb_path,
-                        force_document=is_force,
-                        progress=progress_for_pyrogram,
-                        progress_args=(...),
-                    )
-                except ThumbnailFileInvalid:
-                    rmsg = await self._client.send_document(
-                        self._cmd_message.chat.id,
-                        dl_path,
-                        file_name=new_file_name,
-                        caption=caption,
-                        thumb=None,
-                        force_document=is_force,
-                        progress=progress_for_pyrogram,
-                        progress_args=(...),
-                    )
+                rmsg = await self._safe_send_with_thumb(
+                    self._client.send_document,
+                    self._cmd_message.chat.id,
+                    dl_path,
+                    file_name=new_file_name,
+                    caption=caption,
+                    thumb=thumb_path,
+                    force_document=is_force,
+                    progress=progress_for_pyrogram,
+                    progress_args=(
+                        translator.get("UPLOADING_THE_FILE", file_name=new_file_name),
+                        progress,
+                        time.time(),
+                        get_var("SLEEP_SECS"),
+                        self._client,
+                        self._unique_id,
+                        markup,
+                    ),
+                )
 
             if rmsg is None:
                 await progress.edit_text(translator.get("RENAME_UPLOAD_CANCELLED_BY_USER"))
@@ -308,9 +311,6 @@ class RenameManeuver(DefaultManeuver):
                 await aos.remove(path)
         except Exception as e:
             renamelog.warning(f"Failed to remove {path}: {e}")
-
-
-
 
 
 
