@@ -7,6 +7,7 @@ from .hi import HindiTranslations
 from .ko import KoreanTranslations
 from .ru import RussianTranslations
 from .zh import ChineseTranslations
+from .fr import FrenchTranslations
 from ..config import Config
 
 TRANSLATION_MAP: Dict[str, object] = {
@@ -17,6 +18,7 @@ TRANSLATION_MAP: Dict[str, object] = {
     "ko": KoreanTranslations(),
     "ru": RussianTranslations(),
     "zh": ChineseTranslations(),
+    "fr": FrenchTranslations(),
 }
 
 
