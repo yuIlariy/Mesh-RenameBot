@@ -151,6 +151,7 @@ class ArabicTranslations:
     RENAME_UPLOAD_CANCELLED_BY_USER = random.choice(RENAME_THEMES_UPLOAD_CANCELLED)
     RENAME_ERRORED = "❗ حدث خطأ في عملية إعادة التسمية."
 
+    DOWNLOADING_THE_FILE = "📥 جارٍ تحميل الملف"
     UPLOADING_THE_FILE = "📤 جاري تحميل الملف: **{{ new_file_name }}**"
 
     TRACK_MESSAGE_EXECUTION_START = (
