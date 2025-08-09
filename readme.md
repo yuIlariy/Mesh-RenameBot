@@ -1,6 +1,6 @@
 # 🚀 Mesh Rename Bot
 
-**Mesh Rename Bot** is a powerful Telegram bot designed for **auto-renaming files** using **custom filters**. With some advanced features like **permanent thumbnails, multiple upload modes, queue management, and more**. Also, supports 9 different languages.
+**Mesh Rename Bot** is a powerful Telegram bot designed for **auto-renaming files** using **custom filters**. With some advanced features like **permanent thumbnails, multiple upload modes, queue management, and more**. Also, supports 10 different languages.
 
 This bot is aimed to be **the best rename bot around**! 🏆✨
 
@@ -24,7 +24,7 @@ This bot is aimed to be **the best rename bot around**! 🏆✨
 ✅ **Force Join** (Require users to join a specific channel before use)  
 ✅ **Multi-language Support** 🌎  
 ✅ **Admin Controls** to manage bot users  
-✅ **9 Different** languages supported (en, es, ar, hi, ko, zh, ru, fr, pt) 
+✅ **10 Different** languages supported (en, es, ar, hi, ko, zh, ru, fr, pt, sw) 
 
 ---
 
@@ -142,7 +142,7 @@ Modify the `config.py` file inside `MeshRenameBot` to **update settings & comman
 | `FORCEJOIN_ID` | **Chat ID for `FORCEJOIN`** |
 | `TRACE_CHANNEL` | **Tracking Channel ID** (set `0` to disable tracking) |
 | `SAVE_FILE_TO_TRACE_CHANNEL` | **Save user file to tracking channel** |
-| `DEFAULT_LOCALE` | **Default Language of Bot** (values can be en, es, ar, hi, ko, zh, ru, fr, pt) |
+| `DEFAULT_LOCALE` | **Default Language of Bot** (values can be en, es, ar, hi, ko, zh, ru, fr, pt, sw) |
 
 ---
 
