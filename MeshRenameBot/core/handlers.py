@@ -449,15 +449,6 @@ async def info_callback(client, callback_query):
     )
 
 #🚨🚨
-from pyrogram import Client, filters
-from pyrogram.handlers import CallbackQueryHandler
-from pyrogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
-
-from MeshRenameBot import MeshRenameBot
-from MeshRenameBot.database.users import UserDB
-from MeshRenameBot.modules.translator import Translator
-
-
 @Client.on_callback_query(filters.regex("home"))
 async def home_callback(client, callback_query: CallbackQuery):
     user_locale = UserDB().get_var("locale", callback_query.from_user.id)
