@@ -12,6 +12,7 @@ from .pt import PortugueseTranslations
 from .sw import SwahiliTranslations
 from .de import GermanTranslations
 from .ta import TamilTranslations
+from .id import IndonesianTranslations
 from ..config import Config
 
 TRANSLATION_MAP: Dict[str, object] = {
@@ -27,6 +28,7 @@ TRANSLATION_MAP: Dict[str, object] = {
     "sw": SwahiliTranslations(),
     "de": GermanTranslations(),
     "ta": TamilTranslations(),
+    "id": IndonesianTranslations(),
 }
 
 
