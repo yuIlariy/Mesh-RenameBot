@@ -13,6 +13,7 @@ from .sw import SwahiliTranslations
 from .de import GermanTranslations
 from .ta import TamilTranslations
 from .id import IndonesianTranslations
+from .fa import PersianTranslations
 from ..config import Config
 
 TRANSLATION_MAP: Dict[str, object] = {
@@ -29,6 +30,7 @@ TRANSLATION_MAP: Dict[str, object] = {
     "de": GermanTranslations(),
     "ta": TamilTranslations(),
     "id": IndonesianTranslations(),
+    "fa": PersianTranslations(),
 }
 
 
