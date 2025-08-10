@@ -478,6 +478,10 @@ async def start_handler(client, msg: Message):
         ])
     )
     
+@Client.on_callback_query(filters.regex("setlanguage"))
+async def trigger_setlanguage(client, callback_query):
+    # Simulate sending /setlanguage as if user typed it
+    callback_query.message.chat.send_message("/setlanguage")
 
 
 async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
