@@ -3,10 +3,10 @@ import random
 
 @dataclass
 class KenyanTranslations:
-    LANGUAGE_NAME = "Kenyan (Sheng/Swahili/English)"
+    LANGUAGE_NAME = "🇰🇪 Kenyan (Swahili/English)"
     LANGUAGE_CODE = "ke"
 
-    WRONG_VALUE_ERROR = "❌ Weka sahii bro! {{ variable_name }} ni wrong."
+    WRONG_VALUE_ERROR = "❌ Weka sahii ! {{ variable_name }} ni wrong."
 
     START_MSG = (
         "Niaje msee! 👋\n"
@@ -16,7 +16,7 @@ class KenyanTranslations:
         "- Fast, safe na easy to use\n"
         "- Inasaidia almost all file types\n\n"
         "Just dm me a file nitakushow the process!\n\n"
-        "Twaanza! Use /mode for auto rename, **Rename bila command**🚀\n"
+        "Tuanze! Use /mode for auto rename, **Rename bila command**🚀\n"
         "Send /help for more deets.\n\n"
         "🚀 **By** [NAm](https://t.me/xspes)"
     )
