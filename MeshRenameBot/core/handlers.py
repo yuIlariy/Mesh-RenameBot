@@ -148,6 +148,10 @@ def add_handlers(client: MeshRenameBot) -> None:
         filters.regex(r"^/broadcast$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
     )
 
+    client.add_handler(
+    CallbackQueryHandler(trigger_setlanguage, filters.regex("setlanguage"))
+    )
+
     
     signal.signal(signal.SIGINT, term_handler)
     signal.signal(signal.SIGTERM, term_handler)
