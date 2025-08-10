@@ -448,19 +448,30 @@ async def info_callback(client, callback_query):
         ])
     )
 
+#🚨🚨
+from pyrogram import Client, filters
+from pyrogram.handlers import CallbackQueryHandler
+from pyrogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
+
+from MeshRenameBot import MeshRenameBot
+from MeshRenameBot.database.users import UserDB
+from MeshRenameBot.modules.translator import Translator
+
+
 @Client.on_callback_query(filters.regex("home"))
-async def home_callback(client, callback_query):
+async def home_callback(client, callback_query: CallbackQuery):
     user_locale = UserDB().get_var("locale", callback_query.from_user.id)
     await callback_query.message.edit_caption(
         caption=Translator(user_locale).get("START_MSG"),
         reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("🌐 Choose Language", callback_data="setlanguage")],
             [InlineKeyboardButton("ℹ️ Info", callback_data="info")],
             [InlineKeyboardButton("🤩 Source code", url="https://github.com/yuIlariy/Mesh-RenameBot")],
             [InlineKeyboardButton("Updates📥", url="https://t.me/modstorexd"),
              InlineKeyboardButton("Support🚀", url="https://t.me/xspes")]
         ])
     )
-    
+
 
 async def start_handler(_: MeshRenameBot, msg: Message) -> None:
     user_locale = UserDB().get_var("locale", msg.from_user.id)
@@ -469,19 +480,29 @@ async def start_handler(_: MeshRenameBot, msg: Message) -> None:
         caption=Translator(user_locale).get("START_MSG"),
         quote=True,
         reply_markup=InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton("ℹ️ Info", callback_data="info")
-            ],
-            [
-                InlineKeyboardButton("🤩 Source code", url="https://github.com/yuIlariy/Mesh-RenameBot")
-            ],
-            [
-                InlineKeyboardButton("Updates📥", url="https://t.me/modstorexd"),
-                InlineKeyboardButton("Support🚀", url="https://t.me/xspes")
-            ]
+            [InlineKeyboardButton("🌐 Choose Language", callback_data="setlanguage")],
+            [InlineKeyboardButton("ℹ️ Info", callback_data="info")],
+            [InlineKeyboardButton("🤩 Source code", url="https://github.com/yuIlariy/Mesh-RenameBot")],
+            [InlineKeyboardButton("Updates📥", url="https://t.me/modstorexd"),
+             InlineKeyboardButton("Support🚀", url="https://t.me/xspes")]
         ])
     )
-    
+
+
+async def trigger_setlanguage(client: Client, callback_query: CallbackQuery):
+    await client.send_message(
+        chat_id=callback_query.from_user.id,
+        text="/setlanguage"
+    )
+    await callback_query.answer()
+
+
+def register_handlers(client: Client):
+    client.add_handler(CallbackQueryHandler(home_callback, filters.regex("home")))
+    client.add_handler(CallbackQueryHandler(trigger_setlanguage, filters.regex("setlanguage")))
+
+
+#🚨🚨
 
 async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
     from MeshRenameBot.utils.user_input import userin
