@@ -462,26 +462,29 @@ async def home_callback(client, callback_query):
     )
     
 
-async def start_handler(_: MeshRenameBot, msg: Message) -> None:
+#Opem🌚
+from MeshRenameBot.core.change_locale import change_locale  # ✅ import the handler
+
+async def start_handler(bot: MeshRenameBot, msg: Message) -> None:
     user_locale = UserDB().get_var("locale", msg.from_user.id)
+
     await msg.reply_photo(
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
         caption=Translator(user_locale).get("START_MSG"),
         quote=True,
         reply_markup=InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton("ℹ️ Info", callback_data="info")
-            ],
-            [
-                InlineKeyboardButton("🤩 Source code", url="https://github.com/yuIlariy/Mesh-RenameBot")
-            ],
-            [
-                InlineKeyboardButton("Updates📥", url="https://t.me/modstorexd"),
-                InlineKeyboardButton("Support🚀", url="https://t.me/xspes")
-            ]
+            [InlineKeyboardButton("🌐 Choose Language", callback_data="setlanguage")],
+            [InlineKeyboardButton("ℹ️ Info", callback_data="info")],
+            [InlineKeyboardButton("🤩 Source code", url="https://github.com/yuIlariy/Mesh-RenameBot")],
+            [InlineKeyboardButton("Updates📥", url="https://t.me/modstorexd"),
+             InlineKeyboardButton("Support🚀", url="https://t.me/xspes")]
         ])
     )
-    
+
+    # ✅ Directly trigger the language selector
+    await change_locale(bot, msg)
+
+#Xlose🙄
 
 async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
     from MeshRenameBot.utils.user_input import userin
