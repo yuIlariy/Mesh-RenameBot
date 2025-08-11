@@ -147,6 +147,10 @@ def add_handlers(client: MeshRenameBot) -> None:
         broadcast_handler,
         filters.regex(r"^/broadcast$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
     )
+    client.add_handler(
+    CallbackQueryHandler(trigger_setlanguage, filters.regex("setlanguage", re.IGNORECASE))
+    )
+    
 
     
     signal.signal(signal.SIGINT, term_handler)
@@ -462,26 +466,39 @@ async def home_callback(client, callback_query):
     )
     
 
-async def start_handler(_: MeshRenameBot, msg: Message) -> None:
+async def start_handler(bot: MeshRenameBot, msg: Message) -> None:
     user_locale = UserDB().get_var("locale", msg.from_user.id)
+
+    # Send the START message with buttons
     await msg.reply_photo(
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
         caption=Translator(user_locale).get("START_MSG"),
         quote=True,
         reply_markup=InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton("ℹ️ Info", callback_data="info")
-            ],
-            [
-                InlineKeyboardButton("🤩 Source code", url="https://github.com/yuIlariy/Mesh-RenameBot")
-            ],
-            [
-                InlineKeyboardButton("Updates📥", url="https://t.me/modstorexd"),
-                InlineKeyboardButton("Support🚀", url="https://t.me/xspes")
-            ]
+            [InlineKeyboardButton("🌐 Choose Language", callback_data="setlanguage")],
+            [InlineKeyboardButton("ℹ️ Info", callback_data="info")],
+            [InlineKeyboardButton("🤩 Source code", url="https://github.com/yuIlariy/Mesh-RenameBot")],
+            [InlineKeyboardButton("Updates📥", url="https://t.me/modstorexd"),
+             InlineKeyboardButton("Support🚀", url="https://t.me/xspes")]
         ])
     )
-    
+
+    # Immediately trigger /setlanguage as a user message
+    await bot.send_message(
+        chat_id=msg.from_user.id,
+        text="/setlanguage"
+    )
+
+
+@Client.on_callback_query(filters.regex("setlanguage"))
+async def trigger_setlanguage(client, callback_query):
+    await client.send_message(
+        chat_id=callback_query.from_user.id,
+        text="/setlanguage"
+    )
+    await callback_query.answer()
+
+
 
 async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
     from MeshRenameBot.utils.user_input import userin
