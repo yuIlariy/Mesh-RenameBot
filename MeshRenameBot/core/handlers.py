@@ -501,9 +501,13 @@ from MeshRenameBot.core.change_locale import change_locale
 
 @Client.on_callback_query(filters.regex("setlanguage"))
 async def trigger_setlanguage(client: Client, callback_query: CallbackQuery):
-    await change_locale(client, callback_query.message)
-    await callback_query.answer()
+    # Patch the message to behave like a command
+    message = callback_query.message
+    message.text = "/setlanguage"
+    message.from_user = callback_query.from_user
 
+    await change_locale(client, message)
+    await callback_query.answer()
 
 #Xlose🙄
 
