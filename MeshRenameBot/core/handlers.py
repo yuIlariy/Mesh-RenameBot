@@ -704,6 +704,4 @@ async def intercept_handler(client, msg):
     
 
 async def close_message(_: MeshRenameBot, msg: CallbackQuery) -> None:
-    if msg.message.reply_to_message is not None:
-        await msg.message.reply_to_message.delete()
     await msg.message.delete()
