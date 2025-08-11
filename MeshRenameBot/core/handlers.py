@@ -463,10 +463,22 @@ async def home_callback(client, callback_query):
     
 
 #Opem🌚
-from MeshRenameBot.core.change_locale import change_locale  # ✅ import the handler
+from MeshRenameBot.core.change_locale import change_locale
+from MeshRenameBot.database.users import UserDB
+from MeshRenameBot.modules.translator import Translator
 
 async def start_handler(bot: MeshRenameBot, msg: Message) -> None:
-    user_locale = UserDB().get_var("locale", msg.from_user.id)
+    user_id = msg.from_user.id
+    db = UserDB()
+
+    # Check if user exists
+    is_new_user = not db.exists(user_id)
+
+    # Create user if not exists
+    if is_new_user:
+        db.add_user(user_id)
+
+    user_locale = db.get_var("locale", user_id)
 
     await msg.reply_photo(
         photo="https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg",
@@ -481,9 +493,10 @@ async def start_handler(bot: MeshRenameBot, msg: Message) -> None:
         ])
     )
 
-    # ✅ Directly trigger the language selector
-    await change_locale(bot, msg)
-
+    # ✅ Trigger language selector only for first-time users
+    if is_new_user:
+        await change_locale(bot, msg)
+        
 #Xlose🙄
 
 async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
