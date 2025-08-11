@@ -147,6 +147,10 @@ def add_handlers(client: MeshRenameBot) -> None:
         broadcast_handler,
         filters.regex(r"^/broadcast$", re.IGNORECASE) & filters.user(Config.OWNER_ID[1]))
     )
+    client.add_handler(
+    CallbackQueryHandler(trigger_setlanguage, filters.regex("setlanguage", re.IGNORECASE))
+    )
+    
 
     
     signal.signal(signal.SIGINT, term_handler)
@@ -490,6 +494,16 @@ async def start_handler(bot: MeshRenameBot, msg: Message) -> None:
 
     if is_new_user:
         await change_locale(bot, msg)
+
+from pyrogram import Client, filters
+from pyrogram.types import CallbackQuery
+from MeshRenameBot.core.change_locale import change_locale
+
+@Client.on_callback_query(filters.regex("setlanguage"))
+async def trigger_setlanguage(client: Client, callback_query: CallbackQuery):
+    await change_locale(client, callback_query.message)
+    await callback_query.answer()
+
 
 #Xlose🙄
 
