@@ -185,7 +185,7 @@ Use these commands to interact with the bot:
 
 [Dan for Pyrogram](https://github.com/pyrogram/pyrogram)
 
-[Yuilariy](https://github.com/yuilariy) (it's me👑) for  fixes & new features, adding Portuguese(Brazilian) & French Language))
+[Yuilariy](https://github.com/yuilariy) (it's me👑) for  fixes & new features, adding Portuguese(Brazilian) & French Language & others))
 
 
 
