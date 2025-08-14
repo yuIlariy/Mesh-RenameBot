@@ -9,6 +9,14 @@ from ..maneuvers.ExecutorManager import ExecutorManager
 
 renamelog = logging.getLogger(__name__)
 
+def get_speed_icon(speed_bps):
+    speed_mbps = speed_bps / (1024 * 1024)
+    if speed_mbps < 7:
+        return "🐢"
+    elif speed_mbps < 11:
+        return "🚀"
+    else:
+        return "🛸"
 
 async def progress_for_pyrogram(
     current,
@@ -47,7 +55,7 @@ async def progress_for_pyrogram(
         eta_display = estimated_total_time if estimated_total_time != '' else "0 seconds"
         percent_display = round(percentage, 2)
 
-        speed_icon = "🚀" if speed >= 8 * 1024 * 1024 else "🚨"
+        speed_icon = get_speed_icon(speed)
 
         # Classic block-style progress bar (20 segments)
         total_blocks = 20
