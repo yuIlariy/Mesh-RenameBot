@@ -5,6 +5,7 @@ import logging
 import asyncio
 from datetime import datetime
 import pytz
+import random
 from MeshRenameBot.core.get_config import get_var
 
 renamelog = logging.getLogger(__name__)
@@ -14,7 +15,6 @@ class MeshRenameBot(Client):
     async def start(self):
         await super().start()
 
-        # Send restart message to LOG_CHANNEL
         try:
             me = await self.get_me()
             bot_mention = me.mention  # clickable mention via tg://user?id=...
@@ -22,6 +22,7 @@ class MeshRenameBot(Client):
             tz = pytz.timezone("Africa/Nairobi")
             now = datetime.now(tz)
 
+            # Restart message for log channel
             restart_msg = (
                 f"🌋 **{bot_mention} Iꜱ Rᴇsᴛᴀʀᴛᴇᴅ !!**\n\n"
                 f"📅 **Dᴀᴛᴇ** : {now.strftime('%d %B, %Y')}\n"
@@ -30,11 +31,36 @@ class MeshRenameBot(Client):
                 "🉐 **Vᴇʀsɪᴏɴ** : v4.3.8 (Layer 951)"
             )
 
+            # Owner message with rotating greeting
+            greetings = [
+                "🚀 Bot’s back in action!",
+                "🧩 Patch mode activated!",
+                "🦾 Systems online!",
+                "🎯 Ready to rename and roll!",
+                "📦 Deployment complete!"
+            ]
+            owner_msg = (
+                f"👑 **Your bot {bot_mention} just woke up!**\n\n"
+                f"📅 **Dᴀᴛᴇ** : {now.strftime('%d %B, %Y')}\n"
+                f"⏰ **Tɪᴍᴇ** : {now.strftime('%I:%M:%S %p')}\n"
+                f"🌐 **Tɪᴍᴇᴢᴏɴᴇ** : Africa/Nairobi\n\n"
+                f"{random.choice(greetings)}\n"
+                "🉐 **Vᴇʀsɪᴏɴ** : v4.3.8 (Layer 951)\n\n"
+                "🫡 *All systems go, Captain.*"
+            )
+
+            # Send to log channel
             log_channel = get_var("LOG_CHANNEL")
             if log_channel:
                 await self.send_message(int(log_channel), restart_msg, disable_web_page_preview=True)
+
+            # Send to owner
+            owner_raw = get_var("OWNER_ID")
+            owner_id = int(owner_raw) if isinstance(owner_raw, str) else owner_raw
+            await self.send_message(owner_id, owner_msg, disable_web_page_preview=True)
+
         except Exception:
-            renamelog.exception("Failed to send restart message to LOG_CHANNEL.")
+            renamelog.exception("Failed to send restart message to LOG_CHANNEL or OWNER_ID.")
 
         # Preload TRACE_CHANNEL
         track_channel = int(get_var("TRACE_CHANNEL"))
@@ -74,6 +100,4 @@ class MeshRenameBot(Client):
                 await self.send_message(track_channel, text_mess)
             except Exception:
                 renamelog.exception("Make Sure to enter the Track Channel ID correctly.")
-
-
 
