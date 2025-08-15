@@ -663,8 +663,8 @@ async def intercept_handler(client, msg):
             "🚀 **New User Started Rename Bot**\n\n"
             f"🆔 **User ID:** `{user.id}`\n"
             f"👤 **Username:** @{user.username if user.username else '—'}\n"
-            f"📛 **Name:** [{user.first_name}](tg://user?id={user.id})\n"
-            f"📂 **Time:** `{msg.date.strftime('%Y-%m-%d %H:%M:%S')}`\n\n"
+            f"📜 **Name:** [{user.first_name}](tg://user?id={user.id})\n"
+            f"⏰ **Time:** `{msg.date.strftime('%Y-%m-%d %H:%M:%S')}`\n\n"
             f"🚀 Started: {(await client.get_me()).mention}"
         )
         await client.send_message(get_var("LOG_CHANNEL"), log_text)
