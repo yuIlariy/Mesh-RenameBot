@@ -3,6 +3,8 @@ from pyrogram.file_id import FileId
 from pyrogram.errors import FloodWait
 import logging
 import asyncio
+from datetime import datetime
+import pytz
 from MeshRenameBot.core.get_config import get_var
 
 renamelog = logging.getLogger(__name__)
@@ -12,6 +14,29 @@ class MeshRenameBot(Client):
     async def start(self):
         await super().start()
 
+        # Send restart message to LOG_CHANNEL
+        try:
+            me = await self.get_me()
+            bot_mention = me.mention  # clickable mention via tg://user?id=...
+
+            tz = pytz.timezone("Africa/Nairobi")
+            now = datetime.now(tz)
+
+            restart_msg = (
+                f"🌋 **{bot_mention} Iꜱ Rᴇsᴛᴀʀᴛᴇᴅ !!**\n\n"
+                f"📅 **Dᴀᴛᴇ** : {now.strftime('%d %B, %Y')}\n"
+                f"⏰ **Tɪᴍᴇ** : {now.strftime('%I:%M:%S %p')}\n"
+                f"🌐 **Tɪᴍᴇᴢᴏɴᴇ** : Africa/Nairobi\n\n"
+                "🉐 **Vᴇʀsɪᴏɴ** : v4.3.8 (Layer 951)"
+            )
+
+            log_channel = get_var("LOG_CHANNEL")
+            if log_channel:
+                await self.send_message(int(log_channel), restart_msg, disable_web_page_preview=True)
+        except Exception:
+            renamelog.exception("Failed to send restart message to LOG_CHANNEL.")
+
+        # Preload TRACE_CHANNEL
         track_channel = int(get_var("TRACE_CHANNEL"))
         try:
             chat = await self.get_chat(track_channel)
@@ -49,3 +74,6 @@ class MeshRenameBot(Client):
                 await self.send_message(track_channel, text_mess)
             except Exception:
                 renamelog.exception("Make Sure to enter the Track Channel ID correctly.")
+
+
+
