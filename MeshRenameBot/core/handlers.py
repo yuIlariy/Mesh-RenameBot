@@ -414,7 +414,7 @@ async def status_handler(client: Client, msg: Message) -> None:
 async def info_handler(client, msg: Message):
     caption = (
         "📦 **Auto Rename Bot**\n"
-        "🎯 **Version:** [1.3.8C](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
+        "🎯 **Version:** [4.3.8](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
         "👨‍💻 **Developer:** [Yash Dk 🗿](https://github.com/yash-dk)\n"
         "🔧 **Maintainer:** [NAm 🗿](https://github.com/yuilariy)\n"
         "🛠️ **Source Code:** [Mesh-RenameBot](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
@@ -439,7 +439,7 @@ async def info_callback(client, callback_query):
     await callback_query.message.edit_caption(
         caption=(
             "📦 **Auto Rename Bot**\n"
-            "🎯 **Version:** [1.3.8C](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
+            "🎯 **Version:** [4.3.8](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
             "👨‍💻 **Developer:** [Yash Dk 🗿](https://github.com/yash-dk)\n"
             "🔧 **Maintainer:** [NAm 🗿](https://github.com/yuilariy)\n"
             "🛠️ **Source Code:** [Mesh-RenameBot](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
