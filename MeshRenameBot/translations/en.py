@@ -213,7 +213,7 @@ class EnglishTranslations:
     USER_KICKED = "🌋 **You have been removed from the chat. You cannot use this bot.**"
     USER_NOT_PARTICIPANT = (
         "🖌️ **Access Denied**\n\n"
-        "To use this bot, please join the updates channel first.\n"
+        "📜 To use this bot, please join the updates channel first.\n\n"
         "🐋 *FastWhale bots swim only with the pod.*"
     )
     
