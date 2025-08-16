@@ -24,18 +24,18 @@ class EnglishTranslations:
     CANCEL_MESSAGE = "⚠️ The rename has been **canceled**. Will be updated soon."
 
     RENAME_NO_FILTER_MATCH = (
-        "🚫 **NO FILTER MATCHED - ABORTING RENAME**\n\n"
+        "‼️ **NO FILTER MATCHED - ABORTING RENAME**\n\n"
         "🔍 Using filters to rename as no name was specified.\n"
-        "👻 Manage your filters using /filters."
+        "📜 Manage your filters using /filters."
     )
 
     RENAME_FILTER_MATCH_USED = (
         "✅ Using filters to rename as no name was specified.\n"
-        "👻 Manage your filters using /filters."
+        "📜 Manage your filters using /filters."
     )
 
     RENAME_NOFLTR_NONAME = (
-        "✍️ Enter the new file name in format:\n"
+        "📝 Enter the new file name in format:\n"
         "```/rename my_new_filename.extension```\n"
         "or use `/filters` to set rename filters."
     )
@@ -48,7 +48,7 @@ class EnglishTranslations:
 
     RENAME_ERRORED_REPORT = "❗ The download encountered an error. Report this issue."
 
-    RENAME_CANCEL_BY_USER = "🚫 **Canceled by the user.**"
+    RENAME_CANCEL_BY_USER = "❗ **Canceled by the user.**"
 
     FLTR_ADD_LEFT_STR = "➕ Added Filter: `<code>{{ text_1 }}</code>` **to the LEFT**."
     FLTR_ADD_RIGHT_STR = (
@@ -64,7 +64,7 @@ class EnglishTranslations:
     RM_FLTR = "❌ Remove Filter"
 
     FILTERS_INTRO = (
-        "🛠 **Filter Guide:**\n"
+        "🗒️ **Filter Guide:**\n"
         "There are 3 types of filters:\n\n"
         "🔄 **Replace Filter:** Replace a given word with another.\n"
         "➕ **Addition Filter:** Add a word at the beginning or end.\n"
@@ -76,7 +76,7 @@ class EnglishTranslations:
     ADD_REMOVE_FLTR = "➕ Add Remove Filter"
     BACK = "🔙 Back"
 
-    REPALCE_FILTER_INIT_MSG = "✍️ Send the format: `<code>what_to_replace | replacement</code>` or `/ignore` to go back."
+    REPALCE_FILTER_INIT_MSG = "🖌️ Send the format: `<code>what_to_replace | replacement</code>` or `/ignore` to go back."
 
     NO_INPUT_FROM_USER = "⚠️ No input received from you."
     INPUT_IGNORE = "✅ **Ignored**."
@@ -86,7 +86,7 @@ class EnglishTranslations:
     )
 
     ADDITION_FILTER_INIT_MSG = (
-        "✍️ Enter the text to add within `<code>|</code>`\n"
+        "🖌️ Enter the text to add within `<code>|</code>`\n"
         "Example: `<code>| text to add |</code>`\n"
         "or `/ignore` to go back."
     )
@@ -101,10 +101,10 @@ class EnglishTranslations:
     ADDITION_LEFT = "🔄 Addition to LEFT"
     ADDITION_RIGHT = "🔄 Addition to RIGHT"
 
-    ADDITION_POSITION_PROMPT = "📍 **Where do you want to add the text?**"
+    ADDITION_POSITION_PROMPT = "📑 **Where do you want to add the text?**"
 
     REMOVE_FILTER_INIT_MSG = (
-        "✍️ Enter the text you want to remove or `/ignore` to go back."
+        "🖌️ Enter the text you want to remove or `/ignore` to go back."
     )
 
     REMOVE_FILTER_SUCCESS = (
@@ -129,7 +129,7 @@ class EnglishTranslations:
 
     RENAME_THEMES_DOWNLOAD_CANCELLED = [
         "🛑 Download halted. The rename dream fades...",
-        "🚫 You pulled the plug. Download aborted.",
+        "❗ You pulled the plug. Download aborted.",
         "❌ Operation scrapped mid-flight. No file fetched.",
         "📴 Rename canceled during download. Mission scrubbed.",
         "👋 User opted out mid-download. Peace out, file.",
@@ -137,7 +137,7 @@ class EnglishTranslations:
 
     RENAME_THEMES_UPLOAD_CANCELLED = [
         "🛑 Upload canceled. File stays local and unloved.",
-        "🚫 Rebrand reversed. Upload terminated.",
+        "❗ Rebrand reversed. Upload terminated.",
         "❌ Final stage interrupted. Rename abandoned.",
         "📴 Upload vetoed. Renamed file goes nowhere.",
         "👋 User said 'nope' during upload. File retired.",
@@ -222,7 +222,7 @@ class EnglishTranslations:
         "{% if mode == udb.MODE_AS_DOCUMENT %} ✅{% endif %}\n"
         "3️⃣ **Upload as General Media.**"
         "{% if mode == udb.MODE_AS_GMEDIA %} ✅{% endif %}\n\n"
-        "👻 **Select the renaming mode:**\n"
+        "🖌️ **Select the renaming mode:**\n"
         "🅰️ **Rename with command.**"
         "{% if command_mode == udb.MODE_RENAME_WITH_COMMAND %} ✅{% endif %}\n"
         "🅱️ **Rename without command.**"
@@ -243,7 +243,7 @@ class EnglishTranslations:
     HELP_STR = (
         "📖 **Bot Commands:**\n"
         "`{{ startcmd }}` - ✅ Check if the bot is running.\n"
-        "`{{ renamecmd }}` - ✍️ Reply to a media file with `/rename filename.extension` to rename it.\n"
+        "`{{ renamecmd }}` - 🖌️ Reply to a media file with `/rename filename.extension` to rename it.\n"
         "`{{ filterscmd }}` - ⚙️ Manage your rename filters.\n"
         "`{{ setthumbcmd }}` - 📷 Set a permanent thumbnail (reply to an image).\n"
         "`{{ getthumbcmd }}` - 📸 Get the currently set thumbnail.\n"
