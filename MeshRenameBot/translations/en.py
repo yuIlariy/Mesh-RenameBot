@@ -160,7 +160,7 @@ class EnglishTranslations:
         "👤 **User:** @{{ username }}\n"
         "📛 **Name:** {{ name }}\n"
         "📑 **User ID:** `<code>{{ user_id }}</code>`\n"
-        "🔖 **File Name:** `<code>{{ file_name }}</code>`"
+        "🔖 **File Name:** `<code>{{ file_name }}</code>`\n\n"
         "🐳 *FastWhale engine engaged.*"
     )
     
@@ -168,7 +168,7 @@ class EnglishTranslations:
         "📋 **Rename Task Registered**\n\n"
         "👤 **User:** @{{ username }}\n"
         "📛 **Name:** {{ name }}\n"
-        "🆔 **User ID:** `<code>{{ user_id }}</code>`"
+        "🆔 **User ID:** `<code>{{ user_id }}</code>`\n\n"
         "🗳️ *Queued for processing.*"
     )
 
@@ -188,7 +188,7 @@ class EnglishTranslations:
     RENAME_ADDED_TO_QUEUE = (
         "🏷️ **Task Queued for Rename**\n"
         "🆔 **DC ID:** {{ dc_id }}\n"
-        "👻 **Media ID:** {{ media_id }}"
+        "🔖 **Media ID:** {{ media_id }}\n\n"
         "🌀 *Awaiting execution...*"
     )
 
@@ -210,8 +210,13 @@ class EnglishTranslations:
         "{% endif %}"
     )
 
-    USER_KICKED = "👻 **You have been removed from the chat. You cannot use this bot.**"
-    USER_NOT_PARTICIPANT = "👻 **Join the required chat to use this bot.**"
+    USER_KICKED = "🌋 **You have been removed from the chat. You cannot use this bot.**"
+    USER_NOT_PARTICIPANT = (
+        "🖌️ **Access Denied**\n\n"
+        "To use this bot, please join the updates channel first.\n"
+        "🐋 *FastWhale bots swim only with the pod.*"
+    )
+    
     JOIN_CHANNEL = "🔗 Join Updates Channel"
 
     MODE_INITIAL_MSG = (
