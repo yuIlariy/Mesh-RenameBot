@@ -160,7 +160,7 @@ class EnglishTranslations:
         "👤 **User:** @{{ username }}\n"
         "📛 **Name:** {{ name }}\n"
         "📑 **User ID:** `<code>{{ user_id }}</code>`\n"
-        "🔖 **File Name:** `<code>{{ file_name }}</code>`\n\n"
+        "🪆 **File Name:** `<code>{{ file_name }}</code>`\n\n"
         "🐳 *FastWhale engine engaged.*"
     )
     
@@ -188,7 +188,7 @@ class EnglishTranslations:
     RENAME_ADDED_TO_QUEUE = (
         "🏷️ **Task Queued for Rename**\n"
         "🆔 **DC ID:** {{ dc_id }}\n"
-        "🔖 **Media ID:** {{ media_id }}\n\n"
+        "🪆 **Media ID:** {{ media_id }}\n\n"
         "🌀 *Awaiting execution...*"
     )
 
