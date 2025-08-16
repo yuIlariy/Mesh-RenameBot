@@ -155,19 +155,21 @@ class EnglishTranslations:
     UPLOADING_THE_FILE = "📤 Uploading the file: **{{ new_file_name }}**"
 
     TRACK_MESSAGE_EXECUTION_START = (
-        "🚀 **Execution Started for Rename Task**\n"
+        "🚀 **Rename Task Execution Started**\n"
         "🆔 Task ID: `{{ uid }}`\n\n"
-        "👤 **Username:** @{{ username }}\n"
+        "👤 **User:** @{{ username }}\n"
         "📛 **Name:** {{ name }}\n"
-        "🆔 **User ID:** `<code>{{ user_id }}</code>`\n"
-        "📂 **File Name:** `<code>{{ file_name }}</code>`"
+        "📑 **User ID:** `<code>{{ user_id }}</code>`\n"
+        "🔖 **File Name:** `<code>{{ file_name }}</code>`"
+        "🐳 *FastWhale engine engaged.*"
     )
     
     TRACK_MESSAGE_ADDED_RENAME = (
-        "✅ **Rename Task Added**\n\n"
-        "👤 **Username:** @{{ username }}\n"
+        "📋 **Rename Task Registered**\n\n"
+        "👤 **User:** @{{ username }}\n"
         "📛 **Name:** {{ name }}\n"
         "🆔 **User ID:** `<code>{{ user_id }}</code>`"
+        "🗳️ *Queued for processing.*"
     )
 
     CAPTION_FOOT_NOTE = (
@@ -184,9 +186,10 @@ class EnglishTranslations:
     CAPTION_DELETED = "🗑 **Caption deleted successfully.**"
 
     RENAME_ADDED_TO_QUEUE = (
-        "📥 **Rename Task Added to Queue**\n"
+        "🏷️ **Task Queued for Rename**\n"
         "🆔 **DC ID:** {{ dc_id }}\n"
         "👻 **Media ID:** {{ media_id }}"
+        "🌀 *Awaiting execution...*"
     )
 
     RENAME_QUEUE_STATUS = (
