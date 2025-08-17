@@ -64,7 +64,7 @@ class MeshRenameBot(Client):
             trace_text = (
                 f"🪆 **Trace Ping Received**\n\n"
                 f"🧭 Bot `{me.username}` is online and synced.\n"
-                f"📅 {now.strftime('%d %B, %Y')} | ⏰ {now.strftime('%I:%M:%S %p')}\n"
+                f"📅 {now.strftime('%d %B, %Y')} | ⏰ {now.strftime('%I:%M:%S %p')}\n\n"
                 "`📡 Monitoring tasks and rename queue.`"
             )
             try:
