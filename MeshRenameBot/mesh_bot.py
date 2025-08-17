@@ -46,7 +46,7 @@ class MeshRenameBot(Client):
                 f"🌐 **Tɪᴍᴇᴢᴏɴᴇ** : Africa/Nairobi\n\n"
                 f"{random.choice(greetings)}\n"
                 "🉐 **Vᴇʀsɪᴏɴ** : v4.3.8 (Layer 951)\n\n"
-                "🫡 *All systems go, Capitán.*"
+                "`🫡 All systems go, Capitán.`"
             )
 
             # Send to log channel
