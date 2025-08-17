@@ -141,6 +141,7 @@ Modify the `config.py` file inside `MeshRenameBot` to **update settings & comman
 | `FORCEJOIN` | **Public group/channel username or invite link** (leave blank to disable) |
 | `FORCEJOIN_ID` | **Chat ID for `FORCEJOIN`** |
 | `TRACE_CHANNEL` | **Tracking Channel ID** (set `0` to disable tracking) |
+| `LOG_CHANNEL` | **Logs Channel ID** (Bot processes tracking) |
 | `SAVE_FILE_TO_TRACE_CHANNEL` | **Save user file to tracking channel** |
 | `DEFAULT_LOCALE` | **Default Language of Bot** (values can be en, es, ar, hi, ko, zh, ru, fr, pt, sw, ta, de, id, fa) |
 
