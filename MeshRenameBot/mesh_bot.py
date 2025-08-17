@@ -59,6 +59,20 @@ class MeshRenameBot(Client):
             owner_id = int(owner_raw) if isinstance(owner_raw, str) else owner_raw
             await self.send_message(owner_id, owner_msg, disable_web_page_preview=True)
 
+            # Trace ping message + sticker
+            track_channel = int(get_var("TRACE_CHANNEL"))
+            trace_text = (
+                f"🪆 **Trace Ping Received**\n\n"
+                f"🧭 Bot `{me.username}` is online and synced.\n"
+                f"📅 {now.strftime('%d %B, %Y')} | ⏰ {now.strftime('%I:%M:%S %p')}\n"
+                "`📡 Monitoring tasks and rename queue.`"
+            )
+            try:
+                await self.send_message(track_channel, trace_text, disable_web_page_preview=True)
+                await self.send_sticker(track_channel, "CAACAgIAAxkBAAEPK01ooa7l8E2oJqUYzkUflC7PprKbeQACn2kAAi2ssEiHpvbh9SGYazYE")
+            except Exception:
+                renamelog.exception("Failed to send trace ping or sticker.")
+
         except Exception:
             renamelog.exception("Failed to send restart message to LOG_CHANNEL or OWNER_ID.")
 
@@ -100,4 +114,5 @@ class MeshRenameBot(Client):
                 await self.send_message(track_channel, text_mess)
             except Exception:
                 renamelog.exception("Make Sure to enter the Track Channel ID correctly.")
+
 
