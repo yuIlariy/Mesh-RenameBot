@@ -161,7 +161,7 @@ class EnglishTranslations:
         "📛 **Name:** {{ name }}\n"
         "📑 **User ID:** `<code>{{ user_id }}</code>`\n"
         "🪆 **File Name:** `<code>{{ file_name }}</code>`\n\n"
-        "🐳 *FastWhale engine engaged.*"
+        "`🐳 FastWhale engine engaged.`"
     )
     
     TRACK_MESSAGE_ADDED_RENAME = (
@@ -169,7 +169,7 @@ class EnglishTranslations:
         "👤 **User:** @{{ username }}\n"
         "📛 **Name:** {{ name }}\n"
         "🆔 **User ID:** `<code>{{ user_id }}</code>`\n\n"
-        "🗳️ *Queued for processing.*"
+        "`🗳️ Queued for processing.`"
     )
 
     CAPTION_FOOT_NOTE = (
@@ -189,7 +189,7 @@ class EnglishTranslations:
         "🏷️ **Task Queued for Rename**\n"
         "🆔 **DC ID:** {{ dc_id }}\n"
         "🪆 **Media ID:** {{ media_id }}\n\n"
-        "🌀 *Awaiting execution...*"
+        "`🌀 Awaiting execution...`"
     )
 
     RENAME_QUEUE_STATUS = (
@@ -214,7 +214,7 @@ class EnglishTranslations:
     USER_NOT_PARTICIPANT = (
         "🖌️ **Access Denied**\n\n"
         "📜 To use this bot, please join the updates channel first.\n\n"
-        "🐋 *FastWhale bots swim only with the pod.*"
+        "`🐋 FastWhale bots swim only with the pod.`"
     )
     
     JOIN_CHANNEL = "🔗 Join Updates Channel"
