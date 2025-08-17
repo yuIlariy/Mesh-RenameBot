@@ -63,7 +63,7 @@ class MeshRenameBot(Client):
             track_channel = int(get_var("TRACE_CHANNEL"))
             trace_text = (
                 f"🪆 **Trace Ping Received**\n\n"
-                f"🧭 Bot `{me.username}` is online and synced.\n"
+                f"🧭 {bot_mention} is online and synced.\n"
                 f"📅 {now.strftime('%d %B, %Y')} | ⏰ {now.strftime('%I:%M:%S %p')}\n\n"
                 "`📡 Monitoring tasks and rename queue.`"
             )
@@ -114,5 +114,6 @@ class MeshRenameBot(Client):
                 await self.send_message(track_channel, text_mess)
             except Exception:
                 renamelog.exception("Make Sure to enter the Track Channel ID correctly.")
+
 
 
