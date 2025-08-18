@@ -6,272 +6,276 @@ class EnglishTranslations:
     LANGUAGE_NAME = "🇬🇧 English"
     LANGUAGE_CODE = "en"
 
-    WRONG_VALUE_ERROR = "❌ Invalid value entered for {{ variable_name }} variable."
+    WRONG_VALUE_ERROR = "❌ Oopsie! Invalid value for {{ variable_name }}. Try again! 🤷‍♀️"
 
     START_MSG = (
-    "Hello there! 👋\n"
-    "I’m **Auto Rename Bot**, your go-to assistant for effortlessly renaming files on Telegram.\n\n"
-    "✨ **Key Features:**\n"
-    "- Rename files with custom names and extensions.\n"
-    "- Fast, secure, and easy to use.\n"
-    "- Supports a wide range of file types.\n\n"
-    "Simply send me a file, and I’ll guide you through the renaming process!\n\n"
-    "Let’s get started! Use /mode to enable auto rename, **Rename without command**🚀\n"
-    "Send /help to learn more.\n\n"
-    "🚀 **Powered by** [NAm](https://t.me/xspes)"
+    "✨ **Hey there, file wizard!** ✨\n\n"
+    "I'm **Auto Rename Bot** 🪄, your magical file-renaming assistant!\n\n"
+    "🔥 **Why you'll love me:**\n"
+    "- Rename files with ✨ sparkle and precision\n"
+    "- Blazing fast ⚡ and secure 🔒\n"
+    "- Supports ALL the file types! 📂🎵🎬\n\n"
+    "Just send me a file and let's make magic happen! 🎩\n\n"
+    "🚀 **Pro Tip:** Use /mode for auto-rename ninja mode!\n"
+    "Need help? /help has your back!\n\n"
+    "🛸 **Powered by** [NAm](https://t.me/xspes)"
     )
 
-    CANCEL_MESSAGE = "⚠️ The rename has been **canceled**. Will be updated soon."
+    CANCEL_MESSAGE = "❗ Rename cancelled! Poof! ✨ (Updates coming soon!)"
 
     RENAME_NO_FILTER_MATCH = (
-        "‼️ **NO FILTER MATCHED - ABORTING RENAME**\n\n"
-        "🔍 Using filters to rename as no name was specified.\n"
-        "📜 Manage your filters using /filters."
+        "🔮 **Whoops! No filter match!**\n\n"
+        "Tried using filters but came up empty 🎩🐇\n"
+        "Manage your filters with /filters ✏️"
     )
 
     RENAME_FILTER_MATCH_USED = (
-        "✅ Using filters to rename as no name was specified.\n"
-        "📜 Manage your filters using /filters."
+        "🎯 **Filter power activated!**\n"
+        "Using filters since you didn't specify a name\n"
+        "Tweak them with /filters ⚙️"
     )
 
     RENAME_NOFLTR_NONAME = (
-        "📝 Enter the new file name in format:\n"
-        "```/rename my_new_filename.extension```\n"
-        "or use `/filters` to set rename filters."
+        "📝 **Name your masterpiece!**\n"
+        "```/rename shiny_new_name.ext```\n"
+        "or play with `/filters` 🎨"
     )
 
-    RENAME_CANCEL = "❌ Cancel this rename."
+    RENAME_CANCEL = "❌ Nah, let's cancel this ✌️"
 
-    RENAMING_FILE = "🔄 Renaming the file... Please wait."
+    RENAMING_FILE = "🌀 **File transformation in progress...**"
 
-    DL_RENAMING_FILE = "📥 Downloading the file... Please wait."
+    DL_RENAMING_FILE = "📥 **Downloading your digital treasure...**"
 
-    RENAME_ERRORED_REPORT = "❗ The download encountered an error. Report this issue."
+    RENAME_ERRORED_REPORT = "💥 **Yikes! Something broke!** Please report this 🚨"
 
-    RENAME_CANCEL_BY_USER = "❗ **Canceled by the user.**"
+    RENAME_CANCEL_BY_USER = "🙅‍♂️ **You waved the cancel wand!** ✨"
 
-    FLTR_ADD_LEFT_STR = "➕ Added Filter: `<code>{{ text_1 }}</code>` **to the LEFT**."
-    FLTR_ADD_RIGHT_STR = (
-        "➕ Addition Filter: `<code>{{ text_1 }}</code>` **to the RIGHT**."
-    )
-    FLTR_RM_STR = "❌ Remove Filter: `<code>{{ text_1 }}</code>`."
-    FLTR_REPLACE_STR = (
-        "🔄 Replace Filter: `<code>{{ text_1 }}</code>` → `<code>{{ text_2 }}</code>`."
-    )
+    FLTR_ADD_LEFT_STR = "👈 **Added LEFT filter:** `{{ text_1 }}`"
+    FLTR_ADD_RIGHT_STR = "👉 **Added RIGHT filter:** `{{ text_1 }}`"
+    FLTR_RM_STR = "🗑 **Deleted filter:** `{{ text_1 }}`"
+    FLTR_REPLACE_STR = "🔄 **Swapped:** `{{ text_1 }}` → `{{ text_2 }}`"
 
-    CURRENT_FLTRS = "⚙️ **Your Current Filters:**"
-    ADD_FLTR = "➕ Add Filter"
-    RM_FLTR = "❌ Remove Filter"
+    CURRENT_FLTRS = "🎛️ **Your Filter Dashboard:**"
+    ADD_FLTR = "➕ Add Magic"
+    RM_FLTR = "🗑 Remove Magic"
 
     FILTERS_INTRO = (
-        "🗒️ **Filter Guide:**\n"
-        "There are 3 types of filters:\n\n"
-        "🔄 **Replace Filter:** Replace a given word with another.\n"
-        "➕ **Addition Filter:** Add a word at the beginning or end.\n"
-        "❌ **Remove Filter:** Remove a word from the filename."
+        "📜 **Filter Grimoire:**\n"
+        "Three spells at your disposal:\n\n"
+        "🔄 **Transmute Spell:** Change words\n"
+        "➕ **Conjure Spell:** Add words\n"
+        "🗑 **Vanishing Spell:** Remove words"
     )
 
-    ADD_REPLACE_FLTR = "➕ Add Replace Filter"
-    ADD_ADDITION_FLTR = "➕ Add Addition Filter"
-    ADD_REMOVE_FLTR = "➕ Add Remove Filter"
-    BACK = "🔙 Back"
+    ADD_REPLACE_FLTR = "🔄 Transmute Spell"
+    ADD_ADDITION_FLTR = "➕ Conjure Spell"
+    ADD_REMOVE_FLTR = "🗑 Vanishing Spell"
+    BACK = "🔙 Back to Safety"
 
-    REPALCE_FILTER_INIT_MSG = "🖌️ Send the format: `<code>what_to_replace | replacement</code>` or `/ignore` to go back."
+    REPALCE_FILTER_INIT_MSG = (
+        "✍️ **Transmutation Formula:**\n"
+        "`old_stuff | new_stuff`\n"
+        "or `/ignore` to escape 🏃‍♂️"
+    )
 
-    NO_INPUT_FROM_USER = "⚠️ No input received from you."
-    INPUT_IGNORE = "✅ **Ignored**."
-    WRONG_INPUT_FORMAT = "❌ Invalid format. Check the provided format."
+    NO_INPUT_FROM_USER = "🤷‍♂️ **Crickets...** No input detected!"
+    INPUT_IGNORE = "👍 **Spell ignored!**"
+    WRONG_INPUT_FORMAT = "🤦‍♂️ **Whoops!** Wrong format! Try again!"
     REPLACE_FILTER_SUCCESS = (
-        "✅ **Replace filter added:**\n" "`'{{ text_1 }}'` → `'{{ text_2 }}'`"
+        "✅ **Transmutation Complete!**\n" 
+        "`{{ text_1 }}` → `{{ text_2 }}`"
     )
 
     ADDITION_FILTER_INIT_MSG = (
-        "🖌️ Enter the text to add within `<code>|</code>`\n"
-        "Example: `<code>| text to add |</code>`\n"
-        "or `/ignore` to go back."
+        "✨ **Conjuring Text:**\n"
+        "Wrap your magic in `|text|`\n"
+        "or `/ignore` to bail 🏃‍♀️"
     )
 
     ADDITION_FILTER_SUCCESS_LEFT = (
-        "✅ Added filter: `<code>{{ text_1 }}</code>` **to LEFT**."
+        "👈 **Left Conjuration:** `{{ text_1 }}`"
     )
     ADDITION_FILTER_SUCCESS_RIGHT = (
-        "✅ Added filter: `<code>{{ text_1 }}</code>` **to RIGHT**."
+        "👉 **Right Conjuration:** `{{ text_1 }}`"
     )
 
-    ADDITION_LEFT = "🔄 Addition to LEFT"
-    ADDITION_RIGHT = "🔄 Addition to RIGHT"
+    ADDITION_LEFT = "👈 Left Side"
+    ADDITION_RIGHT = "👉 Right Side"
 
-    ADDITION_POSITION_PROMPT = "📑 **Where do you want to add the text?**"
+    ADDITION_POSITION_PROMPT = "🧙‍♂️ **Where shall I place the magic?**"
 
     REMOVE_FILTER_INIT_MSG = (
-        "🖌️ Enter the text you want to remove or `/ignore` to go back."
+        "🗑 **Vanishing Act:**\n"
+        "What shall disappear?\n"
+        "or `/ignore` to keep it ✌️"
     )
 
     REMOVE_FILTER_SUCCESS = (
-        "✅ **Remove filter added:** `<code>{{ text_1 }}</code>` will be removed."
+        "✅ **Poof!** `{{ text_1 }}` will vanish!"
     )
 
     RENAME_THEMES_DOWNLOADING = [
-        "✅ Download complete. Initiating rename magic...",
-        "📦 File fetched! Ready to bless it with a new name...",
-        "🪄 Download done. ✨ Let the rename ritual begin...",
-        "🔧 Data acquired. Renaming engine revving up...",
-        "💾 Saved and sealed. Now to rename with style...",
+        "🎩 Download complete! Preparing magic...",
+        "📦 File acquired! Ready for naming sorcery...",
+        "✨ Download successful! Incantations beginning...",
+        "⚡ Data secured! Renaming engines firing up...",
+        "💾 File captured! Preparing for glorious rebirth..."
     ]
 
     RENAME_THEMES_UPLOADING = [
-        "✅ All renamed and ready! Upload complete.",
-        "🚀 File successfully rebranded and launched.",
-        "📤 Upload done. Your renamed masterpiece is live!",
-        "🌟 File rename finalized. Delivered to the cosmos!",
-        "📁 Task complete. The file ascends renamed.",
+        "🚀 **Blast off!** Renamed file launched!",
+        "🎉 **Ta-da!** Your newly named file is ready!",
+        "📤 Upload complete! Enjoy your masterpiece!",
+        "🌟 File metamorphosis complete!",
+        "🏁 Race over! Your file has crossed the finish line!"
     ]
 
     RENAME_THEMES_DOWNLOAD_CANCELLED = [
-        "🛑 Download halted. The rename dream fades...",
-        "❗ You pulled the plug. Download aborted.",
-        "❌ Operation scrapped mid-flight. No file fetched.",
-        "📴 Rename canceled during download. Mission scrubbed.",
-        "👋 User opted out mid-download. Peace out, file.",
+        "🛑 **Abort!** Download spell interrupted!",
+        "🚧 Whoops! You stopped the download train!",
+        "🎭 The show's over before it began!",
+        "📵 Download connection terminated!",
+        "👋 You ghosted the download! Bye-bye!"
     ]
 
     RENAME_THEMES_UPLOAD_CANCELLED = [
-        "🛑 Upload canceled. File stays local and unloved.",
-        "❗ Rebrand reversed. Upload terminated.",
-        "❌ Final stage interrupted. Rename abandoned.",
-        "📴 Upload vetoed. Renamed file goes nowhere.",
-        "👋 User said 'nope' during upload. File retired.",
+        "✋ **Hold up!** Upload stopped mid-flight!",
+        "🚫 No delivery today! Upload cancelled!",
+        "🌪️ Upload tornado dissipated!",
+        "📴 Connection lost in the void!",
+        "🤷‍♂️ You changed your mind! Upload aborted!"
     ]
 
-    REPLY_TO_MEDIA = "📂 Reply `/rename` to a media file."
+    REPLY_TO_MEDIA = "📎 **Psst!** Reply `/rename` to a file!"
 
     RENAME_DOWNLOADING_DONE = random.choice(RENAME_THEMES_DOWNLOADING)
     RENAME_UPLOADING_DONE = random.choice(RENAME_THEMES_UPLOADING)
     RENAME_CANCEL_BY_USER = random.choice(RENAME_THEMES_DOWNLOAD_CANCELLED)
     RENAME_UPLOAD_CANCELLED_BY_USER = random.choice(RENAME_THEMES_UPLOAD_CANCELLED)
-    RENAME_ERRORED = "❗ Rename process encountered an error."
+    RENAME_ERRORED = "💥 **Kaboom!** Renaming spell failed!"
 
-    DOWNLOADING_THE_FILE = "📥 Downloading the file"
-    UPLOADING_THE_FILE = "📤 Uploading the file: **{{ new_file_name }}**"
+    DOWNLOADING_THE_FILE = "📥 **Fetching your file...**"
+    UPLOADING_THE_FILE = "📤 **Launching:** `{{ new_file_name }}` 🚀"
 
     TRACK_MESSAGE_EXECUTION_START = (
-        "🚀 **Rename Task Execution Started**\n"
-        "🆔 Task ID: `{{ uid }}`\n\n"
-        "👤 **User:** @{{ username }}\n"
-        "📛 **Name:** {{ name }}\n"
-        "📑 **User ID:** `<code>{{ user_id }}</code>`\n"
-        "🪆 **File Name:** `<code>{{ file_name }}</code>`\n\n"
-        "`🐳 FastWhale engine engaged.`"
+        "🚀 **Rename Mission Initiated**\n"
+        "🆔 Mission ID: `{{ uid }}`\n\n"
+        "👤 **Agent:** @{{ username }}\n"
+        "📛 **Codename:** {{ name }}\n"
+        "🪪 **ID:** `{{ user_id }}`\n"
+        "📜 **File:** `{{ file_name }}`\n\n"
+        "`⚡ Hyperdrive engaged!`"
     )
     
     TRACK_MESSAGE_ADDED_RENAME = (
-        "📋 **Rename Task Registered**\n\n"
-        "👤 **User:** @{{ username }}\n"
-        "📛 **Name:** {{ name }}\n"
-        "🆔 **User ID:** `<code>{{ user_id }}</code>`\n\n"
-        "`🗳️ Queued for processing.`"
+        "📥 **Rename Mission Queued**\n\n"
+        "👤 **Agent:** @{{ username }}\n"
+        "📛 **Codename:** {{ name }}\n"
+        "🪪 **ID:** `{{ user_id }}`\n\n"
+        "`⏳ Awaiting deployment...`"
     )
 
     CAPTION_FOOT_NOTE = (
-        "☄️ **NOTE:** You can set the caption using `/setcaption` followed by your desired text.\n"
-        "📂 Use `<code>{file_name}</code>` to dynamically insert the renamed file name in the caption."
+        "💡 **Pro Tip:** Use `/setcaption` to add flair!\n"
+        "✨ Insert `{file_name}` to auto-fill the filename!"
     )
 
-    DELETE_CAPTION = "🗑 Delete Caption"
-    CLOSE = "❌ Close"
+    DELETE_CAPTION = "🗑️ Yeet Caption"
+    CLOSE = "🚪 Exit"
 
-    CAPTION_CURRENT = "📝 **Your Current Caption:** {{ caption }}"
-    CAPTION_NOT_SET = "⚠️ **No caption set.**"
-    CAPTION_SET = "✅ **Caption updated to:** {{ caption }}"
-    CAPTION_DELETED = "🗑 **Caption deleted successfully.**"
+    CAPTION_CURRENT = "📝 **Current Caption:** {{ caption }}"
+    CAPTION_NOT_SET = "🫗 **Caption empty!** So lonely..."
+    CAPTION_SET = "✅ **New Caption:** {{ caption }}"
+    CAPTION_DELETED = "🗑️ **Caption vanished!** Poof!"
 
     RENAME_ADDED_TO_QUEUE = (
-        "🏷️ **Task Queued for Rename**\n"
+        "📊 **Rename in Queue**\n"
         "🆔 **DC ID:** {{ dc_id }}\n"
-        "🪆 **Media ID:** {{ media_id }}\n\n"
-        "`🌀 Awaiting execution...`"
+        "📦 **Media ID:** {{ media_id }}\n\n"
+        "`⏳ Patience, young padawan...`"
     )
 
     RENAME_QUEUE_STATUS = (
-        "📊 **Rename Queue Status:**\n"
-        "☄️ **Total Tasks in Queue:** {{ total_tasks }}\n"
-        "⚡ **Queue Capacity:** {{ queue_capacity }}\n"
-        "⏳ **Currently Processing:** {{ current_task }}"
+        "📈 **Queue Stats:**\n"
+        "📊 **Total Tasks:** {{ total_tasks }}\n"
+        "⚡ **Capacity:** {{ queue_capacity }}\n"
+        "⏳ **Processing:** {{ current_task }}"
     )
 
     RENAME_QUEUE_USER_STATUS = (
         "{% if is_executing %}\n"
-        "⚡ **Your Task is Currently Executing**\n"
+        "⚡ **Your file is being MAGIC'D!**\n"
         "🆔 **Task ID:** {{ task_id }}\n"
         "{% endif %}"
         "{% if is_pending %}\n"
-        "⏳ **Your Task Position in Queue:** {{ task_number }}\n"
+        "⏳ **Your place in line:** {{ task_number }}\n"
         "🆔 **Task ID:** {{ task_id }}\n"
         "{% endif %}"
     )
 
-    USER_KICKED = "🌋 **You have been removed from the chat. You cannot use this bot.**"
+    USER_KICKED = "👢 **You've been booted!** No bot for you!"
     USER_NOT_PARTICIPANT = (
-        "🖌️ **Access Denied**\n\n"
-        "📜 To use this bot, please join the updates channel first.\n\n"
-        "`🐋 FastWhale bots swim only with the pod.`"
+        "🔒 **Secret Club Alert!**\n\n"
+        "Join our channel to unlock the magic!\n\n"
+        "`🦄 Unicorns only beyond this point`"
     )
     
-    JOIN_CHANNEL = "🔗 Join Updates Channel"
+    JOIN_CHANNEL = "🔗 Join Secret Club"
 
     MODE_INITIAL_MSG = (
-        "📂 **File Output Mode:**\n\n"
-        "1️⃣ **Same format as sent.**"
+        "🎛️ **Output Mode Selector:**\n\n"
+        "1️⃣ **Keep original format**"
         "{% if mode == udb.MODE_SAME_AS_SENT %} ✅{% endif %}\n"
-        "2️⃣ **Force to Document.**"
+        "2️⃣ **Force Document mode**"
         "{% if mode == udb.MODE_AS_DOCUMENT %} ✅{% endif %}\n"
-        "3️⃣ **Upload as General Media.**"
+        "3️⃣ **General Media mode**"
         "{% if mode == udb.MODE_AS_GMEDIA %} ✅{% endif %}\n\n"
-        "🖌️ **Select the renaming mode:**\n"
-        "🅰️ **Rename with command.**"
+        "✨ **Rename Style:**\n"
+        "🅰️ **Command rename**"
         "{% if command_mode == udb.MODE_RENAME_WITH_COMMAND %} ✅{% endif %}\n"
-        "🅱️ **Rename without command.**"
+        "🅱️ **Auto-rename**"
         "{% if command_mode == udb.MODE_RENAME_WITHOUT_COMMAND %} ✅{% endif %}"
     )
 
-    MODE_SET_0 = "1️⃣"
-    MODE_SET_1 = "2️⃣"
-    MODE_SET_2 = "3️⃣"
-    COMMAND_MODE_SET_3 = "🅰️"
-    COMMAND_MODE_SET_4 = "🅱️"
+    MODE_SET_0 = "1️⃣ OG Mode"
+    MODE_SET_1 = "2️⃣ Doc Mode"
+    MODE_SET_2 = "3️⃣ Media Mode"
+    COMMAND_MODE_SET_3 = "🅰️ Command"
+    COMMAND_MODE_SET_4 = "🅱️ Auto"
 
-    THUMB_REPLY_TO_MEDIA = "📸 Reply to an image to set it as a thumbnail."
-    THUMB_SET_SUCCESS = "✅ **Thumbnail set successfully.**"
-    THUMB_NOT_FOUND = "⚠️ **No Thumbnail Found.**"
-    THUMB_CLEARED = "🗑 **Thumbnail cleared successfully.**"
+    THUMB_REPLY_TO_MEDIA = "🖼️ **Reply to an image** to set as thumbnail"
+    THUMB_SET_SUCCESS = "✅ **Thumbnail locked in!**"
+    THUMB_NOT_FOUND = "🕵️‍♂️ **No thumbnail detected!**"
+    THUMB_CLEARED = "🧹 **Thumbnail swept away!**"
 
     HELP_STR = (
-        "📖 **Bot Commands:**\n"
-        "`{{ startcmd }}` - ✅ Check if the bot is running.\n"
-        "`{{ renamecmd }}` - 🖌️ Reply to a media file with `/rename filename.extension` to rename it.\n"
-        "`{{ filterscmd }}` - ⚙️ Manage your rename filters.\n"
-        "`{{ setthumbcmd }}` - 📷 Set a permanent thumbnail (reply to an image).\n"
-        "`{{ getthumbcmd }}` - 📸 Get the currently set thumbnail.\n"
-        "`{{ clrthumbcmd }}` - ❌ Remove the set thumbnail.\n"
-        "`{{ modecmd }}` - 🔄 Switch between 3 output modes:\n"
-        "    - 📝 Same format as sent.\n"
-        "    - 📂 Forced Document.\n"
-        "    - 🎥 General Media (streamable video/audio).\n\n"
-        "    🔄 Switch between renaming modes:\n"
-        "    - 🏷 Rename **with command**.\n"
-        "    - ✨ Rename **without command/auto Rename**.\n\n"
-        "`{{ queuecmd }}` - 📊 View the bot's rename queue status.\n"
-        "`{{ setcaptioncmd }}` - 📝 Set a caption for the renamed files.\n"
-        "`{{ helpcmd }}` - 📖 Show this help message.\n"
-        "`{{ pingcmd }}` - 🎈Ping Bot.\n"
-        "`{{ infocmd }}` - 🧑‍💻 View bot info.\n"
-        "`{{ profilecmd }}` - ☄️ Your usage stats.\n"
-        "`{{ statuscmd }}` - 🗿 Bot Status.\n"
-        "`{{ statscmd }}` - 👻 Global bot stats.\n"
-        "`{{ broadcastcmd }}` - ☄️Make it go broadcast.\n"
-        "`{{ leaderboardcmd }}` - 👻 Users leaderboard.\n"
-        "`{{ setlanguagecmd }}` - 🌐 Change the bot's language."
+        "📚 **Magic Spellbook:**\n"
+        "`{{ startcmd }}` - Check if I'm alive! 💓\n"
+        "`{{ renamecmd }}` - Rename files like a boss! 🎩\n"
+        "`{{ filterscmd }}` - Customize your renaming magic! ✨\n"
+        "`{{ setthumbcmd }}` - Set a permanent thumbnail! 🖼️\n"
+        "`{{ getthumbcmd }}` - Peek at current thumbnail! 👀\n"
+        "`{{ clrthumbcmd }}` - Bye-bye thumbnail! 🗑️\n"
+        "`{{ modecmd }}` - Switch output modes:\n"
+        "   - 📝 Original format\n"
+        "   - 📂 Force document\n"
+        "   - 🎥 Media mode\n\n"
+        "   Switch rename styles:\n"
+        "   - 🏷️ Command-based\n"
+        "   - 🤖 Auto-rename\n\n"
+        "`{{ queuecmd }}` - Check rename queue 📊\n"
+        "`{{ setcaptioncmd }}` - Set fancy captions 🎨\n"
+        "`{{ helpcmd }}` - This magic book! 📖\n"
+        "`{{ pingcmd }}` - Ping-pong! 🏓\n"
+        "`{{ infocmd }}` - Bot specs! 🤖\n"
+        "`{{ profilecmd }}` - Your stats! 📈\n"
+        "`{{ statuscmd }}` - Bot vitals! 💓\n"
+        "`{{ statscmd }}` - Global numbers! 🌍\n"
+        "`{{ broadcastcmd }}` - Mega-announce! 📢\n"
+        "`{{ leaderboardcmd }}` - Top users! 🏆\n"
+        "`{{ setlanguagecmd }}` - Change language! 🌐"
     )
 
-    CURRENT_LOCALE = "🌐 **Your current language:** {{ user_locale }}"
+    CURRENT_LOCALE = "🌍 **Your language:** {{ user_locale }}"
 
