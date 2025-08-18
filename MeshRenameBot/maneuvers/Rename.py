@@ -198,36 +198,24 @@ class RenameManeuver(DefaultManeuver):
         else:
             is_force = False
 
-        # --- REVISED FIX START ---
-        # Get the user's thumbnail first.
-        thumb_path = UserDB().get_thumbnail(user_id)
+        # --- CORRECTED THUMBNAIL LOGIC START ---
+        thumb_path = None
 
-        # If a user thumbnail is set and exists, use it.
-        if thumb_path and os.path.exists(thumb_path):
-            renamelog.info("Using user's custom thumbnail.")
+        # Check if user has set a custom thumbnail
+        user_thumb_path = UserDB().get_thumbnail(user_id)
+
+        if user_thumb_path and os.path.exists(user_thumb_path):
+            # User has set a thumbnail - use it for ALL files (whether they have thumbnails or not)
+            thumb_path = user_thumb_path
+            renamelog.info("Using user's custom thumbnail (will override any existing thumbnail).")
         else:
-            # If no user thumbnail, check for an original thumbnail.
-            thumb_path = None # Reset thumb_path
-            if original_thumb:
-                try:
-                    # Download the original thumbnail and use its path.
-                    thumb_path = await self._client.download_media(original_thumb.file_id)
-                    renamelog.info("Using original file's thumbnail.")
-                except Exception:
-                    renamelog.exception("Error downloading original thumbnail.")
-            
-            # If still no thumbnail, try to generate one from the downloaded file.
-            if not thumb_path:
-                try:
-                    thumb_path = await get_thumbnail(
-                        dl_path, self._cmd_message.from_user.id, is_force
-                    )
-                    renamelog.info("Generated a new thumbnail.")
-                except Exception:
-                    renamelog.exception("Error generating thumbnail.")
+            # User hasn't set a custom thumbnail - don't add any thumbnail
+            thumb_path = None
+            renamelog.info("No user thumbnail set - skipping thumbnail addition.")
 
-        # --- REVISED FIX END ---
+        # --- CORRECTED THUMBNAIL LOGIC END ---
 
+        
         renamelog.info(thumb_path)
         renamelog.info(f"is force = {is_force}")
         await progress.edit_text(
