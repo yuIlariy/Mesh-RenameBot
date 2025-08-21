@@ -190,6 +190,4 @@ Use these commands to interact with the bot:
 
 
 
-
-## Know issue 🌋
-- Thumbnail adding not working, unable to fix it(Know how to? PM me)
+### spes 🪆
