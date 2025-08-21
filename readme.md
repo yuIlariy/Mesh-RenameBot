@@ -31,7 +31,7 @@ This bot is aimed to be **the best rename bot around**! 🏆✨
 ## Test the bots
 [Check on Telegram](https://t.me/MeshRenameBot) 🚀By Yash
 
-[Beta Bot V2](https://t.me/MeshRenameBot) 🚀By yuilariy
+[Beta Bot V2](https://t.me/MeshRenameBot) 🚀By yuilariy(`Maybe stable 🪆`)
 
 
 ---
