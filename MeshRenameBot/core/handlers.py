@@ -553,7 +553,6 @@ async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
     await client.send_track(
         translator.get(
             "TRACK_MESSAGE_ADDED_RENAME",
-            uid=self._unique_id,
             username=self._cmd_message.from_user.username,
             name=self._cmd_message.from_user.mention(style="md"),
             user_id=self._cmd_message.from_user.id,
