@@ -553,9 +553,10 @@ async def rename_handler(client: MeshRenameBot, msg: Message) -> None:
     await client.send_track(
         translator.get(
             "TRACK_MESSAGE_ADDED_RENAME",
-            username=msg.from_user.username,
-            name=msg.from_user.first_name,
-            user_id=msg.from_user.id,
+            uid=self._unique_id,
+            username=self._cmd_message.from_user.username,
+            name=self._cmd_message.from_user.mention(style="md"),
+            user_id=self._cmd_message.from_user.id,
         )
     )
     await asyncio.sleep(2)
