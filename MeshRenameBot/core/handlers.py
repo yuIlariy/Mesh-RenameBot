@@ -460,7 +460,7 @@ async def home_callback(client, callback_query):
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton("ℹ️ Info", callback_data="info")],
             [InlineKeyboardButton("🤩 Source code", url="https://github.com/yuIlariy/Mesh-RenameBot")],
-            [InlineKeyboardButton("Updates📥", url="https://t.me/modstorexd"),
+            [InlineKeyboardButton("Updates📥", url="https://t.me/OtherBs"),
              InlineKeyboardButton("Support🚀", url="https://t.me/xspes")]
         ])
     )
@@ -487,7 +487,7 @@ async def start_handler(bot: MeshRenameBot, msg: Message) -> None:
             [InlineKeyboardButton("🌐 Choose Language", callback_data="setlanguage")],
             [InlineKeyboardButton("ℹ️ Info", callback_data="info")],
             [InlineKeyboardButton("🤩 Source code", url="https://github.com/yuIlariy/Mesh-RenameBot")],
-            [InlineKeyboardButton("Updates📥", url="https://t.me/modstorexd"),
+            [InlineKeyboardButton("Updates📥", url="https://t.me/OtherBs"),
              InlineKeyboardButton("Support🚀", url="https://t.me/xspes")]
         ])
     )
