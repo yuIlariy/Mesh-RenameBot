@@ -44,8 +44,8 @@ class Config:
     OWNER_ID = [int, get_config_value("OWNER_ID", [int, 6318135266])]
 
     # Public username url or invite link of private chat
-    FORCEJOIN = [str, get_config_value("FORCEJOIN", [str, "modstorexd"])]
-    FORCEJOIN_ID = [int, get_config_value("FORCEJOIN_ID", [int, -1002000119186])]
+    FORCEJOIN = [str, get_config_value("FORCEJOIN", [str, "OtherBs"])]
+    FORCEJOIN_ID = [int, get_config_value("FORCEJOIN_ID", [int, -1002651553501])]
 
     LOG_CHANNEL = [int, get_config_value("LOG_CHANNEL", [int, -1001925329161])]
     TRACE_CHANNEL = [int, get_config_value("TRACE_CHANNEL", [int, -1002790858154])]
