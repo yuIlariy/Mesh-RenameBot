@@ -43,6 +43,9 @@ class Config:
     AUTH_USERS = [list, get_config_value("AUTH_USERS", [list, [6318135266]])]
     OWNER_ID = [int, get_config_value("OWNER_ID", [int, 6318135266])]
 
+    #Premium pyrogram stringsession 
+    PREM_SESSION = [str, get_config_value("PREM_SESSION", [str, ""])]
+
     # Public username url or invite link of private chat
     FORCEJOIN = [str, get_config_value("FORCEJOIN", [str, "OtherBs"])]
     FORCEJOIN_ID = [int, get_config_value("FORCEJOIN_ID", [int, -1002651553501])]
