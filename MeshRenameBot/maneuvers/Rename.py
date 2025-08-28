@@ -72,100 +72,6 @@ class RenameManeuver(DefaultManeuver):
             renamelog.warning(f"Error getting original thumb: {e}")
         return None
 
-    async def _send_via_premium(self, file_path, caption, progress, translator, new_file_name, markup, chat_id, is_video=False, is_audio=False, is_force=False, thumb_path=None):
-        """Send file to user using premium client for large files"""
-        try:
-            premium_client = await PremiumClientManager.get_premium_client()
-            
-            file_size = await aos.path.getsize(file_path)
-            renamelog.info(f"File size: {file_size} bytes, using premium client for user upload")
-            
-            upload_args = {
-                "chat_id": chat_id,
-                "caption": caption,
-                "progress": progress_for_pyrogram,
-                "progress_args": (
-                    translator.get("UPLOADING_THE_FILE", file_name=new_file_name),
-                    progress,
-                    time.time(),
-                    get_var("SLEEP_SECS"),
-                    self._client,
-                    self._unique_id,
-                    markup,
-                )
-            }
-            
-            if thumb_path and os.path.exists(thumb_path):
-                upload_args["thumb"] = thumb_path
-            
-            if is_audio and not is_force:
-                try:
-                    metadata = extractMetadata(createParser(file_path))
-                    duration = 0
-                    perfo = ""
-
-                    if self._media_message.audio is not None:
-                        duration = self._media_message.audio.duration
-
-                    if duration == 0 and metadata.has("duration"):
-                        duration = metadata.get("duration").seconds
-
-                    if metadata.has("author"):
-                        perfo = metadata.get("author")
-                        
-                    upload_args["duration"] = duration
-                    upload_args["performer"] = perfo
-                    upload_args["file_name"] = new_file_name
-                    return await premium_client.send_audio(file_path, **upload_args)
-                    
-                except Exception as e:
-                    renamelog.error(f"Error getting audio metadata: {e}")
-                    # Fallback to document
-                    upload_args["file_name"] = new_file_name
-                    upload_args["force_document"] = True
-                    return await premium_client.send_document(file_path, **upload_args)
-
-            elif is_video and not is_force:
-                try:
-                    width = 0
-                    height = 0
-                    duration = 0
-                    
-                    # Get dimensions from original message
-                    if self._media_message.video:
-                        width = self._media_message.video.width
-                        height = self._media_message.video.height
-                        duration = self._media_message.video.duration
-                    
-                    # Fallback to metadata extraction
-                    if width == 0 or height == 0 or duration == 0:
-                        metadata = extractMetadata(createParser(file_path))
-                        if metadata.has("duration"):
-                            duration = metadata.get("duration").seconds
-                        # For width/height, we might need more complex extraction
-                        
-                    upload_args["duration"] = duration
-                    upload_args["width"] = width
-                    upload_args["height"] = height
-                    upload_args["file_name"] = new_file_name
-                    return await premium_client.send_video(file_path, **upload_args)
-                    
-                except Exception as e:
-                    renamelog.error(f"Error getting video metadata: {e}")
-                    # Fallback to document
-                    upload_args["file_name"] = new_file_name
-                    upload_args["force_document"] = True
-                    return await premium_client.send_document(file_path, **upload_args)
-
-            else:
-                upload_args["file_name"] = new_file_name
-                upload_args["force_document"] = is_force
-                return await premium_client.send_document(file_path, **upload_args)
-                
-        except Exception as e:
-            renamelog.error(f"Premium upload to user failed: {e}")
-            return None
-
     async def execute(self) -> None:
         self._execute_pending = False
         user_id = self._cmd_message.from_user.id
@@ -365,13 +271,117 @@ class RenameManeuver(DefaultManeuver):
             use_premium = file_size > 2 * 1024 * 1024 * 1024  # 2GB threshold
             
             if use_premium and get_var("PREM_SESSION"):
-                # Upload to user using premium client for large files
-                rmsg = await self._send_via_premium(
-                    dl_path, caption, progress, translator, new_file_name, markup,
-                    self._cmd_message.chat.id, is_video, is_audio, is_force, thumb_path
-                )
-            else:
-                # Use regular client for smaller files
+                # Use premium client for large files to user
+                try:
+                    premium_client = await PremiumClientManager.get_premium_client()
+                    
+                    if is_audio and not is_force:
+                        try:
+                            metadata = extractMetadata(createParser(dl_path))
+                            perfo = ""
+                            duration = 0
+
+                            if self._media_message.audio is not None:
+                                duration = self._media_message.audio.duration
+
+                            if duration == 0 and metadata.has("duration"):
+                                duration = metadata.get("duration").seconds
+
+                            if metadata.has("author"):
+                                perfo = metadata.get("author")
+                        except:
+                            duration = 0
+                            perfo = ""
+
+                        rmsg = await premium_client.send_audio(
+                            self._cmd_message.chat.id,
+                            dl_path,
+                            file_name=new_file_name,
+                            caption=caption,
+                            duration=duration,
+                            performer=perfo,
+                            thumb=thumb_path,
+                            progress=progress_for_pyrogram,
+                            progress_args=(
+                                translator.get("UPLOADING_THE_FILE", file_name=new_file_name),
+                                progress,
+                                time.time(),
+                                get_var("SLEEP_SECS"),
+                                self._client,
+                                self._unique_id,
+                                markup,
+                            ),
+                        )
+
+                    elif is_video and not is_force:
+                        width = 0
+                        height = 0
+                        try:
+                            if self._media_message.video:
+                                width = self._media_message.video.width
+                                height = self._media_message.video.height
+
+                            metadata = extractMetadata(createParser(dl_path))
+                            if self._media_message.video is not None:
+                                duration = self._media_message.video.duration
+                            else:
+                                duration = 0
+
+                            if duration == 0 and metadata.has("duration"):
+                                duration = metadata.get("duration").seconds
+                        except:
+                            width = 0
+                            height = 0
+                            duration = 0
+
+                        rmsg = await premium_client.send_video(
+                            self._cmd_message.chat.id,
+                            dl_path,
+                            file_name=new_file_name,
+                            caption=caption,
+                            duration=duration,
+                            width=width,
+                            height=height,
+                            thumb=thumb_path,
+                            progress=progress_for_pyrogram,
+                            progress_args=(
+                                translator.get("UPLOADING_THE_FILE", file_name=new_file_name),
+                                progress,
+                                time.time(),
+                                get_var("SLEEP_SECS"),
+                                self._client,
+                                self._unique_id,
+                                markup,
+                            ),
+                        )
+
+                    else:
+                        rmsg = await premium_client.send_document(
+                            self._cmd_message.chat.id,
+                            dl_path,
+                            file_name=new_file_name,
+                            caption=caption,
+                            thumb=thumb_path,
+                            force_document=is_force,
+                            progress=progress_for_pyrogram,
+                            progress_args=(
+                                translator.get("UPLOADING_THE_FILE", file_name=new_file_name),
+                                progress,
+                                time.time(),
+                                get_var("SLEEP_SECS"),
+                                self._client,
+                                self._unique_id,
+                                markup,
+                            ),
+                        )
+                except Exception as e:
+                    renamelog.error(f"Premium upload failed: {e}")
+                    # Fall back to regular client if premium fails
+                    use_premium = False
+                    renamelog.info("Falling back to regular client")
+
+            # If not using premium or premium failed, use regular client
+            if not use_premium:
                 if is_audio and not is_force:
                     try:
                         metadata = extractMetadata(createParser(dl_path))
