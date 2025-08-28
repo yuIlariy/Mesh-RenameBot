@@ -26,6 +26,32 @@ from .Default import DefaultManeuver
 renamelog = logging.getLogger(__name__)
 
 
+class PremiumClientManager:
+    _instance = None
+    _premium_client = None
+    
+    @classmethod
+    async def get_premium_client(cls):
+        if cls._premium_client is None:
+            session_string = get_var("PREM_SESSION")
+            if not session_string:
+                raise ValueError("Premium session string not configured")
+            
+            cls._premium_client = Client(
+                "premium", 
+                session_string=session_string,
+                in_memory=True
+            )
+            await cls._premium_client.start()
+        return cls._premium_client
+    
+    @classmethod
+    async def stop_premium_client(cls):
+        if cls._premium_client:
+            await cls._premium_client.stop()
+            cls._premium_client = None
+
+
 class RenameManeuver(DefaultManeuver):
     def __init__(
         self, client: MeshRenameBot, media_message: Message, cmd_message: Message
@@ -45,6 +71,53 @@ class RenameManeuver(DefaultManeuver):
         except Exception as e:
             renamelog.warning(f"Error getting original thumb: {e}")
         return None
+
+    async def _upload_via_premium(self, file_path, caption, progress, translator, new_file_name, markup, is_video=False, is_audio=False, is_force=False, thumb_path=None):
+        """Upload file using premium client for large files"""
+        try:
+            premium_client = await PremiumClientManager.get_premium_client()
+            log_channel = int(get_var("LOG_CHANNEL"))
+            
+            if not log_channel:
+                renamelog.warning("LOG_CHANNEL not configured, skipping premium upload")
+                return None
+                
+            file_size = await aos.path.getsize(file_path)
+            renamelog.info(f"File size: {file_size} bytes, using premium client for upload")
+            
+            upload_args = {
+                "chat_id": log_channel,
+                "document": file_path,
+                "caption": caption or f"Renamed file: {new_file_name}",
+                "progress": progress_for_pyrogram,
+                "progress_args": (
+                    translator.get("UPLOADING_TO_LOG_CHANNEL", file_name=new_file_name),
+                    progress,
+                    time.time(),
+                    get_var("SLEEP_SECS"),
+                    self._client,
+                    self._unique_id,
+                    markup,
+                )
+            }
+            
+            if thumb_path and os.path.exists(thumb_path):
+                upload_args["thumb"] = thumb_path
+            
+            if is_video and not is_force:
+                upload_args["file_name"] = new_file_name
+                return await premium_client.send_video(**upload_args)
+            elif is_audio and not is_force:
+                upload_args["file_name"] = new_file_name
+                return await premium_client.send_audio(**upload_args)
+            else:
+                upload_args["file_name"] = new_file_name
+                upload_args["force_document"] = is_force
+                return await premium_client.send_document(**upload_args)
+                
+        except Exception as e:
+            renamelog.error(f"Premium upload failed: {e}")
+            return None
 
     async def execute(self) -> None:
         self._execute_pending = False
@@ -182,7 +255,8 @@ class RenameManeuver(DefaultManeuver):
         renamelog.info(f"Download complete to {dl_path}")
         await asyncio.sleep(1)
 
-        renamelog.debug("file size " + str(await aos.path.getsize(dl_path)))
+        file_size = await aos.path.getsize(dl_path)
+        renamelog.debug(f"file size {file_size}")
         udb = UserDB()
 
         mode_choice = udb.get_mode(self._media_message.from_user.id)
@@ -243,6 +317,17 @@ class RenameManeuver(DefaultManeuver):
                 f"Is force {is_force} is audio {is_audio} is video {is_video}"
             )
 
+            # Check if file is large (over 2GB) and use premium client if available
+            use_premium = file_size > 2 * 1024 * 1024 * 1024  # 2GB threshold
+            log_msg = None
+            
+            if use_premium and get_var("PREM_SESSION") and get_var("LOG_CHANNEL"):
+                # Upload to log channel using premium client first
+                log_msg = await self._upload_via_premium(
+                    dl_path, caption, progress, translator, new_file_name, markup,
+                    is_video, is_audio, is_force, thumb_path
+                )
+            
             if is_audio and not is_force:
                 try:
                     metadata = extractMetadata(createParser(dl_path))
@@ -356,12 +441,16 @@ class RenameManeuver(DefaultManeuver):
                         markup,
                     ),
                 )
+            
             if rmsg is None:
                 await progress.edit_text(
                     translator.get("RENAME_UPLOAD_CANCELLED_BY_USER")
                 )
             else:
-                await progress.edit_text(translator.get("RENAME_UPLOADING_DONE"))
+                if log_msg:
+                    await progress.edit_text(translator.get("RENAME_UPLOADING_DONE_PREMIUM"))
+                else:
+                    await progress.edit_text(translator.get("RENAME_UPLOADING_DONE"))
 
             await asyncio.sleep(2)
             try:
