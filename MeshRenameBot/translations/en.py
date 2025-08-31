@@ -37,8 +37,8 @@ class EnglishTranslations:
 
     RENAME_NOFLTR_NONAME = (
         "📝 **Name your masterpiece!**\n"
-        "```/rename shiny_new_name.ext```\n"
-        "or play with `/filters` 🎨"
+        "🧩 Example: `/rename shiny_new_name.ext`\n"
+        "or play with /filters 🎨 for Auto pick filters"
     )
 
     RENAME_CANCEL = "❌ Nah, let's cancel this ✌️"
