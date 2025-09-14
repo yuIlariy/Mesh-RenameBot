@@ -51,13 +51,13 @@ class EnglishTranslations:
     RENAME_CANCEL_BY_USER = "🙅‍♂️ **You waved the cancel wand!** ✨"
 
     FLTR_ADD_LEFT_STR = "➕ Added Filter: `<code>{{ text_1 }}</code>` **to the LEFT**."
-    FLTR_ADD_RIGHT_STR = "(
+    FLTR_ADD_RIGHT_STR = (
         "➕ Addition Filter: `<code>{{ text_1 }}</code>` **to the RIGHT**."
-    )"
+    )
     FLTR_RM_STR = "❌ Remove Filter: `<code>{{ text_1 }}</code>`."
-    FLTR_REPLACE_STR = "(
+    FLTR_REPLACE_STR = (
         "🔄 Replace Filter: `<code>{{ text_1 }}</code>` → `<code>{{ text_2 }}</code>`."
-    )"
+    )
 
     CURRENT_FLTRS = "🎛️ **Your Filter Dashboard:**"
     ADD_FLTR = "➕ Add Filter"
