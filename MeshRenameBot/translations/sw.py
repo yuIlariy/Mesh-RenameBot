@@ -237,7 +237,7 @@ class SwahiliTranslations:
         "    - 🎥 Media\n\n"
         "    🔄 Hali za kubadilisha jina:\n"
         "    - 🏷 Kwa amri\n"
-        "    - ✨ Bila amri\n\n"
+        "    - ✨ Bila amri (lazima uongeze /filters)!\n\n"
         "`{{ queuecmd }}` - 📊 Angalia foleni\n"
         "`{{ setcaptioncmd }}` - 📝 Weka maelezo\n"
         "`{{ helpcmd }}` - 📖 Msaada\n"
