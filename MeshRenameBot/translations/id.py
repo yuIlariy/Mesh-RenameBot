@@ -3,254 +3,274 @@ import random
 
 @dataclass
 class IndonesianTranslations:
-    LANGUAGE_NAME = "🇮🇩 Bahasa Indonesia"
+    LANGUAGE_NAME = "🇮🇩 Indonesia"
     LANGUAGE_CODE = "id"
 
-    WRONG_VALUE_ERROR = "❌ Nilai tidak valid dimasukkan untuk variabel {{ variable_name }}."
+    WRONG_VALUE_ERROR = "❌ Ups! Nilai tidak valid untuk {{ variable_name }}. Coba lagi! 🤷‍♀️"
 
     START_MSG = (
-        "Halo! 👋\n"
-        "Saya **Auto Rename Bot**, asisten Anda untuk mengganti nama file di Telegram dengan mudah.\n\n"
-        "✨ **Fitur Utama:**\n"
-        "- Ganti nama file dengan nama dan ekstensi kustom.\n"
-        "- Cepat, aman, dan mudah digunakan.\n"
-        "- Mendukung berbagai jenis file.\n\n"
-        "Cukup kirimkan saya file, dan saya akan memandu Anda melalui proses penggantian nama!\n\n"
-        "Mari mulai! Gunakan /mode untuk mengaktifkan penggantian nama otomatis, **Ganti nama tanpa perintah**🚀\n"
-        "Kirim /help untuk info lebih lanjut.\n\n"
-        "🚀 **Diberdayakan oleh** [NAm](https://t.me/xspes)"
+    "✨ **Hai penyihir file!** ✨\n\n"
+    "Saya adalah **Auto Rename Bot** 🪄, asisten ajaibmu untuk mengganti nama file!\n\n"
+    "🔥 **Mengapa kamu akan menyukai saya:**\n"
+    "- Ganti nama file dengan ✨ kilau dan presisi\n"
+    "- Super cepat ⚡ dan aman 🔒\n"
+    "- Mendukung SEMUA jenis file! 📂🎵🎬\n\n"
+    "Cukup kirimkan saya file dan mari kita buat keajaiban! 🎩\n\n"
+    "🚀 **Tip Pro:** Gunakan /mode untuk mode ninja ganti nama otomatis (harus tambahkan /filters)!\n"
+    "Butuh bantuan? /help siap membantu!\n\n"
+    "🛸 **Didukung oleh** [NAm](https://t.me/xspes)"
     )
 
-    CANCEL_MESSAGE = "⚠️ Penggantian nama telah **dibatalkan**. Akan segera diperbarui."
+    CANCEL_MESSAGE = "❗ Penggantian nama dibatalkan! Puf! ✨ (Pembaruan segera datang!)"
 
     RENAME_NO_FILTER_MATCH = (
-        "🚫 **TIDAK ADA FILTER YANG COCOK - MEMBATALKAN PENGGANTIAN NAMA**\n\n"
-        "🔍 Menggunakan filter untuk mengganti nama karena tidak ada nama yang ditentukan.\n"
-        "👻 Kelola filter Anda dengan /filters."
+        "🔮 **Ups! Tidak ada filter yang cocok!**\n\n"
+        "Mencoba menggunakan filter tetapi tidak menemukan apa pun 🎩🐇\n"
+        "Kelola filter Anda dengan /filters ✏️"
     )
 
     RENAME_FILTER_MATCH_USED = (
-        "✅ Menggunakan filter untuk mengganti nama karena tidak ada nama yang ditentukan.\n"
-        "👻 Kelola filter Anda dengan /filters."
+        "🎯 **Kekuatan filter diaktifkan!**\n"
+        "Menggunakan filter karena Anda tidak menentukan nama\n"
+        "Sesuaikan dengan /filters ⚙️"
     )
 
     RENAME_NOFLTR_NONAME = (
-        "✍️ Masukkan nama file baru dalam format:\n"
-        "```/rename nama_file_baru.ekstensi```\n"
-        "atau gunakan `/filters` untuk mengatur filter penggantian nama."
+        "📝 **TIDAK ada filter ditemukan!**\n\n"
+        "Silakan tambahkan /filters 🎨 untuk filter ganti nama otomatis."
     )
 
-    RENAME_CANCEL = "❌ Batalkan penggantian nama ini."
+    RENAME_CANCEL = "❌ Tidak, batalkan saja ✌️"
 
-    RENAMING_FILE = "🔄 Mengganti nama file... Harap tunggu."
+    RENAMING_FILE = "🌀 **Transformasi file sedang berlangsung...**"
 
-    DL_RENAMING_FILE = "📥 Mengunduh file... Harap tunggu."
+    DL_RENAMING_FILE = "📥 **Mengunduh harta digital Anda...**"
 
-    RENAME_ERRORED_REPORT = "❗ Terjadi kesalahan saat mengunduh. Laporkan masalah ini."
+    RENAME_ERRORED_REPORT = "💥 **Aduh! Sesuatu rusak!** Tolong laporkan ini 🚨"
 
-    RENAME_CANCEL_BY_USER = "🚫 **Dibatalkan oleh pengguna.**"
+    RENAME_CANCEL_BY_USER = "🙅‍♂️ **Anda mengayunkan tongkat pembatalan!** ✨"
 
-    FLTR_ADD_LEFT_STR = "➕ Menambahkan Filter: `<code>{{ text_1 }}</code>` **ke KIRI**."
-    FLTR_ADD_RIGHT_STR = "➕ Menambahkan Filter: `<code>{{ text_1 }}</code>` **ke KANAN**."
-    FLTR_RM_STR = "❌ Menghapus Filter: `<code>{{ text_1 }}</code>`."
-    FLTR_REPLACE_STR = "🔄 Mengganti Filter: `<code>{{ text_1 }}</code>` → `<code>{{ text_2 }}</code>`."
+    FLTR_ADD_LEFT_STR = "➕ Filter ditambahkan: `<code>{{ text_1 }}</code>` **ke KIRI**."
+    FLTR_ADD_RIGHT_STR = (
+        "➕ Filter ditambahkan: `<code>{{ text_1 }}</code>` **ke KANAN**."
+    )
+    FLTR_RM_STR = "❌ Filter dihapus: `<code>{{ text_1 }}</code>`."
+    FLTR_REPLACE_STR = (
+        "🔄 Filter diganti: `<code>{{ text_1 }}</code>` → `<code>{{ text_2 }}</code>`."
+    )
 
-    CURRENT_FLTRS = "⚙️ **Filter Anda Saat Ini:**"
+    CURRENT_FLTRS = "🎛️ **Dasbor Filter Anda:**"
     ADD_FLTR = "➕ Tambah Filter"
     RM_FLTR = "❌ Hapus Filter"
 
     FILTERS_INTRO = (
         "🛠 **Panduan Filter:**\n"
         "Ada 3 jenis filter:\n\n"
-        "🔄 **Filter Ganti:** Ganti kata tertentu dengan kata lain.\n"
-        "➕ **Filter Tambah:** Tambahkan kata di awal atau akhir.\n"
-        "❌ **Filter Hapus:** Hapus kata dari nama file."
+        "🔄 **Filter Pengganti:** Ganti kata tertentu dengan kata lain.\n"
+        "➕ **Filter Penambahan:** Tambahkan kata di awal atau akhir.\n"
+        "❌ **Filter Penghapusan:** Hapus kata dari nama file."
     )
 
-    ADD_REPLACE_FLTR = "➕ Tambah Filter Ganti"
-    ADD_ADDITION_FLTR = "➕ Tambah Filter Tambah"
-    ADD_REMOVE_FLTR = "➕ Tambah Filter Hapus"
+    ADD_REPLACE_FLTR = "➕ Tambah Filter Pengganti"
+    ADD_ADDITION_FLTR = "➕ Tambah Filter Penambahan"
+    ADD_REMOVE_FLTR = "➕ Tambah Filter Penghapusan"
     BACK = "🔙 Kembali"
 
-    REPALCE_FILTER_INIT_MSG = "✍️ Kirim format: `<code>yang_diganti | pengganti</code>` atau `/ignore` untuk kembali."
+    REPALCE_FILTER_INIT_MSG = "✍️ Kirim format: `<code>apa_yang_diganti | pengganti</code>` atau /ignore untuk kembali."
 
-    NO_INPUT_FROM_USER = "⚠️ Tidak ada input yang diterima dari Anda."
-    INPUT_IGNORE = "✅ **Diabaikan**."
-    WRONG_INPUT_FORMAT = "❌ Format tidak valid. Periksa format yang diberikan."
-    REPLACE_FILTER_SUCCESS = "✅ **Filter ganti ditambahkan:**\n`'{{ text_1 }}'` → `'{{ text_2 }}'`"
-
-    ADDITION_FILTER_INIT_MSG = (
-        "✍️ Masukkan teks yang akan ditambahkan dalam `<code>|</code>`\n"
-        "Contoh: `<code>| teks yang ditambahkan |</code>`\n"
-        "atau `/ignore` untuk kembali."
+    NO_INPUT_FROM_USER = "🤷‍♂️ **Jangkrik...** Tidak ada input yang terdeteksi!"
+    INPUT_IGNORE = "👍 **Diabaikan!**"
+    WRONG_INPUT_FORMAT = "🤦‍♂️ **Ups!** Format salah! Periksa format yang diberikan dan coba lagi!"
+    REPLACE_FILTER_SUCCESS = (
+        "✅ **Filter pengganti ditambahkan:**\n" "`'{{ text_1 }}'` → `'{{ text_2 }}'`"
     )
 
-    ADDITION_FILTER_SUCCESS_LEFT = "✅ Menambahkan filter: `<code>{{ text_1 }}</code>` **ke KIRI**."
-    ADDITION_FILTER_SUCCESS_RIGHT = "✅ Menambahkan filter: `<code>{{ text_1 }}</code>` **ke KANAN**."
+    ADDITION_FILTER_INIT_MSG = (
+        "✍️ Masukkan teks untuk ditambahkan di dalam `<code>|</code>`\n"
+        "Contoh: `<code>| teks untuk ditambahkan |</code>`\n"
+        "atau /ignore untuk kembali."
+    )
 
-    ADDITION_LEFT = "🔄 Tambah ke Kiri"
-    ADDITION_RIGHT = "🔄 Tambah ke Kanan"
+    ADDITION_FILTER_SUCCESS_LEFT = (
+        "✅ Filter ditambahkan: `<code>{{ text_1 }}</code>` **ke KIRI**."
+    )
+    ADDITION_FILTER_SUCCESS_RIGHT = (
+        "✅ Filter ditambahkan: `<code>{{ text_1 }}</code>` **ke KANAN**."
+    )
 
-    ADDITION_POSITION_PROMPT = "📍 **Di mana Anda ingin menambahkan teks?**"
+    ADDITION_LEFT = "🔄 Penambahan ke KIRI"
+    ADDITION_RIGHT = "🔄 Penambahan ke KANAN"
 
-    REMOVE_FILTER_INIT_MSG = "✍️ Masukkan teks yang ingin dihapus atau `/ignore` untuk kembali."
+    ADDITION_POSITION_PROMPT = "🧙‍♂️ **Di mana Anda ingin menambahkan teks?**"
 
-    REMOVE_FILTER_SUCCESS = "✅ **Filter hapus ditambahkan:** `<code>{{ text_1 }}</code>` akan dihapus."
+    REMOVE_FILTER_INIT_MSG = (
+        "✍️ Masukkan teks yang ingin Anda hapus atau /ignore untuk kembali."
+    )
+
+    REMOVE_FILTER_SUCCESS = (
+        "✅ **Filter penghapusan ditambahkan:** `<code>{{ text_1 }}</code>` akan dihapus."
+    )
 
     RENAME_THEMES_DOWNLOADING = [
-        "✅ Unduhan selesai. Memulai ajaib penggantian nama...",
-        "📦 File diterima! Siap memberikan nama baru...",
-        "🪄 Unduhan selesai. ✨ Mari mulai ritual penggantian nama...",
-        "🔧 Data diperoleh. Mesin penggantian nama menyala...",
-        "💾 Disimpan dan disegel. Sekarang ganti nama dengan gaya...",
+        "🎩 Unduhan selesai! Mempersiapkan keajaiban...",
+        "📦 File diperoleh! Siap untuk sihir penamaan...",
+        "✨ Unduhan berhasil! Mantra dimulai...",
+        "⚡ Data diamankan! Mesin pengganti nama menyala...",
+        "💾 File ditangkap! Siap untuk kelahiran kembali yang mulia..."
     ]
 
     RENAME_THEMES_UPLOADING = [
-        "✅ Semua telah diganti nama dan siap! Unggahan selesai.",
-        "🚀 File berhasil diganti nama dan diluncurkan.",
-        "📤 Unggahan selesai. Karya Anda dengan nama baru sudah live!",
-        "🌟 Penggantian nama file selesai. Terkirim ke kosmos!",
-        "📁 Tugas selesai. File naik dengan nama baru.",
+        "🚀 **Blast off!** File yang diganti nama diluncurkan!",
+        "🎉 **Ta-da!** File dengan nama barumu sudah siap!",
+        "📤 Unggahan selesai! Nikmati mahakaryamu!",
+        "🌟 Metamorfosis file selesai!",
+        "🏁 Balapan selesai! File Anda telah melewati garis finish!"
     ]
 
     RENAME_THEMES_DOWNLOAD_CANCELLED = [
-        "🛑 Unduhan dihentikan. Mimpi penggantian nama memudar...",
-        "🚫 Anda menghentikannya. Unduhan dibatalkan.",
-        "❌ Operasi dibatalkan di tengah penerbangan. Tidak ada file yang diambil.",
-        "📴 Penggantian nama dibatalkan selama pengunduhan. Misi dibatalkan.",
-        "👋 Pengguna memilih keluar di tengah pengunduhan. Selamat tinggal, file.",
+        "🛑 **Abort!** Mantra unduhan terganggu!",
+        "🚧 Ups! Anda menghentikan kereta unduhan!",
+        "🎭 Pertunjukan berakhir sebelum dimulai!",
+        "📵 Koneksi unduhan dihentikan!",
+        "👋 Anda meninggalkan unduhan! Selamat tinggal!"
     ]
 
     RENAME_THEMES_UPLOAD_CANCELLED = [
-        "🛑 Unggahan dibatalkan. File tetap lokal dan tidak dicintai.",
-        "🚫 Penggantian nama dibalikkan. Unggahan dihentikan.",
-        "❌ Tahap akhir terganggu. Penggantian nama ditinggalkan.",
-        "📴 Unggahan diveto. File yang diganti nama tidak kemana-mana.",
-        "👋 Pengguna berkata 'tidak' selama pengunggahan. File pensiun.",
+        "✋ **Tunggu!** Unggahan berhenti di tengah penerbangan!",
+        "🚫 Tidak ada pengiriman hari ini! Unggahan dibatalkan!",
+        "🌪️ Tornado unggahan menghilang!",
+        "📴 Koneksi hilang dalam kekosongan!",
+        "🤷‍♂️ Anda berubah pikiran! Unggahan dibatalkan!"
     ]
 
-    REPLY_TO_MEDIA = "📂 Balas `/rename` ke file media."
+    REPLY_TO_MEDIA = "📎 **Psst!** Balas `/rename` ke file!"
 
     RENAME_DOWNLOADING_DONE = random.choice(RENAME_THEMES_DOWNLOADING)
     RENAME_UPLOADING_DONE = random.choice(RENAME_THEMES_UPLOADING)
     RENAME_CANCEL_BY_USER = random.choice(RENAME_THEMES_DOWNLOAD_CANCELLED)
     RENAME_UPLOAD_CANCELLED_BY_USER = random.choice(RENAME_THEMES_UPLOAD_CANCELLED)
-    RENAME_ERRORED = "❗ Proses penggantian nama mengalami kesalahan."
+    RENAME_ERRORED = "💥 **Kaboom!** Mantra penggantian nama gagal!"
 
-    DOWNLOADING_THE_FILE = "📥 Mengunduh file"
-    UPLOADING_THE_FILE = "📤 Mengunggah file: **{{ new_file_name }}**"
+    DOWNLOADING_THE_FILE = "📥 **Mengambil file Anda...**"
+    UPLOADING_THE_FILE = "📤 **Meluncurkan:** `{{ new_file_name }}` 🚀"
 
     TRACK_MESSAGE_EXECUTION_START = (
-        "🚀 **Eksekusi Dimulai untuk Tugas Penggantian Nama**\n"
-        "🆔 ID Tugas: `{{ uid }}`\n\n"
-        "👤 **Username:** @{{ username }}\n"
-        "📛 **Nama:** {{ name }}\n"
-        "🆔 **ID Pengguna:** `<code>{{ user_id }}</code>`\n"
-        "📂 **Nama File:** `<code>{{ file_name }}</code>`"
+        "🚀 **Misi Penggantian Nama Dimulai**\n"
+        "🆔 ID Misi: `{{ uid }}`\n\n"
+        "👤 **Agen:** @{{ username }}\n"
+        "📛 **Nama Kode:** {{ name }}\n"
+        "🪪 **ID:** `{{ user_id }}`\n"
+        "📜 **File:** `{{ file_name }}`\n\n"
+        "`⚡ Hyperdrive diaktifkan!`"
     )
     
     TRACK_MESSAGE_ADDED_RENAME = (
-        "✅ **Tugas Penggantian Nama Ditambahkan**\n\n"
-        "👤 **Username:** @{{ username }}\n"
-        "📛 **Nama:** {{ name }}\n"
-        "🆔 **ID Pengguna:** `<code>{{ user_id }}</code>`"
+        "📥 **Misi Penggantian Nama Antri**\n\n"
+        "👤 **Agen:** @{{ username }}\n"
+        "📛 **Nama Kode:** {{ name }}\n"
+        "🪪 **ID:** `{{ user_id }}`\n\n"
+        "`⏳ Menunggu penyebaran...`"
     )
 
     CAPTION_FOOT_NOTE = (
-        "☄️ **CATATAN:** Anda dapat mengatur caption menggunakan `/setcaption` diikuti dengan teks yang diinginkan.\n"
-        "📂 Gunakan `<code>{file_name}</code>` untuk secara dinamis menyisipkan nama file yang diganti dalam caption."
+        "💡 **Tip Pro:** Gunakan /setcaption untuk menambah gaya!\n"
+        "✨ Gunakan `/setcaption {file_name}` untuk mengisi otomatis nama file di keterangan!"
     )
 
-    DELETE_CAPTION = "🗑 Hapus Caption"
-    CLOSE = "❌ Tutup"
+    DELETE_CAPTION = "🗑️ Hapus Keterangan"
+    CLOSE = "🚪 Keluar"
 
-    CAPTION_CURRENT = "📝 **Caption Anda Saat Ini:** {{ caption }}"
-    CAPTION_NOT_SET = "⚠️ **Tidak ada caption yang diatur.**"
-    CAPTION_SET = "✅ **Caption diperbarui menjadi:** {{ caption }}"
-    CAPTION_DELETED = "🗑 **Caption berhasil dihapus.**"
+    CAPTION_CURRENT = "📝 **Keterangan Saat Ini:** {{ caption }}"
+    CAPTION_NOT_SET = "🫗 **Keterangan kosong!** Sangat sepi..."
+    CAPTION_SET = "✅ **Keterangan Baru:** {{ caption }}"
+    CAPTION_DELETED = "🗑️ **Keterangan berhasil dihapus.**"
 
     RENAME_ADDED_TO_QUEUE = (
-        "📥 **Tugas Penggantian Nama Ditambahkan ke Antrian**\n"
-        "🆔 **DC ID:** {{ dc_id }}\n"
-        "👻 **Media ID:** {{ media_id }}"
+        "📊 **Penggantian Nama Antri**\n"
+        "🆔 **ID DC:** {{ dc_id }}\n"
+        "📦 **ID Media:** {{ media_id }}\n\n"
+        "`⏳ Sabar, padawan muda...`"
     )
 
     RENAME_QUEUE_STATUS = (
-        "📊 **Status Antrian Penggantian Nama:**\n"
-        "☄️ **Total Tugas dalam Antrian:** {{ total_tasks }}\n"
-        "⚡ **Kapasitas Antrian:** {{ queue_capacity }}\n"
+        "📈 **Statistik Antrian:**\n"
+        "📊 **Total Tugas:** {{ total_tasks }}\n"
+        "⚡ **Kapasitas:** {{ queue_capacity }}\n"
         "⏳ **Sedang Diproses:** {{ current_task }}"
     )
 
     RENAME_QUEUE_USER_STATUS = (
         "{% if is_executing %}\n"
-        "⚡ **Tugas Anda Sedang Dieksekusi**\n"
+        "⚡ **File Anda sedang disihir!**\n"
         "🆔 **ID Tugas:** {{ task_id }}\n"
         "{% endif %}"
         "{% if is_pending %}\n"
-        "⏳ **Posisi Tugas Anda dalam Antrian:** {{ task_number }}\n"
+        "⏳ **Posisi Anda dalam antrian:** {{ task_number }}\n"
         "🆔 **ID Tugas:** {{ task_id }}\n"
         "{% endif %}"
     )
 
-    USER_KICKED = "👻 **Anda telah dikeluarkan dari obrolan. Anda tidak dapat menggunakan bot ini.**"
-    USER_NOT_PARTICIPANT = "👻 **Bergabunglah dengan obrolan yang diperlukan untuk menggunakan bot ini.**"
-    JOIN_CHANNEL = "🔗 Gabung Channel Update"
+    USER_KICKED = "👢 **Anda telah diusir!** Tidak ada bot untuk Anda!"
+    USER_NOT_PARTICIPANT = (
+        "🔒 **Peringatan Klub Rahasia!**\n\n"
+        "Bergabunglah dengan saluran kami untuk membuka keajaiban!\n\n"
+        "`🦄 Hanya unicorn setelah titik ini`"
+    )
+    
+    JOIN_CHANNEL = "🔗 Bergabung dengan Klub Rahasia"
 
     MODE_INITIAL_MSG = (
-        "📂 **Mode Output File:**\n\n"
-        "1️⃣ **Format yang sama seperti dikirim.**"
+        "🎛️ **Pemilih Mode Keluaran:**\n\n"
+        "1️⃣ **Pertahankan format asli**"
         "{% if mode == udb.MODE_SAME_AS_SENT %} ✅{% endif %}\n"
-        "2️⃣ **Paksa sebagai Dokumen.**"
+        "2️⃣ **Paksa mode dokumen**"
         "{% if mode == udb.MODE_AS_DOCUMENT %} ✅{% endif %}\n"
-        "3️⃣ **Unggah sebagai Media Umum.**"
+        "3️⃣ **Mode media umum**"
         "{% if mode == udb.MODE_AS_GMEDIA %} ✅{% endif %}\n\n"
-        "👻 **Pilih mode penggantian nama:**\n"
-        "🅰️ **Ganti nama dengan perintah.**"
+        "✨ **Gaya Penggantian Nama:**\n"
+        "🅰️ **Penggantian nama perintah**"
         "{% if command_mode == udb.MODE_RENAME_WITH_COMMAND %} ✅{% endif %}\n"
-        "🅱️ **Ganti nama tanpa perintah.**"
+        "🅱️ **Penggantian nama otomatis**"
         "{% if command_mode == udb.MODE_RENAME_WITHOUT_COMMAND %} ✅{% endif %}"
     )
 
-    MODE_SET_0 = "1️⃣"
-    MODE_SET_1 = "2️⃣"
-    MODE_SET_2 = "3️⃣"
-    COMMAND_MODE_SET_3 = "🅰️"
-    COMMAND_MODE_SET_4 = "🅱️"
+    MODE_SET_0 = "1️⃣ Mode OG"
+    MODE_SET_1 = "2️⃣ Mode Dokumen"
+    MODE_SET_2 = "3️⃣ Mode Media"
+    COMMAND_MODE_SET_3 = "🅰️ Perintah"
+    COMMAND_MODE_SET_4 = "🅱️ Otomatis"
 
-    THUMB_REPLY_TO_MEDIA = "📸 Balas ke gambar untuk mengaturnya sebagai thumbnail."
-    THUMB_SET_SUCCESS = "✅ **Thumbnail berhasil diatur.**"
-    THUMB_NOT_FOUND = "⚠️ **Thumbnail Tidak Ditemukan.**"
-    THUMB_CLEARED = "🗑 **Thumbnail berhasil dihapus.**"
+    THUMB_REPLY_TO_MEDIA = "🖼️ **Balas ke gambar** untuk mengatur sebagai thumbnail"
+    THUMB_SET_SUCCESS = "✅ **Thumbnail dikunci!**"
+    THUMB_NOT_FOUND = "🕵️‍♂️ **Tidak ada thumbnail yang terdeteksi!**"
+    THUMB_CLEARED = "🧹 **Thumbnail disapu bersih!**"
 
     HELP_STR = (
-        "📖 **Perintah Bot:**\n"
-        "`{{ startcmd }}` - ✅ Periksa apakah bot sedang berjalan.\n"
-        "`{{ renamecmd }}` - ✍️ Balas ke file media dengan `/rename namafile.ekstensi` untuk mengganti namanya.\n"
-        "`{{ filterscmd }}` - ⚙️ Kelola filter penggantian nama Anda.\n"
-        "`{{ setthumbcmd }}` - 📷 Atur thumbnail permanen (balas ke gambar).\n"
-        "`{{ getthumbcmd }}` - 📸 Dapatkan thumbnail yang saat ini diatur.\n"
-        "`{{ clrthumbcmd }}` - ❌ Hapus thumbnail yang diatur.\n"
-        "`{{ modecmd }}` - 🔄 Beralih antara 3 mode output:\n"
-        "    - 📝 Format yang sama seperti dikirim.\n"
-        "    - 📂 Paksa sebagai Dokumen.\n"
-        "    - 🎥 Media Umum (video/audio yang dapat di-stream).\n\n"
-        "    🔄 Beralih antara mode penggantian nama:\n"
-        "    - 🏷 Ganti nama **dengan perintah**.\n"
-        "    - ✨ Ganti nama **tanpa perintah/ganti nama otomatis**.\n\n"
-        "`{{ queuecmd }}` - 📊 Lihat status antrian penggantian nama bot.\n"
-        "`{{ setcaptioncmd }}` - 📝 Atur caption untuk file yang diganti nama.\n"
-        "`{{ helpcmd }}` - 📖 Tampilkan pesan bantuan ini.\n"
-        "`{{ pingcmd }}` - 🎈 Ping Bot.\n"
-        "`{{ infocmd }}` - 🧑‍💻 Lihat info bot.\n"
-        "`{{ profilecmd }}` - ☄️ Statistik penggunaan Anda.\n"
-        "`{{ statuscmd }}` - 🗿 Status Bot.\n"
-        "`{{ statscmd }}` - 👻 Statistik global bot.\n"
-        "`{{ broadcastcmd }}` - ☄️ Buat siaran.\n"
-        "`{{ leaderboardcmd }}` - 👻 Papan peringkat pengguna.\n"
-        "`{{ setlanguagecmd }}` - 🌐 Ubah bahasa bot."
+        "📚 **Buku Mantra Ajaib:**\n"
+        "`{{ startcmd }}` - Periksa apakah saya masih hidup! 💓\n"
+        "`{{ renamecmd }}` - Ganti nama file seperti bos! 🎩\n"
+        "`{{ filterscmd }}` - Sesuaikan filter penggantian nama Anda! ✨\n"
+        "`{{ setthumbcmd }}` - Atur thumbnail permanen! 🖼️\n"
+        "`{{ getthumbcmd }}` - Lihat thumbnail saat ini! 👀\n"
+        "`{{ clrthumbcmd }}` - Hapus thumbnail! 🗑️\n"
+        "`{{ modecmd }}` - Ubah mode keluaran:\n"
+        "   - 📝 Format asli\n"
+        "   - 📂 Paksa dokumen\n"
+        "   - 🎥 Mode media\n\n"
+        "   Ubah gaya penggantian nama:\n"
+        "   - 🏷️ Berbasis perintah\n"
+        "   - 🤖 Penggantian nama otomatis (harus tambahkan /filters)\n\n"
+        "`{{ queuecmd }}` - Periksa antrian penggantian nama 📊\n"
+        "`{{ setcaptioncmd }}` - Atur keterangan mewah 🎨\n"
+        "`{{ helpcmd }}` - Buku ajaib ini! 📖\n"
+        "`{{ pingcmd }}` - Ping-pong! 🏓\n"
+        "`{{ infocmd }}` - Spesifikasi bot! 🤖\n"
+        "`{{ profilecmd }}` - Statistik Anda! 📈\n"
+        "`{{ statuscmd }}` - Tanda vital bot! 💓\n"
+        "`{{ statscmd }}` - Angka global! 🌍\n"
+        "`{{ broadcastcmd }}` - Mega-pengumuman! 📢\n"
+        "`{{ leaderboardcmd }}` - Pengguna teratas! 🏆\n"
+        "`{{ setlanguagecmd }}` - Ubah bahasa! 🌐"
     )
 
-    CURRENT_LOCALE = "🌐 **Bahasa Anda saat ini:** {{ user_locale }}"
-
-
+    CURRENT_LOCALE = "🌍 **Bahasa Anda:** {{ user_locale }}"
