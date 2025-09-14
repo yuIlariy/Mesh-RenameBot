@@ -16,7 +16,7 @@ class SwahiliTranslations:
         "- Haraka, salama na rahisi kutumia\n"
         "- Inasaidia aina nyingi za faili\n\n"
         "Tuma faili kwangu nami nitakuongoza katika mchakato!\n\n"
-        "Tuanze! Tumia /mode kuwezesha kubadilisha jina kiotomatiki\n"
+        "Tumia /mode kuwezesha kubadilisha jina kiotomatiki (lazima uongeze /filters)!\n"
         "Tuma /help kujifunza zaidi.\n\n"
         "🚀 **Imetengenezwa na** [NAm](https://t.me/xspes)"
     )
@@ -35,9 +35,9 @@ class SwahiliTranslations:
     )
 
     RENAME_NOFLTR_NONAME = (
-        "✍️ Weka jina jipya kwa umbizo:\n"
-        "```/rename jina_jipya.kiambatisho```\n"
-        "au tumia `/filters` kuweka michujo ya kubadilisha jina."
+        "🔮 **Lo! Hakuna filta inayofanana!**\n\n"
+        "Imekuwa ikijaribu kutumia filta lakini hakuna kilichopatikana 🎩🐇\n"
+        "Dhibiti filta zako kwa /filters ✏️"
     )
 
     RENAME_CANCEL = "❌ Ghairi ubadilishaji huu."
@@ -82,7 +82,7 @@ class SwahiliTranslations:
     ADDITION_FILTER_INIT_MSG = (
         "✍️ Weka maandishi ya kuongeza kati ya `<code>|</code>`\n"
         "Mfano: `<code>| maandishi |</code>`\n"
-        "au `/ignore` kurudi."
+        "au /ignore kurudi."
     )
 
     ADDITION_FILTER_SUCCESS_LEFT = "✅ Chujio kimeongezwa: `<code>{{ text_1 }}</code>` **kushoto**."
@@ -93,7 +93,7 @@ class SwahiliTranslations:
 
     ADDITION_POSITION_PROMPT = "📍 **Unataka kuongeza wapi?**"
 
-    REMOVE_FILTER_INIT_MSG = "✍️ Weka maandishi ya kuondoa au `/ignore` kurudi."
+    REMOVE_FILTER_INIT_MSG = "✍️ Weka maandishi ya kuondoa au /ignore kurudi."
 
     REMOVE_FILTER_SUCCESS = "✅ **Chujio cha kuondoa kimeongezwa:** `<code>{{ text_1 }}</code>` itaondolewa."
 
