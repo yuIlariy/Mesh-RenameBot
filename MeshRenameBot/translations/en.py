@@ -16,7 +16,7 @@ class EnglishTranslations:
     "- Blazing fast ⚡ and secure 🔒\n"
     "- Supports ALL the file types! 📂🎵🎬\n\n"
     "Just send me a file and let's make magic happen! 🎩\n\n"
-    "🚀 **Pro Tip:** Use /mode for auto-rename ninja mode(must add /filters)!\n"
+    "🚀 **Pro Tip:** Use /mode for auto-rename ninja mode (must add /filters) !\n"
     "Need help? /help has your back!\n\n"
     "🛸 **Powered by** [NAm](https://t.me/xspes)"
     )
@@ -259,7 +259,7 @@ class EnglishTranslations:
         "   - 🎥 Media mode\n\n"
         "   Switch rename styles:\n"
         "   - 🏷️ Command-based\n"
-        "   - 🤖 Auto-rename(must add /filters)\n\n"
+        "   - 🤖 Auto-rename (must add /filters)\n\n"
         "`{{ queuecmd }}` - Check rename queue 📊\n"
         "`{{ setcaptioncmd }}` - Set fancy captions 🎨\n"
         "`{{ helpcmd }}` - This magic book! 📖\n"
