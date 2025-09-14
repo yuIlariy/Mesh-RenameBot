@@ -414,11 +414,11 @@ async def status_handler(client: Client, msg: Message) -> None:
 async def info_handler(client, msg: Message):
     caption = (
         "📦 **Auto Rename Bot**\n"
-        "🎯 **Version:** [4.3.8](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
+        "🎯 **Version:** [4.6.8](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
         "👨‍💻 **Developer:** [Yash Dk 🗿](https://github.com/yash-dk)\n"
         "🔧 **Maintainer:** [NAm 🗿](https://github.com/yuilariy)\n"
         "🛠️ **Source Code:** [Mesh-RenameBot](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
-        "☁️ **Platform:** [AWS](https://aws.amazon.com)\n"
+        "☁️ **Platform:** [DeluxHost](https://deluxhost.net/)\n"
         "🐍 **Language:** [Python](https://www.python.org)\n"
         "🗄️ **Database:** [Postgres (Neon)](https://neon.tech)"
     )
