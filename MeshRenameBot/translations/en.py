@@ -16,7 +16,7 @@ class EnglishTranslations:
     "- Blazing fast ⚡ and secure 🔒\n"
     "- Supports ALL the file types! 📂🎵🎬\n\n"
     "Just send me a file and let's make magic happen! 🎩\n\n"
-    "🚀 **Pro Tip:** Use /mode for auto-rename ninja mode!\n"
+    "🚀 **Pro Tip:** Use /mode for auto-rename ninja mode(must add /filters)!\n"
     "Need help? /help has your back!\n\n"
     "🛸 **Powered by** [NAm](https://t.me/xspes)"
     )
@@ -50,68 +50,65 @@ class EnglishTranslations:
 
     RENAME_CANCEL_BY_USER = "🙅‍♂️ **You waved the cancel wand!** ✨"
 
-    FLTR_ADD_LEFT_STR = "👈 **Added LEFT filter:** `{{ text_1 }}`"
-    FLTR_ADD_RIGHT_STR = "👉 **Added RIGHT filter:** `{{ text_1 }}`"
-    FLTR_RM_STR = "🗑 **Deleted filter:** `{{ text_1 }}`"
-    FLTR_REPLACE_STR = "🔄 **Swapped:** `{{ text_1 }}` → `{{ text_2 }}`"
+    FLTR_ADD_LEFT_STR = "➕ Added Filter: `<code>{{ text_1 }}</code>` **to the LEFT**."
+    FLTR_ADD_RIGHT_STR = "(
+        "➕ Addition Filter: `<code>{{ text_1 }}</code>` **to the RIGHT**."
+    )"
+    FLTR_RM_STR = "❌ Remove Filter: `<code>{{ text_1 }}</code>`."
+    FLTR_REPLACE_STR = "(
+        "🔄 Replace Filter: `<code>{{ text_1 }}</code>` → `<code>{{ text_2 }}</code>`."
+    )"
 
     CURRENT_FLTRS = "🎛️ **Your Filter Dashboard:**"
-    ADD_FLTR = "➕ Add Magic"
-    RM_FLTR = "🗑 Remove Magic"
+    ADD_FLTR = "➕ Add Filter"
+    RM_FLTR = "❌ Remove Filter"
 
     FILTERS_INTRO = (
-        "📜 **Filter Grimoire:**\n"
-        "Three spells at your disposal:\n\n"
-        "🔄 **Transmute Spell:** Change words\n"
-        "➕ **Conjure Spell:** Add words\n"
-        "🗑 **Vanishing Spell:** Remove words"
+        "🛠 **Filter Guide:**\n"
+        "There are 3 types of filters:\n\n"
+        "🔄 **Replace Filter:** Replace a given word with another.\n"
+        "➕ **Addition Filter:** Add a word at the beginning or end.\n"
+        "❌ **Remove Filter:** Remove a word from the filename."
     )
 
-    ADD_REPLACE_FLTR = "🔄 Transmute Spell"
-    ADD_ADDITION_FLTR = "➕ Conjure Spell"
-    ADD_REMOVE_FLTR = "🗑 Vanishing Spell"
-    BACK = "🔙 Back to Safety"
+    ADD_REPLACE_FLTR = "➕ Add Replace Filter"
+    ADD_ADDITION_FLTR = "➕ Add Addition Filter"
+    ADD_REMOVE_FLTR = "➕ Add Remove Filter"
+    BACK = "🔙 Back"
 
-    REPALCE_FILTER_INIT_MSG = (
-        "✍️ **Transmutation Formula:**\n"
-        "`old_stuff | new_stuff`\n"
-        "or `/ignore` to escape 🏃‍♂️"
-    )
+    REPALCE_FILTER_INIT_MSG = "✍️ Send the format: `<code>what_to_replace | replacement</code>` or /ignore to go back."
 
     NO_INPUT_FROM_USER = "🤷‍♂️ **Crickets...** No input detected!"
-    INPUT_IGNORE = "👍 **Spell ignored!**"
-    WRONG_INPUT_FORMAT = "🤦‍♂️ **Whoops!** Wrong format! Try again!"
+    INPUT_IGNORE = "👍 **Ignored!**"
+    WRONG_INPUT_FORMAT = "🤦‍♂️ **Whoops!** Wrong format! Check the provided format & Try again!"
     REPLACE_FILTER_SUCCESS = (
-        "✅ **Transmutation Complete!**\n" 
-        "`{{ text_1 }}` → `{{ text_2 }}`"
+        "✅ **Replace filter added:**\n" "`'{{ text_1 }}'` → `'{{ text_2 }}'`"
     )
 
     ADDITION_FILTER_INIT_MSG = (
-        "✨ **Conjuring Text:**\n"
-        "Wrap your magic in `|text|`\n"
-        "or `/ignore` to bail 🏃‍♀️"
+        "✍️ Enter the text to add within `<code>|</code>`\n"
+        "Example: `<code>| text to add |</code>`\n"
+        "or /ignore to go back."
     )
 
     ADDITION_FILTER_SUCCESS_LEFT = (
-        "👈 **Left Conjuration:** `{{ text_1 }}`"
+        "✅ Added filter: `<code>{{ text_1 }}</code>` **to LEFT**."
     )
     ADDITION_FILTER_SUCCESS_RIGHT = (
-        "👉 **Right Conjuration:** `{{ text_1 }}`"
+        "✅ Added filter: `<code>{{ text_1 }}</code>` **to RIGHT**."
     )
 
-    ADDITION_LEFT = "👈 Left Side"
-    ADDITION_RIGHT = "👉 Right Side"
+    ADDITION_LEFT = "🔄 Addition to LEFT"
+    ADDITION_RIGHT = "🔄 Addition to RIGHT"
 
-    ADDITION_POSITION_PROMPT = "🧙‍♂️ **Where shall I place the magic?**"
+    ADDITION_POSITION_PROMPT = "🧙‍♂️ **Where do you want to add the text?**"
 
     REMOVE_FILTER_INIT_MSG = (
-        "🗑 **Vanishing Act:**\n"
-        "What shall disappear?\n"
-        "or `/ignore` to keep it ✌️"
+        "✍️ Enter the text you want to remove or /ignore to go back."
     )
 
     REMOVE_FILTER_SUCCESS = (
-        "✅ **Poof!** `{{ text_1 }}` will vanish!"
+        "✅ **Remove filter added:** `<code>{{ text_1 }}</code>` will be removed."
     )
 
     RENAME_THEMES_DOWNLOADING = [
@@ -176,8 +173,8 @@ class EnglishTranslations:
     )
 
     CAPTION_FOOT_NOTE = (
-        "💡 **Pro Tip:** Use `/setcaption` to add flair!\n"
-        "✨ Insert `{file_name}` to auto-fill the filename!"
+        "💡 **Pro Tip:** Use /setcaption to add flair!\n"
+        "✨ Use `/setcaption {file_name}` to auto-fill the filename in the caption!"
     )
 
     DELETE_CAPTION = "🗑️ Yeet Caption"
@@ -186,7 +183,7 @@ class EnglishTranslations:
     CAPTION_CURRENT = "📝 **Current Caption:** {{ caption }}"
     CAPTION_NOT_SET = "🫗 **Caption empty!** So lonely..."
     CAPTION_SET = "✅ **New Caption:** {{ caption }}"
-    CAPTION_DELETED = "🗑️ **Caption vanished!** Poof!"
+    CAPTION_DELETED = "🗑️ **Caption deleted successfully.**"
 
     RENAME_ADDED_TO_QUEUE = (
         "📊 **Rename in Queue**\n"
@@ -252,17 +249,17 @@ class EnglishTranslations:
         "📚 **Magic Spellbook:**\n"
         "`{{ startcmd }}` - Check if I'm alive! 💓\n"
         "`{{ renamecmd }}` - Rename files like a boss! 🎩\n"
-        "`{{ filterscmd }}` - Customize your renaming magic! ✨\n"
+        "`{{ filterscmd }}` - Customize your renaming filters! ✨\n"
         "`{{ setthumbcmd }}` - Set a permanent thumbnail! 🖼️\n"
         "`{{ getthumbcmd }}` - Peek at current thumbnail! 👀\n"
-        "`{{ clrthumbcmd }}` - Bye-bye thumbnail! 🗑️\n"
+        "`{{ clrthumbcmd }}` - Delete thumbnail! 🗑️\n"
         "`{{ modecmd }}` - Switch output modes:\n"
         "   - 📝 Original format\n"
         "   - 📂 Force document\n"
         "   - 🎥 Media mode\n\n"
         "   Switch rename styles:\n"
         "   - 🏷️ Command-based\n"
-        "   - 🤖 Auto-rename\n\n"
+        "   - 🤖 Auto-rename(must add /filters)\n\n"
         "`{{ queuecmd }}` - Check rename queue 📊\n"
         "`{{ setcaptioncmd }}` - Set fancy captions 🎨\n"
         "`{{ helpcmd }}` - This magic book! 📖\n"
