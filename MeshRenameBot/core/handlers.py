@@ -418,7 +418,7 @@ async def info_handler(client, msg: Message):
         "👨‍💻 **Developer:** [Yash Dk 🗿](https://github.com/yash-dk)\n"
         "🔧 **Maintainer:** [NAm 🗿](https://github.com/yuilariy)\n"
         "🛠️ **Source Code:** [Mesh-RenameBot](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
-        "☁️ **Platform:** [DeluxHost](https://deluxhost.net/)\n"
+        "☁️ **Server:** [DeluxHost](https://deluxhost.net/)\n"
         "🐍 **Language:** [Python](https://www.python.org)\n"
         "🗄️ **Database:** [Postgres (Neon)](https://neon.tech)"
     )
@@ -443,7 +443,7 @@ async def info_callback(client, callback_query):
             "👨‍💻 **Developer:** [Yash Dk 🗿](https://github.com/yash-dk)\n"
             "🔧 **Maintainer:** [NAm 🗿](https://github.com/yuilariy)\n"
             "🛠️ **Source Code:** [Mesh-RenameBot](https://github.com/yuIlariy/Mesh-RenameBot)\n\n"
-            "☁️ **Platform:** [DeluxHost](https://deluxhost.net/)\n"
+            "☁️ **Server:** [DeluxHost](https://deluxhost.net/)\n"
             "🐍 **Language:** [Python](https://www.python.org)\n"
             "🗄️ **Database:** [Postgres (Neon)](https://neon.tech)"
         ),
