@@ -45,7 +45,7 @@ class MeshRenameBot(Client):
                 f"⏰ **Tɪᴍᴇ** : {now.strftime('%I:%M:%S %p')}\n"
                 f"🌐 **Tɪᴍᴇᴢᴏɴᴇ** : Africa/Nairobi\n\n"
                 f"{random.choice(greetings)}\n"
-                "🉐 **Vᴇʀsɪᴏɴ** : v4.3.8 (Layer 951)\n\n"
+                "🉐 **Vᴇʀsɪᴏɴ** : v6.2.8 (Layer 991)\n\n"
                 "`🫡 All systems go, Capitán.`"
             )
 
