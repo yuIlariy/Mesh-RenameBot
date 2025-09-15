@@ -25,10 +25,10 @@ class MeshRenameBot(Client):
             # Restart message for log channel
             restart_msg = (
                 f"🌋 **{bot_mention} Iꜱ Rᴇsᴛᴀʀᴛᴇᴅ !!**\n\n"
-                f"📅 **Dᴀᴛᴇ** : {now.strftime('%d %B, %Y')}\n"
-                f"⏰ **Tɪᴍᴇ** : {now.strftime('%I:%M:%S %p')}\n"
-                f"🌐 **Tɪᴍᴇᴢᴏɴᴇ** : Africa/Nairobi\n\n"
-                "🉐 **Vᴇʀsɪᴏɴ** : v4.3.8 (Layer 951)"
+                f"📅 **Dᴀᴛᴇ** : `{now.strftime('%d %B, %Y')}`\n"
+                f"⏰ **Tɪᴍᴇ** : `{now.strftime('%I:%M:%S %p')}`\n"
+                f"🌐 **Tɪᴍᴇᴢᴏɴᴇ** : `Africa/Nairobi`\n\n"
+                "🉐 **Vᴇʀsɪᴏɴ** : `v6.2.8 (Layer 991)`"
             )
 
             # Owner message with rotating greeting
