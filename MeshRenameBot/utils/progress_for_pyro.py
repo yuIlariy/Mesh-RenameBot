@@ -57,11 +57,11 @@ async def progress_for_pyrogram(
 
         speed_icon = get_speed_icon(speed)
 
-        # Classic block-style progress bar (10 segments)
-        total_blocks = 10
+        # Classic block-style progress bar (20 segments)
+        total_blocks = 20
         filled_blocks = math.floor((percentage / 100) * total_blocks)
         empty_blocks = total_blocks - filled_blocks
-        block_bar = "█" * filled_blocks + "░" * empty_blocks
+        block_bar = "▰" * filled_blocks + "▱" * empty_blocks
 
         tmp = f"""{ud_type}\n
  {block_bar}
