@@ -78,7 +78,7 @@ async def progress_for_pyrogram(
 
 ┃    ⏰ ᴇᴛᴀ: {eta_display}
 
-╰━━━━━━━━━━━━━━━━➣
+╰━━━━━━━━━━━━━━━➣
 </b>"""
 
         try:
